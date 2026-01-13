@@ -1,8 +1,11 @@
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { PrismaClient } from "./generated/client";
-import { env } from "cloudflare:workers";
+import { PrismaPg } from "@prisma/adapter-pg";
 
-const adapter = new PrismaNeon({
-  connectionString: env.DATABASE_URL,
+const connectionString = process.env.DATABASE_URL;
+export const prismaClient = new PrismaClient({
+  adapter:
+    process.env.LIVING_MEMORY_ENV === "local"
+      ? new PrismaPg({ connectionString })
+      : new PrismaNeon({ connectionString }),
 });
-export const prismaClient = new PrismaClient({ adapter });

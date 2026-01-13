@@ -1,5 +1,5 @@
-import { auth } from "../lib/auth";
-import type { LivingMemoryAPIContext } from "../lib/types";
+import { auth } from "../utils/auth";
+import type { LivingMemoryAPIContext } from "../utils/types";
 import { createMiddleware } from "hono/factory";
 
 /**

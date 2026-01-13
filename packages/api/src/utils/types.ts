@@ -1,6 +1,7 @@
 import { ContextVariablesAuth } from "./auth";
 
-export type LMBindings = Cloudflare.Env;
+export type LMEnvs = Cloudflare.Env;
+export type LMBindings = LMEnvs;
 export type LMVariables = ContextVariablesAuth;
 
 export type LivingMemoryAPIContext = {

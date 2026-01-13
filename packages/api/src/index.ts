@@ -1,8 +1,9 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { auth } from "./lib/auth";
-import { LivingMemoryAPIContext } from "./lib/types";
+import { auth } from "./utils/auth";
+import { LivingMemoryAPIContext } from "./utils/types";
 import { requireAuth } from "./middleware/auth.middleware";
+import { env } from "cloudflare:workers";
 
 const app = new Hono<LivingMemoryAPIContext>({
   strict: true,
@@ -12,7 +13,7 @@ const app = new Hono<LivingMemoryAPIContext>({
 app.use(
   "*",
   cors({
-    origin: "*", // Configure this to your frontend domain in production
+    origin: env.LIVING_MEMORY_ENV === "local" ? "*" : env.APP_DOMAIN,
     credentials: true,
   })
 );
