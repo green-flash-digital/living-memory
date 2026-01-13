@@ -1,5 +1,5 @@
 {
-  "name": "living-memory",
+  "name": "@living-memory/root",
   "version": "0.0.0",
   "private": true,
   "description": "Living Memory - A monorepo for managing and preserving digital memories",
@@ -18,6 +18,6 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "turbo": "^2.7.4"
+    "turbo": "2.7.4"
   }
 }
