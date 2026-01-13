@@ -1,0 +1,5 @@
+# Ignore files that should not affect Turbo's cache
+*.log
+.DS_Store
+.env.local
+.env.*.local

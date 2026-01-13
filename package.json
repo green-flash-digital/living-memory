@@ -1,0 +1,23 @@
+{
+  "name": "living-memory",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Living Memory - A monorepo for managing and preserving digital memories",
+  "workspaces": [
+    "packages/*"
+  ],
+  "packageManager": "yarn@4.12.0",
+  "scripts": {
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "dev": "turbo run dev",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "deploy": "turbo run deploy",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "devDependencies": {
+    "turbo": "^2.7.4"
+  }
+}
