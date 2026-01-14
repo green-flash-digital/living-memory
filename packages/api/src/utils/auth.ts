@@ -34,18 +34,23 @@ export const auth = betterAuth({
       schema: {
         // Map to Household model
         organization: {
-          modelName: "household",
+          modelName: "Household",
           fields: {
             name: "name",
           },
         },
         // Map to UserHousehold join table
         member: {
-          modelName: "user_household",
+          modelName: "User_Household",
           fields: {
             userId: "userId",
             organizationId: "householdId",
             role: "role",
+          },
+          additionalFields: {
+            updatedAt: {
+              type: "date",
+            },
           },
         },
       },

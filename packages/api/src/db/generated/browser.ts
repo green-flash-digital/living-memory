@@ -37,3 +37,53 @@ export type Account = Prisma.AccountModel
  * 
  */
 export type Verification = Prisma.VerificationModel
+/**
+ * Model Household
+ * 
+ */
+export type Household = Prisma.HouseholdModel
+/**
+ * Model Device
+ * 
+ */
+export type Device = Prisma.DeviceModel
+/**
+ * Model DeviceAuthorization
+ * 
+ */
+export type DeviceAuthorization = Prisma.DeviceAuthorizationModel
+/**
+ * Model Photo
+ * 
+ */
+export type Photo = Prisma.PhotoModel
+/**
+ * Model Playlist
+ * 
+ */
+export type Playlist = Prisma.PlaylistModel
+/**
+ * Model PlaylistItem
+ * 
+ */
+export type PlaylistItem = Prisma.PlaylistItemModel
+/**
+ * Model Invitation
+ * 
+ */
+export type Invitation = Prisma.InvitationModel
+/**
+ * Model DeviceCode
+ * 
+ */
+export type DeviceCode = Prisma.DeviceCodeModel
+/**
+ * Model User_Household
+ * 
+ */
+export type User_Household = Prisma.User_HouseholdModel
+/**
+ * Model PlaylistShare
+ * 
+ */
+export type PlaylistShare = Prisma.PlaylistShareModel

@@ -32,6 +32,7 @@ export type UserMinAggregateOutputType = {
   image: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  isOnboarded: boolean | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -42,6 +43,7 @@ export type UserMaxAggregateOutputType = {
   image: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  isOnboarded: boolean | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -52,6 +54,7 @@ export type UserCountAggregateOutputType = {
   image: number
   createdAt: number
   updatedAt: number
+  isOnboarded: number
   _all: number
 }
 
@@ -64,6 +67,7 @@ export type UserMinAggregateInputType = {
   image?: true
   createdAt?: true
   updatedAt?: true
+  isOnboarded?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -74,6 +78,7 @@ export type UserMaxAggregateInputType = {
   image?: true
   createdAt?: true
   updatedAt?: true
+  isOnboarded?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -84,6 +89,7 @@ export type UserCountAggregateInputType = {
   image?: true
   createdAt?: true
   updatedAt?: true
+  isOnboarded?: true
   _all?: true
 }
 
@@ -167,6 +173,7 @@ export type UserGroupByOutputType = {
   image: string | null
   createdAt: Date
   updatedAt: Date
+  isOnboarded: boolean | null
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -198,8 +205,15 @@ export type UserWhereInput = {
   image?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  isOnboarded?: Prisma.BoolNullableFilter<"User"> | boolean | null
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
+  photos?: Prisma.PhotoListRelationFilter
+  playlistsCreateByUser?: Prisma.PlaylistListRelationFilter
+  invitations?: Prisma.InvitationListRelationFilter
+  playlistsSharedWithUser?: Prisma.PlaylistShareListRelationFilter
+  playlistsSharedByUser?: Prisma.PlaylistShareListRelationFilter
+  user_households?: Prisma.User_HouseholdListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -210,8 +224,15 @@ export type UserOrderByWithRelationInput = {
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isOnboarded?: Prisma.SortOrderInput | Prisma.SortOrder
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   accounts?: Prisma.AccountOrderByRelationAggregateInput
+  photos?: Prisma.PhotoOrderByRelationAggregateInput
+  playlistsCreateByUser?: Prisma.PlaylistOrderByRelationAggregateInput
+  invitations?: Prisma.InvitationOrderByRelationAggregateInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareOrderByRelationAggregateInput
+  playlistsSharedByUser?: Prisma.PlaylistShareOrderByRelationAggregateInput
+  user_households?: Prisma.User_HouseholdOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -225,8 +246,15 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   image?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  isOnboarded?: Prisma.BoolNullableFilter<"User"> | boolean | null
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
+  photos?: Prisma.PhotoListRelationFilter
+  playlistsCreateByUser?: Prisma.PlaylistListRelationFilter
+  invitations?: Prisma.InvitationListRelationFilter
+  playlistsSharedWithUser?: Prisma.PlaylistShareListRelationFilter
+  playlistsSharedByUser?: Prisma.PlaylistShareListRelationFilter
+  user_households?: Prisma.User_HouseholdListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -237,6 +265,7 @@ export type UserOrderByWithAggregationInput = {
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isOnboarded?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -253,6 +282,7 @@ export type UserScalarWhereWithAggregatesInput = {
   image?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  isOnboarded?: Prisma.BoolNullableWithAggregatesFilter<"User"> | boolean | null
 }
 
 export type UserCreateInput = {
@@ -263,8 +293,15 @@ export type UserCreateInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isOnboarded?: boolean | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutUserInput
+  playlistsCreateByUser?: Prisma.PlaylistCreateNestedManyWithoutCreatedByInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareCreateNestedManyWithoutSharedWithInput
+  playlistsSharedByUser?: Prisma.PlaylistShareCreateNestedManyWithoutSharedByInput
+  user_households?: Prisma.User_HouseholdCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -275,8 +312,15 @@ export type UserUncheckedCreateInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isOnboarded?: boolean | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutUserInput
+  playlistsCreateByUser?: Prisma.PlaylistUncheckedCreateNestedManyWithoutCreatedByInput
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUncheckedCreateNestedManyWithoutSharedWithInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUncheckedCreateNestedManyWithoutSharedByInput
+  user_households?: Prisma.User_HouseholdUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -287,8 +331,15 @@ export type UserUpdateInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutUserNestedInput
+  playlistsCreateByUser?: Prisma.PlaylistUpdateManyWithoutCreatedByNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUpdateManyWithoutSharedWithNestedInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUpdateManyWithoutSharedByNestedInput
+  user_households?: Prisma.User_HouseholdUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -299,8 +350,15 @@ export type UserUncheckedUpdateInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutUserNestedInput
+  playlistsCreateByUser?: Prisma.PlaylistUncheckedUpdateManyWithoutCreatedByNestedInput
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUncheckedUpdateManyWithoutSharedByNestedInput
+  user_households?: Prisma.User_HouseholdUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -311,6 +369,7 @@ export type UserCreateManyInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isOnboarded?: boolean | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -321,6 +380,7 @@ export type UserUpdateManyMutationInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -331,6 +391,7 @@ export type UserUncheckedUpdateManyInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -341,6 +402,7 @@ export type UserCountOrderByAggregateInput = {
   image?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isOnboarded?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -351,6 +413,7 @@ export type UserMaxOrderByAggregateInput = {
   image?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isOnboarded?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -361,6 +424,7 @@ export type UserMinOrderByAggregateInput = {
   image?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isOnboarded?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -382,6 +446,10 @@ export type NullableStringFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type NullableBoolFieldUpdateOperationsInput = {
+  set?: boolean | null
 }
 
 export type UserCreateNestedOneWithoutSessionsInput = {
@@ -412,6 +480,90 @@ export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>
 }
 
+export type UserCreateNestedOneWithoutPhotosInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPhotosInput, Prisma.UserUncheckedCreateWithoutPhotosInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPhotosInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPhotosNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPhotosInput, Prisma.UserUncheckedCreateWithoutPhotosInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPhotosInput
+  upsert?: Prisma.UserUpsertWithoutPhotosInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPhotosInput, Prisma.UserUpdateWithoutPhotosInput>, Prisma.UserUncheckedUpdateWithoutPhotosInput>
+}
+
+export type UserCreateNestedOneWithoutPlaylistsCreateByUserInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPlaylistsCreateByUserInput, Prisma.UserUncheckedCreateWithoutPlaylistsCreateByUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPlaylistsCreateByUserInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPlaylistsCreateByUserNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPlaylistsCreateByUserInput, Prisma.UserUncheckedCreateWithoutPlaylistsCreateByUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPlaylistsCreateByUserInput
+  upsert?: Prisma.UserUpsertWithoutPlaylistsCreateByUserInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPlaylistsCreateByUserInput, Prisma.UserUpdateWithoutPlaylistsCreateByUserInput>, Prisma.UserUncheckedUpdateWithoutPlaylistsCreateByUserInput>
+}
+
+export type UserCreateNestedOneWithoutInvitationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInvitationsInput, Prisma.UserUncheckedCreateWithoutInvitationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvitationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutInvitationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutInvitationsInput, Prisma.UserUncheckedCreateWithoutInvitationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutInvitationsInput
+  upsert?: Prisma.UserUpsertWithoutInvitationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInvitationsInput, Prisma.UserUpdateWithoutInvitationsInput>, Prisma.UserUncheckedUpdateWithoutInvitationsInput>
+}
+
+export type UserCreateNestedOneWithoutUser_householdsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUser_householdsInput, Prisma.UserUncheckedCreateWithoutUser_householdsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUser_householdsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutUser_householdsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUser_householdsInput, Prisma.UserUncheckedCreateWithoutUser_householdsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUser_householdsInput
+  upsert?: Prisma.UserUpsertWithoutUser_householdsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUser_householdsInput, Prisma.UserUpdateWithoutUser_householdsInput>, Prisma.UserUncheckedUpdateWithoutUser_householdsInput>
+}
+
+export type UserCreateNestedOneWithoutPlaylistsSharedWithUserInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPlaylistsSharedWithUserInput, Prisma.UserUncheckedCreateWithoutPlaylistsSharedWithUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPlaylistsSharedWithUserInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutPlaylistsSharedByUserInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPlaylistsSharedByUserInput, Prisma.UserUncheckedCreateWithoutPlaylistsSharedByUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPlaylistsSharedByUserInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPlaylistsSharedWithUserNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPlaylistsSharedWithUserInput, Prisma.UserUncheckedCreateWithoutPlaylistsSharedWithUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPlaylistsSharedWithUserInput
+  upsert?: Prisma.UserUpsertWithoutPlaylistsSharedWithUserInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPlaylistsSharedWithUserInput, Prisma.UserUpdateWithoutPlaylistsSharedWithUserInput>, Prisma.UserUncheckedUpdateWithoutPlaylistsSharedWithUserInput>
+}
+
+export type UserUpdateOneRequiredWithoutPlaylistsSharedByUserNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPlaylistsSharedByUserInput, Prisma.UserUncheckedCreateWithoutPlaylistsSharedByUserInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPlaylistsSharedByUserInput
+  upsert?: Prisma.UserUpsertWithoutPlaylistsSharedByUserInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPlaylistsSharedByUserInput, Prisma.UserUpdateWithoutPlaylistsSharedByUserInput>, Prisma.UserUncheckedUpdateWithoutPlaylistsSharedByUserInput>
+}
+
 export type UserCreateWithoutSessionsInput = {
   id: string
   name: string
@@ -420,7 +572,14 @@ export type UserCreateWithoutSessionsInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isOnboarded?: boolean | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutUserInput
+  playlistsCreateByUser?: Prisma.PlaylistCreateNestedManyWithoutCreatedByInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareCreateNestedManyWithoutSharedWithInput
+  playlistsSharedByUser?: Prisma.PlaylistShareCreateNestedManyWithoutSharedByInput
+  user_households?: Prisma.User_HouseholdCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -431,7 +590,14 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isOnboarded?: boolean | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutUserInput
+  playlistsCreateByUser?: Prisma.PlaylistUncheckedCreateNestedManyWithoutCreatedByInput
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUncheckedCreateNestedManyWithoutSharedWithInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUncheckedCreateNestedManyWithoutSharedByInput
+  user_households?: Prisma.User_HouseholdUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -458,7 +624,14 @@ export type UserUpdateWithoutSessionsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutUserNestedInput
+  playlistsCreateByUser?: Prisma.PlaylistUpdateManyWithoutCreatedByNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUpdateManyWithoutSharedWithNestedInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUpdateManyWithoutSharedByNestedInput
+  user_households?: Prisma.User_HouseholdUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -469,7 +642,14 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutUserNestedInput
+  playlistsCreateByUser?: Prisma.PlaylistUncheckedUpdateManyWithoutCreatedByNestedInput
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUncheckedUpdateManyWithoutSharedByNestedInput
+  user_households?: Prisma.User_HouseholdUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -480,7 +660,14 @@ export type UserCreateWithoutAccountsInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isOnboarded?: boolean | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutUserInput
+  playlistsCreateByUser?: Prisma.PlaylistCreateNestedManyWithoutCreatedByInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareCreateNestedManyWithoutSharedWithInput
+  playlistsSharedByUser?: Prisma.PlaylistShareCreateNestedManyWithoutSharedByInput
+  user_households?: Prisma.User_HouseholdCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -491,7 +678,14 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   image?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isOnboarded?: boolean | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutUserInput
+  playlistsCreateByUser?: Prisma.PlaylistUncheckedCreateNestedManyWithoutCreatedByInput
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUncheckedCreateNestedManyWithoutSharedWithInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUncheckedCreateNestedManyWithoutSharedByInput
+  user_households?: Prisma.User_HouseholdUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -518,7 +712,14 @@ export type UserUpdateWithoutAccountsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutUserNestedInput
+  playlistsCreateByUser?: Prisma.PlaylistUpdateManyWithoutCreatedByNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUpdateManyWithoutSharedWithNestedInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUpdateManyWithoutSharedByNestedInput
+  user_households?: Prisma.User_HouseholdUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -529,7 +730,542 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutUserNestedInput
+  playlistsCreateByUser?: Prisma.PlaylistUncheckedUpdateManyWithoutCreatedByNestedInput
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUncheckedUpdateManyWithoutSharedByNestedInput
+  user_households?: Prisma.User_HouseholdUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPhotosInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  isOnboarded?: boolean | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  playlistsCreateByUser?: Prisma.PlaylistCreateNestedManyWithoutCreatedByInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareCreateNestedManyWithoutSharedWithInput
+  playlistsSharedByUser?: Prisma.PlaylistShareCreateNestedManyWithoutSharedByInput
+  user_households?: Prisma.User_HouseholdCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPhotosInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  isOnboarded?: boolean | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  playlistsCreateByUser?: Prisma.PlaylistUncheckedCreateNestedManyWithoutCreatedByInput
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUncheckedCreateNestedManyWithoutSharedWithInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUncheckedCreateNestedManyWithoutSharedByInput
+  user_households?: Prisma.User_HouseholdUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPhotosInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPhotosInput, Prisma.UserUncheckedCreateWithoutPhotosInput>
+}
+
+export type UserUpsertWithoutPhotosInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPhotosInput, Prisma.UserUncheckedUpdateWithoutPhotosInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPhotosInput, Prisma.UserUncheckedCreateWithoutPhotosInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPhotosInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPhotosInput, Prisma.UserUncheckedUpdateWithoutPhotosInput>
+}
+
+export type UserUpdateWithoutPhotosInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  playlistsCreateByUser?: Prisma.PlaylistUpdateManyWithoutCreatedByNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUpdateManyWithoutSharedWithNestedInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUpdateManyWithoutSharedByNestedInput
+  user_households?: Prisma.User_HouseholdUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPhotosInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  playlistsCreateByUser?: Prisma.PlaylistUncheckedUpdateManyWithoutCreatedByNestedInput
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUncheckedUpdateManyWithoutSharedByNestedInput
+  user_households?: Prisma.User_HouseholdUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPlaylistsCreateByUserInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  isOnboarded?: boolean | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareCreateNestedManyWithoutSharedWithInput
+  playlistsSharedByUser?: Prisma.PlaylistShareCreateNestedManyWithoutSharedByInput
+  user_households?: Prisma.User_HouseholdCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPlaylistsCreateByUserInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  isOnboarded?: boolean | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUncheckedCreateNestedManyWithoutSharedWithInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUncheckedCreateNestedManyWithoutSharedByInput
+  user_households?: Prisma.User_HouseholdUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPlaylistsCreateByUserInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPlaylistsCreateByUserInput, Prisma.UserUncheckedCreateWithoutPlaylistsCreateByUserInput>
+}
+
+export type UserUpsertWithoutPlaylistsCreateByUserInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPlaylistsCreateByUserInput, Prisma.UserUncheckedUpdateWithoutPlaylistsCreateByUserInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPlaylistsCreateByUserInput, Prisma.UserUncheckedCreateWithoutPlaylistsCreateByUserInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPlaylistsCreateByUserInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPlaylistsCreateByUserInput, Prisma.UserUncheckedUpdateWithoutPlaylistsCreateByUserInput>
+}
+
+export type UserUpdateWithoutPlaylistsCreateByUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUpdateManyWithoutSharedWithNestedInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUpdateManyWithoutSharedByNestedInput
+  user_households?: Prisma.User_HouseholdUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPlaylistsCreateByUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUncheckedUpdateManyWithoutSharedByNestedInput
+  user_households?: Prisma.User_HouseholdUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutInvitationsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  isOnboarded?: boolean | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutUserInput
+  playlistsCreateByUser?: Prisma.PlaylistCreateNestedManyWithoutCreatedByInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareCreateNestedManyWithoutSharedWithInput
+  playlistsSharedByUser?: Prisma.PlaylistShareCreateNestedManyWithoutSharedByInput
+  user_households?: Prisma.User_HouseholdCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutInvitationsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  isOnboarded?: boolean | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutUserInput
+  playlistsCreateByUser?: Prisma.PlaylistUncheckedCreateNestedManyWithoutCreatedByInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUncheckedCreateNestedManyWithoutSharedWithInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUncheckedCreateNestedManyWithoutSharedByInput
+  user_households?: Prisma.User_HouseholdUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutInvitationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutInvitationsInput, Prisma.UserUncheckedCreateWithoutInvitationsInput>
+}
+
+export type UserUpsertWithoutInvitationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutInvitationsInput, Prisma.UserUncheckedUpdateWithoutInvitationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutInvitationsInput, Prisma.UserUncheckedCreateWithoutInvitationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutInvitationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutInvitationsInput, Prisma.UserUncheckedUpdateWithoutInvitationsInput>
+}
+
+export type UserUpdateWithoutInvitationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutUserNestedInput
+  playlistsCreateByUser?: Prisma.PlaylistUpdateManyWithoutCreatedByNestedInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUpdateManyWithoutSharedWithNestedInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUpdateManyWithoutSharedByNestedInput
+  user_households?: Prisma.User_HouseholdUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutInvitationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutUserNestedInput
+  playlistsCreateByUser?: Prisma.PlaylistUncheckedUpdateManyWithoutCreatedByNestedInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUncheckedUpdateManyWithoutSharedByNestedInput
+  user_households?: Prisma.User_HouseholdUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutUser_householdsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  isOnboarded?: boolean | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutUserInput
+  playlistsCreateByUser?: Prisma.PlaylistCreateNestedManyWithoutCreatedByInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareCreateNestedManyWithoutSharedWithInput
+  playlistsSharedByUser?: Prisma.PlaylistShareCreateNestedManyWithoutSharedByInput
+}
+
+export type UserUncheckedCreateWithoutUser_householdsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  isOnboarded?: boolean | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutUserInput
+  playlistsCreateByUser?: Prisma.PlaylistUncheckedCreateNestedManyWithoutCreatedByInput
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUncheckedCreateNestedManyWithoutSharedWithInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUncheckedCreateNestedManyWithoutSharedByInput
+}
+
+export type UserCreateOrConnectWithoutUser_householdsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUser_householdsInput, Prisma.UserUncheckedCreateWithoutUser_householdsInput>
+}
+
+export type UserUpsertWithoutUser_householdsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUser_householdsInput, Prisma.UserUncheckedUpdateWithoutUser_householdsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUser_householdsInput, Prisma.UserUncheckedCreateWithoutUser_householdsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUser_householdsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUser_householdsInput, Prisma.UserUncheckedUpdateWithoutUser_householdsInput>
+}
+
+export type UserUpdateWithoutUser_householdsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutUserNestedInput
+  playlistsCreateByUser?: Prisma.PlaylistUpdateManyWithoutCreatedByNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUpdateManyWithoutSharedWithNestedInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUpdateManyWithoutSharedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUser_householdsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutUserNestedInput
+  playlistsCreateByUser?: Prisma.PlaylistUncheckedUpdateManyWithoutCreatedByNestedInput
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUncheckedUpdateManyWithoutSharedByNestedInput
+}
+
+export type UserCreateWithoutPlaylistsSharedWithUserInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  isOnboarded?: boolean | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutUserInput
+  playlistsCreateByUser?: Prisma.PlaylistCreateNestedManyWithoutCreatedByInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
+  playlistsSharedByUser?: Prisma.PlaylistShareCreateNestedManyWithoutSharedByInput
+  user_households?: Prisma.User_HouseholdCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPlaylistsSharedWithUserInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  isOnboarded?: boolean | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutUserInput
+  playlistsCreateByUser?: Prisma.PlaylistUncheckedCreateNestedManyWithoutCreatedByInput
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUncheckedCreateNestedManyWithoutSharedByInput
+  user_households?: Prisma.User_HouseholdUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPlaylistsSharedWithUserInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPlaylistsSharedWithUserInput, Prisma.UserUncheckedCreateWithoutPlaylistsSharedWithUserInput>
+}
+
+export type UserCreateWithoutPlaylistsSharedByUserInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  isOnboarded?: boolean | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  photos?: Prisma.PhotoCreateNestedManyWithoutUserInput
+  playlistsCreateByUser?: Prisma.PlaylistCreateNestedManyWithoutCreatedByInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutUserInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareCreateNestedManyWithoutSharedWithInput
+  user_households?: Prisma.User_HouseholdCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPlaylistsSharedByUserInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  isOnboarded?: boolean | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutUserInput
+  playlistsCreateByUser?: Prisma.PlaylistUncheckedCreateNestedManyWithoutCreatedByInput
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutUserInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUncheckedCreateNestedManyWithoutSharedWithInput
+  user_households?: Prisma.User_HouseholdUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPlaylistsSharedByUserInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPlaylistsSharedByUserInput, Prisma.UserUncheckedCreateWithoutPlaylistsSharedByUserInput>
+}
+
+export type UserUpsertWithoutPlaylistsSharedWithUserInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPlaylistsSharedWithUserInput, Prisma.UserUncheckedUpdateWithoutPlaylistsSharedWithUserInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPlaylistsSharedWithUserInput, Prisma.UserUncheckedCreateWithoutPlaylistsSharedWithUserInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPlaylistsSharedWithUserInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPlaylistsSharedWithUserInput, Prisma.UserUncheckedUpdateWithoutPlaylistsSharedWithUserInput>
+}
+
+export type UserUpdateWithoutPlaylistsSharedWithUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutUserNestedInput
+  playlistsCreateByUser?: Prisma.PlaylistUpdateManyWithoutCreatedByNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUpdateManyWithoutSharedByNestedInput
+  user_households?: Prisma.User_HouseholdUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPlaylistsSharedWithUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutUserNestedInput
+  playlistsCreateByUser?: Prisma.PlaylistUncheckedUpdateManyWithoutCreatedByNestedInput
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
+  playlistsSharedByUser?: Prisma.PlaylistShareUncheckedUpdateManyWithoutSharedByNestedInput
+  user_households?: Prisma.User_HouseholdUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserUpsertWithoutPlaylistsSharedByUserInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPlaylistsSharedByUserInput, Prisma.UserUncheckedUpdateWithoutPlaylistsSharedByUserInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPlaylistsSharedByUserInput, Prisma.UserUncheckedCreateWithoutPlaylistsSharedByUserInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPlaylistsSharedByUserInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPlaylistsSharedByUserInput, Prisma.UserUncheckedUpdateWithoutPlaylistsSharedByUserInput>
+}
+
+export type UserUpdateWithoutPlaylistsSharedByUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  photos?: Prisma.PhotoUpdateManyWithoutUserNestedInput
+  playlistsCreateByUser?: Prisma.PlaylistUpdateManyWithoutCreatedByNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutUserNestedInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUpdateManyWithoutSharedWithNestedInput
+  user_households?: Prisma.User_HouseholdUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPlaylistsSharedByUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  photos?: Prisma.PhotoUncheckedUpdateManyWithoutUserNestedInput
+  playlistsCreateByUser?: Prisma.PlaylistUncheckedUpdateManyWithoutCreatedByNestedInput
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutUserNestedInput
+  playlistsSharedWithUser?: Prisma.PlaylistShareUncheckedUpdateManyWithoutSharedWithNestedInput
+  user_households?: Prisma.User_HouseholdUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -540,11 +1276,23 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
 export type UserCountOutputType = {
   sessions: number
   accounts: number
+  photos: number
+  playlistsCreateByUser: number
+  invitations: number
+  playlistsSharedWithUser: number
+  playlistsSharedByUser: number
+  user_households: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
+  photos?: boolean | UserCountOutputTypeCountPhotosArgs
+  playlistsCreateByUser?: boolean | UserCountOutputTypeCountPlaylistsCreateByUserArgs
+  invitations?: boolean | UserCountOutputTypeCountInvitationsArgs
+  playlistsSharedWithUser?: boolean | UserCountOutputTypeCountPlaylistsSharedWithUserArgs
+  playlistsSharedByUser?: boolean | UserCountOutputTypeCountPlaylistsSharedByUserArgs
+  user_households?: boolean | UserCountOutputTypeCountUser_householdsArgs
 }
 
 /**
@@ -571,6 +1319,48 @@ export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.AccountWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPhotosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PhotoWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPlaylistsCreateByUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PlaylistWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvitationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPlaylistsSharedWithUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PlaylistShareWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPlaylistsSharedByUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PlaylistShareWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountUser_householdsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.User_HouseholdWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -580,8 +1370,15 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   image?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isOnboarded?: boolean
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
+  photos?: boolean | Prisma.User$photosArgs<ExtArgs>
+  playlistsCreateByUser?: boolean | Prisma.User$playlistsCreateByUserArgs<ExtArgs>
+  invitations?: boolean | Prisma.User$invitationsArgs<ExtArgs>
+  playlistsSharedWithUser?: boolean | Prisma.User$playlistsSharedWithUserArgs<ExtArgs>
+  playlistsSharedByUser?: boolean | Prisma.User$playlistsSharedByUserArgs<ExtArgs>
+  user_households?: boolean | Prisma.User$user_householdsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -593,6 +1390,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   image?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isOnboarded?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -603,6 +1401,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   image?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isOnboarded?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -613,12 +1412,19 @@ export type UserSelectScalar = {
   image?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isOnboarded?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "isOnboarded", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
+  photos?: boolean | Prisma.User$photosArgs<ExtArgs>
+  playlistsCreateByUser?: boolean | Prisma.User$playlistsCreateByUserArgs<ExtArgs>
+  invitations?: boolean | Prisma.User$invitationsArgs<ExtArgs>
+  playlistsSharedWithUser?: boolean | Prisma.User$playlistsSharedWithUserArgs<ExtArgs>
+  playlistsSharedByUser?: boolean | Prisma.User$playlistsSharedByUserArgs<ExtArgs>
+  user_households?: boolean | Prisma.User$user_householdsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -629,6 +1435,12 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     accounts: Prisma.$AccountPayload<ExtArgs>[]
+    photos: Prisma.$PhotoPayload<ExtArgs>[]
+    playlistsCreateByUser: Prisma.$PlaylistPayload<ExtArgs>[]
+    invitations: Prisma.$InvitationPayload<ExtArgs>[]
+    playlistsSharedWithUser: Prisma.$PlaylistSharePayload<ExtArgs>[]
+    playlistsSharedByUser: Prisma.$PlaylistSharePayload<ExtArgs>[]
+    user_households: Prisma.$User_HouseholdPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -638,6 +1450,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     image: string | null
     createdAt: Date
     updatedAt: Date
+    isOnboarded: boolean | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1034,6 +1847,12 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  photos<T extends Prisma.User$photosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$photosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PhotoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  playlistsCreateByUser<T extends Prisma.User$playlistsCreateByUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$playlistsCreateByUserArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlaylistPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  invitations<T extends Prisma.User$invitationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$invitationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  playlistsSharedWithUser<T extends Prisma.User$playlistsSharedWithUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$playlistsSharedWithUserArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlaylistSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  playlistsSharedByUser<T extends Prisma.User$playlistsSharedByUserArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$playlistsSharedByUserArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlaylistSharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  user_households<T extends Prisma.User$user_householdsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$user_householdsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$User_HouseholdPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1070,6 +1889,7 @@ export interface UserFieldRefs {
   readonly image: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly isOnboarded: Prisma.FieldRef<"User", 'Boolean'>
 }
     
 
@@ -1503,6 +2323,150 @@ export type User$accountsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.AccountScalarFieldEnum | Prisma.AccountScalarFieldEnum[]
+}
+
+/**
+ * User.photos
+ */
+export type User$photosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Photo
+   */
+  select?: Prisma.PhotoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Photo
+   */
+  omit?: Prisma.PhotoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PhotoInclude<ExtArgs> | null
+  where?: Prisma.PhotoWhereInput
+  orderBy?: Prisma.PhotoOrderByWithRelationInput | Prisma.PhotoOrderByWithRelationInput[]
+  cursor?: Prisma.PhotoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PhotoScalarFieldEnum | Prisma.PhotoScalarFieldEnum[]
+}
+
+/**
+ * User.playlistsCreateByUser
+ */
+export type User$playlistsCreateByUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Playlist
+   */
+  select?: Prisma.PlaylistSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Playlist
+   */
+  omit?: Prisma.PlaylistOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PlaylistInclude<ExtArgs> | null
+  where?: Prisma.PlaylistWhereInput
+  orderBy?: Prisma.PlaylistOrderByWithRelationInput | Prisma.PlaylistOrderByWithRelationInput[]
+  cursor?: Prisma.PlaylistWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PlaylistScalarFieldEnum | Prisma.PlaylistScalarFieldEnum[]
+}
+
+/**
+ * User.invitations
+ */
+export type User$invitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Invitation
+   */
+  select?: Prisma.InvitationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Invitation
+   */
+  omit?: Prisma.InvitationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvitationInclude<ExtArgs> | null
+  where?: Prisma.InvitationWhereInput
+  orderBy?: Prisma.InvitationOrderByWithRelationInput | Prisma.InvitationOrderByWithRelationInput[]
+  cursor?: Prisma.InvitationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InvitationScalarFieldEnum | Prisma.InvitationScalarFieldEnum[]
+}
+
+/**
+ * User.playlistsSharedWithUser
+ */
+export type User$playlistsSharedWithUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PlaylistShare
+   */
+  select?: Prisma.PlaylistShareSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PlaylistShare
+   */
+  omit?: Prisma.PlaylistShareOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PlaylistShareInclude<ExtArgs> | null
+  where?: Prisma.PlaylistShareWhereInput
+  orderBy?: Prisma.PlaylistShareOrderByWithRelationInput | Prisma.PlaylistShareOrderByWithRelationInput[]
+  cursor?: Prisma.PlaylistShareWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PlaylistShareScalarFieldEnum | Prisma.PlaylistShareScalarFieldEnum[]
+}
+
+/**
+ * User.playlistsSharedByUser
+ */
+export type User$playlistsSharedByUserArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PlaylistShare
+   */
+  select?: Prisma.PlaylistShareSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PlaylistShare
+   */
+  omit?: Prisma.PlaylistShareOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PlaylistShareInclude<ExtArgs> | null
+  where?: Prisma.PlaylistShareWhereInput
+  orderBy?: Prisma.PlaylistShareOrderByWithRelationInput | Prisma.PlaylistShareOrderByWithRelationInput[]
+  cursor?: Prisma.PlaylistShareWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PlaylistShareScalarFieldEnum | Prisma.PlaylistShareScalarFieldEnum[]
+}
+
+/**
+ * User.user_households
+ */
+export type User$user_householdsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User_Household
+   */
+  select?: Prisma.User_HouseholdSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User_Household
+   */
+  omit?: Prisma.User_HouseholdOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.User_HouseholdInclude<ExtArgs> | null
+  where?: Prisma.User_HouseholdWhereInput
+  orderBy?: Prisma.User_HouseholdOrderByWithRelationInput | Prisma.User_HouseholdOrderByWithRelationInput[]
+  cursor?: Prisma.User_HouseholdWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.User_HouseholdScalarFieldEnum | Prisma.User_HouseholdScalarFieldEnum[]
 }
 
 /**

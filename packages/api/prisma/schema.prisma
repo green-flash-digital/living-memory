@@ -10,19 +10,22 @@ datasource db {
 }
 
 model User {
-  id               String          @id
-  name             String
-  email            String
-  emailVerified    Boolean         @default(false)
-  image            String?
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
-  sessions         Session[]
-  accounts         Account[]
-  isOnboarded      Boolean?        @default(false)
-  households       UserHousehold[]
-  photos           Photo[]
-  createdPlaylists Playlist[]
+  id                      String           @id
+  name                    String
+  email                   String
+  emailVerified           Boolean          @default(false)
+  image                   String?
+  createdAt               DateTime         @default(now())
+  updatedAt               DateTime         @updatedAt
+  sessions                Session[]
+  accounts                Account[]
+  isOnboarded             Boolean?         @default(false)
+  photos                  Photo[]
+  playlistsCreateByUser   Playlist[]
+  invitations             Invitation[]
+  playlistsSharedWithUser PlaylistShare[]  @relation("SharedPlaylists") // Playlists shared with this user
+  playlistsSharedByUser   PlaylistShare[]  @relation("SharedByUser") // Playlists this user has shared
+  user_households         User_Household[]
 
   @@unique([email])
   @@map("user")
@@ -38,6 +41,8 @@ model Session {
   userAgent String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  activeOrganizationId String?
 
   @@unique([token])
   @@index([userId])
@@ -77,32 +82,22 @@ model Verification {
 }
 
 model Household {
-  id        String          @id
+  id        String     @id
   name      String
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
-  members   UserHousehold[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   devices   Device[]
   playlists Playlist[]
   photos    Photo[]
 
+  slug            String
+  logo            String?
+  metadata        String?
+  user_households User_Household[] // Households can have multiple users
+  invitations     Invitation[]
+
+  @@unique([slug])
   @@map("household")
-}
-
-model UserHousehold {
-  id          String    @id
-  userId      String
-  householdId String
-  role        String    @default("member") // "owner", "admin", "member"
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  household   Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, householdId])
-  @@index([userId])
-  @@index([householdId])
-  @@map("user_household")
 }
 
 model Device {
@@ -162,17 +157,19 @@ model Photo {
 }
 
 model Playlist {
-  id          String         @id
+  id          String          @id
   name        String
   description String?
   householdId String
   createdById String
-  isActive    Boolean        @default(true)
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  household   Household      @relation(fields: [householdId], references: [id], onDelete: Cascade)
-  createdBy   User           @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  isActive    Boolean         @default(true)
+  isPublic    Boolean         @default(false) // If true, can be shared outside household
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  household   Household       @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  createdBy   User            @relation(fields: [createdById], references: [id], onDelete: Cascade)
   items       PlaylistItem[]
+  shares      PlaylistShare[] // Shares of this playlist
 
   @@index([householdId])
   @@index([createdById])
@@ -193,4 +190,71 @@ model PlaylistItem {
   @@index([playlistId])
   @@index([photoId])
   @@map("playlist_item")
+}
+
+model Invitation {
+  id             String    @id
+  organizationId String
+  household      Household @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           String?
+  status         String    @default("pending")
+  expiresAt      DateTime
+  createdAt      DateTime  @default(now())
+  inviterId      String
+  user           User      @relation(fields: [inviterId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([email])
+  @@map("invitation")
+}
+
+model DeviceCode {
+  id              String    @id
+  deviceCode      String
+  userCode        String
+  userId          String?
+  expiresAt       DateTime
+  status          String
+  lastPolledAt    DateTime?
+  pollingInterval Int?
+  clientId        String?
+  scope           String?
+
+  @@map("deviceCode")
+}
+
+model User_Household {
+  id          String    @id
+  householdId String
+  household   Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  role        String    @default("member")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+
+  @@unique([userId, householdId])
+  @@index([householdId])
+  @@index([userId])
+  @@map("user_household")
+}
+
+model PlaylistShare {
+  id               String   @id
+  playlistId       String
+  sharedWithUserId String // User ID of the person the playlist is shared with
+  sharedByUserId   String // User ID of the person who shared it
+  permission       String   @default("view") // "view", "edit"
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  playlist         Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  sharedWith       User     @relation("SharedPlaylists", fields: [sharedWithUserId], references: [id], onDelete: Cascade)
+  sharedBy         User     @relation("SharedByUser", fields: [sharedByUserId], references: [id], onDelete: Cascade)
+
+  @@unique([playlistId, sharedWithUserId])
+  @@index([playlistId])
+  @@index([sharedWithUserId])
+  @@index([sharedByUserId])
+  @@map("playlist_share")
 }
