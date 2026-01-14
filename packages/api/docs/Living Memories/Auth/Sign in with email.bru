@@ -1,0 +1,23 @@
+meta {
+  name: Sign in with email
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{API_DOMAIN}}/api/auth/sign-in/email
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "email": "{{SUPER_USER_EMAIL}}",
+    "password": "{{SUPER_USER_PASSWORD}}"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,28 @@
+version: "3.8"
+
+name: "living-memories"
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: living_memories
+    ports:
+      # Maps port 55432 on your host to port 5432 inside the postgres container.
+      # This means you can connect to the Postgres server on your computer at localhost:55432,
+      # and traffic will be forwarded to the database inside the container.
+      - "55432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
