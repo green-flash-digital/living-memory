@@ -3,7 +3,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { organization } from "better-auth/plugins";
 import { deviceAuthorization } from "better-auth/plugins";
 
-import { prismaClient } from "../db";
+import { prismaClient } from "../db/prisma-client";
 import { getEnvVar } from "./util.getEnvVar";
 
 export const auth = betterAuth({

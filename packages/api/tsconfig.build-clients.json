@@ -4,7 +4,7 @@
     "outDir": "./dist-client",
     "declaration": true,
     "declarationMap": true,
-    "emitDeclarationOnly": true
+    "skipLibCheck": true
   },
-  "include": ["./src/utils/client.auth.ts"]
+  "include": ["./src-clients/client.auth.ts", "worker-configuration.d.ts"]
 }

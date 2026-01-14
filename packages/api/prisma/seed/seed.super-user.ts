@@ -1,6 +1,5 @@
 import "../../dev-utils/loadLocalEnvVars";
-import { getEnvVar } from "../../src/utils";
-
+import { getEnvVar } from "../../src/utils/util.getEnvVar";
 import { auth } from "../../src/utils/auth";
 
 /**
