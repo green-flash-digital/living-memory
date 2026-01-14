@@ -1,12 +1,10 @@
 import { createAuthClient } from "better-auth/react";
-
-const API_URL = typeof window !== "undefined" 
-  ? (import.meta.env.VITE_API_URL || "http://localhost:8787")
-  : "http://localhost:8787";
+import { EnvVar } from "./EnvVar";
 
 export const authClient = createAuthClient({
-  baseURL: API_URL,
+  baseURL: EnvVar.get("API_DOMAIN"),
   fetchOptions: {
-    credentials: "include",
+    credentials:
+      EnvVar.get("LIVING_MEMORY_ENV") !== "local" ? "include" : undefined,
   },
 });

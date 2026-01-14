@@ -5,10 +5,19 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import "./app.css";
+import { EnvVar } from "./lib/EnvVar";
+
+export const loader = ({ context }: Route.LoaderArgs) => {
+  EnvVar.register({
+    API_DOMAIN: context.env.API_DOMAIN,
+    LIVING_MEMORY_ENV: context.env.LIVING_MEMORY_ENV,
+  });
+  return EnvVar.vars;
+};
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -24,6 +33,8 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const data = useLoaderData<typeof loader>();
+
   return (
     <html lang="en">
       <head>
@@ -31,6 +42,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: EnvVar.setWindowString(data),
+          }}
+        />
       </head>
       <body>
         {children}

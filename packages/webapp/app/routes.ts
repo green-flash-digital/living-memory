@@ -1,9 +1,6 @@
 import { type RouteConfig, index, route } from "@react-router/dev/routes";
 
 export default [
-  index("routes/home.tsx"),
-  route("login", "routes/login.tsx"),
-  route("register", "routes/register.tsx"),
-  route("logout", "routes/logout.tsx"),
-  route("protected", "routes/protected.tsx"),
+  index("features/home/Home.route.tsx"),
+  route("/sign-in", "features/auth/SignIn.route.tsx"),
 ] satisfies RouteConfig;

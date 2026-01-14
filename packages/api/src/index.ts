@@ -13,8 +13,7 @@ const app = new Hono<LivingMemoryAPIContext>({
 app.use(
   "*",
   cors({
-    origin: [env.APP_DOMAIN],
-    allowHeaders: ["Content-Type", "Authorization", "Cookie"],
+    origin: [env.APP_DOMAIN, env.API_DOMAIN],
     allowMethods: ["*"],
     exposeHeaders: ["Content-Length"],
     maxAge: 600,
