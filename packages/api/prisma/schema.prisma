@@ -19,6 +19,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  isOnboarded   Boolean?  @default(false)
 
   @@unique([email])
   @@map("user")

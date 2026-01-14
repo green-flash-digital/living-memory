@@ -16,6 +16,17 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  user: {
+    additionalFields: {
+      isOnboarded: {
+        type: "boolean",
+        fieldName: "isOnboarded",
+        defaultValue: false,
+        input: false,
+        returned: true,
+      },
+    },
+  },
   experimental: { joins: true },
   advanced: {
     disableOriginCheck: getEnvVar("LIVING_MEMORY_ENV") === "local",

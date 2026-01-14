@@ -9,20 +9,17 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import { EnvVar } from "./utils.client/EnvVar";
-import { cloudflareContext } from "./context/context.cloudflare";
+import { ClientEnvVar } from "./utils.client/EnvVar";
+import { getCFContext } from "./context/context.cloudflare";
 
-export const loader = ({ context }: Route.LoaderArgs) => {
-  const cloudflare = context.get(cloudflareContext);
-  if (!cloudflare) {
-    throw new Error("Cloudflare context is not available");
-  }
-  EnvVar.register({
+export async function loader(args: Route.LoaderArgs) {
+  const cloudflare = await getCFContext(args);
+  ClientEnvVar.register({
     API_DOMAIN: cloudflare.env.API_DOMAIN,
     LIVING_MEMORY_ENV: cloudflare.env.LIVING_MEMORY_ENV,
   });
-  return EnvVar.vars;
-};
+  return ClientEnvVar.vars;
+}
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -49,7 +46,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
         <script
           dangerouslySetInnerHTML={{
-            __html: EnvVar.setWindowString(data),
+            __html: ClientEnvVar.setWindowString(data),
           }}
         />
       </head>

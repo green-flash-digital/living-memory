@@ -56,4 +56,4 @@ export class EnvVarManager {
   }
 }
 
-export const EnvVar = new EnvVarManager();
+export const ClientEnvVar = new EnvVarManager();
