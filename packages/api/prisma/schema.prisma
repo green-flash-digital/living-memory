@@ -10,16 +10,19 @@ datasource db {
 }
 
 model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
-  isOnboarded   Boolean?  @default(false)
+  id               String          @id
+  name             String
+  email            String
+  emailVerified    Boolean         @default(false)
+  image            String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  sessions         Session[]
+  accounts         Account[]
+  isOnboarded      Boolean?        @default(false)
+  households       UserHousehold[]
+  photos           Photo[]
+  createdPlaylists Playlist[]
 
   @@unique([email])
   @@map("user")
@@ -71,4 +74,123 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model Household {
+  id        String          @id
+  name      String
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  members   UserHousehold[]
+  devices   Device[]
+  playlists Playlist[]
+  photos    Photo[]
+
+  @@map("household")
+}
+
+model UserHousehold {
+  id          String    @id
+  userId      String
+  householdId String
+  role        String    @default("member") // "owner", "admin", "member"
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  household   Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, householdId])
+  @@index([userId])
+  @@index([householdId])
+  @@map("user_household")
+}
+
+model Device {
+  id             String                @id
+  name           String
+  householdId    String
+  deviceType     String? // e.g., "raspberry-pi", "tablet", "phone"
+  isActive       Boolean               @default(true)
+  lastSeenAt     DateTime?
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+  household      Household             @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  authorizations DeviceAuthorization[]
+
+  @@index([householdId])
+  @@map("device")
+}
+
+model DeviceAuthorization {
+  id          String   @id
+  deviceId    String?
+  householdId String
+  code        String // 6-digit code
+  qrCode      String? // QR code data/URL
+  expiresAt   DateTime
+  isUsed      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  device      Device?  @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+
+  @@unique([code])
+  @@index([householdId])
+  @@index([deviceId])
+  @@map("device_authorization")
+}
+
+model Photo {
+  id            String         @id
+  userId        String
+  householdId   String
+  url           String
+  filename      String?
+  mimeType      String?
+  size          Int? // in bytes
+  width         Int?
+  height        Int?
+  metadata      String? // JSON string for additional metadata
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  household     Household      @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  playlistItems PlaylistItem[]
+
+  @@index([userId])
+  @@index([householdId])
+  @@map("photo")
+}
+
+model Playlist {
+  id          String         @id
+  name        String
+  description String?
+  householdId String
+  createdById String
+  isActive    Boolean        @default(true)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  household   Household      @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  createdBy   User           @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  items       PlaylistItem[]
+
+  @@index([householdId])
+  @@index([createdById])
+  @@map("playlist")
+}
+
+model PlaylistItem {
+  id         String   @id
+  playlistId String
+  photoId    String?
+  order      Int      @default(0)
+  duration   Int? // in seconds, if applicable
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  playlist   Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  photo      Photo?   @relation(fields: [photoId], references: [id], onDelete: Cascade)
+
+  @@index([playlistId])
+  @@index([photoId])
+  @@map("playlist_item")
 }

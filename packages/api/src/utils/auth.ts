@@ -1,5 +1,7 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
+import { organization } from "better-auth/plugins";
+import { deviceAuthorization } from "better-auth/plugins";
 
 import { prismaClient } from "../db";
 import { getEnvVar } from "./util.getEnvVar";
@@ -27,6 +29,31 @@ export const auth = betterAuth({
       },
     },
   },
+  plugins: [
+    organization({
+      schema: {
+        // Map to Household model
+        organization: {
+          modelName: "household",
+          fields: {
+            name: "name",
+          },
+        },
+        // Map to UserHousehold join table
+        member: {
+          modelName: "user_household",
+          fields: {
+            userId: "userId",
+            organizationId: "householdId",
+            role: "role",
+          },
+        },
+      },
+    }),
+    deviceAuthorization({
+      verificationUri: "/device",
+    }),
+  ],
   experimental: { joins: true },
   advanced: {
     disableOriginCheck: getEnvVar("LIVING_MEMORY_ENV") === "local",
