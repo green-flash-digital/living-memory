@@ -1,5 +1,5 @@
 import { createRequestHandler, RouterContextProvider } from "react-router";
-import { cloudflareContext } from "../app/lib/context.cloudflare";
+import { cloudflareContext } from "../app/context/context.cloudflare";
 
 declare module "react-router" {
   // Migration support: allows existing code to access context.cloudflare

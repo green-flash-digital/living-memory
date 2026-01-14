@@ -1,6 +1,11 @@
-import { createContext } from "react-router";
+import type { RouterContextProvider } from "react-router";
 
-export type SessionContext = {
+export type ContextAndRequest = {
+  context: Readonly<RouterContextProvider>;
+  request: Request;
+};
+
+export type Session = {
   user: {
     id: string;
     name: string;
@@ -21,4 +26,3 @@ export type SessionContext = {
     userId: string;
   };
 };
-export const sessionContext = createContext<SessionContext>();

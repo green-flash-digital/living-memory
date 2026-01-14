@@ -9,8 +9,8 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import { EnvVar } from "./lib/EnvVar";
-import { cloudflareContext } from "./lib/context.cloudflare";
+import { EnvVar } from "./utils.client/EnvVar";
+import { cloudflareContext } from "./context/context.cloudflare";
 
 export const loader = ({ context }: Route.LoaderArgs) => {
   const cloudflare = context.get(cloudflareContext);

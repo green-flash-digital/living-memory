@@ -1,24 +1,12 @@
 import { useState, type FormEvent } from "react";
-import { authClient } from "../../lib/auth";
+import { AuthClient } from "../../utils.client/auth";
 import { redirect, useNavigate } from "react-router";
 import type { Route } from "./+types/SignIn.route";
-import { type SessionContext } from "~/lib/context.session";
-import { getCFContext } from "~/lib/context.cloudflare";
+import { AuthClientSSR } from "~/utils.server/SSRAuthClient";
 
 export async function loader(args: Route.LoaderArgs) {
-  const cf = await getCFContext(args);
-
-  const url = `${cf.env.API_DOMAIN}/api/auth/get-session`;
-  const res = await fetch(url, {
-    headers: args.request.headers,
-    credentials: "include",
-  });
-
-  if (!res.ok) return null;
-
-  const session = (await res.json()) as SessionContext | null;
+  const session = await AuthClientSSR.getSession(args);
   if (session?.session) throw redirect("/");
-
   return null;
 }
 
@@ -35,7 +23,7 @@ export default function SignInRoute() {
     setIsLoading(true);
 
     try {
-      await authClient.signIn.email({
+      await AuthClient.signIn.email({
         email,
         password,
       });
