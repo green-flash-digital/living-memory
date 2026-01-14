@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:clients": "yarn tsc build --project=./tsconfig.build-clients.json",
     "preview": "yarn run build && vite preview",
     "deploy": "yarn run build && wrangler deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
