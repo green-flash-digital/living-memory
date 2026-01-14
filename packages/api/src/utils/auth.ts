@@ -10,13 +10,13 @@ export const auth = betterAuth({
     debugLogs: true,
   }),
   telemetry: { enabled: false },
+  trustedOrigins: [getEnvVar("API_DOMAIN"), getEnvVar("APP_DOMAIN")],
   secret: getEnvVar("AUTH_SECRET"),
   baseURL: getEnvVar("API_DOMAIN"),
   emailAndPassword: {
     enabled: true,
   },
   experimental: { joins: true },
-  trustedOrigins: [getEnvVar("API_DOMAIN"), getEnvVar("APP_DOMAIN")],
   advanced: {
     disableOriginCheck: getEnvVar("LIVING_MEMORY_ENV") === "local",
   },

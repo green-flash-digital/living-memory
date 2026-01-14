@@ -7,6 +7,6 @@ const connectionString = getEnvVar("DATABASE_URL");
 export const prismaClient = new PrismaClient({
   adapter:
     getEnvVar("LIVING_MEMORY_ENV") === "local"
-      ? new PrismaPg({ connectionString })
+      ? new PrismaPg({ connectionString, maxUses: 1 })
       : new PrismaNeon({ connectionString }),
 });

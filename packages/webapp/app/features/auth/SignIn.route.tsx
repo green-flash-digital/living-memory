@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { authClient } from "../../lib/auth";
-import { redirect } from "react-router";
+import { redirect, useNavigate } from "react-router";
 import type { Route } from "./+types/SignIn.route";
 import { type SessionContext } from "~/lib/context.session";
 import { getCFContext } from "~/lib/context.cloudflare";
@@ -30,6 +30,7 @@ export default function SignInRoute() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,22 +38,12 @@ export default function SignInRoute() {
     setIsLoading(true);
 
     try {
-      await authClient.signIn.email(
-        {
-          email,
-          password,
-          callbackURL: "/",
-        },
-        {
-          onSuccess(ctx) {
-            debugger;
-          },
-        }
-      );
-      // On success, you might want to redirect or update UI
-      // For now, we'll just clear the form
-      setEmail("");
-      setPassword("");
+      await authClient.signIn.email({
+        email,
+        password,
+      });
+      // Better Auth automatically sets the cookie, so we can redirect
+      navigate("/");
     } catch (err) {
       setError(
         err instanceof Error

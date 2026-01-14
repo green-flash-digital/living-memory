@@ -9,12 +9,11 @@ const app = new Hono<LivingMemoryAPIContext>({
   strict: true,
 });
 
-// CORS middleware
 app.use(
   "*",
   cors({
-    origin: [env.APP_DOMAIN, env.API_DOMAIN],
-    allowHeaders: ["Content-Type", "Authorization", "Cookie"],
+    origin: [env.APP_DOMAIN],
+    allowHeaders: ["Content-Type", "Authorization"],
     allowMethods: ["*"],
     exposeHeaders: ["Content-Length"],
     maxAge: 600,
@@ -28,8 +27,9 @@ app.get("/api/health", (c) => {
 });
 
 // Better Auth routes - handle all methods for /api/auth/*
-app.on(["POST", "GET"], "/api/auth/*", async (c) => {
-  return await auth.handler(c.req.raw);
+app.all("/api/auth/*", async (c) => {
+  const res = auth.handler(c.req.raw);
+  return res;
 });
 
 app.get("/api/test", requireAuth, (c) => {
