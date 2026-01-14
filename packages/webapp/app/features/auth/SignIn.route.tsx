@@ -14,10 +14,7 @@ export async function loader(args: Route.LoaderArgs) {
     credentials: "include",
   });
 
-  if (!res.ok) {
-    // If the request fails, allow the sign-in page to render
-    return null;
-  }
+  if (!res.ok) return null;
 
   const session = (await res.json()) as SessionContext | null;
   if (session?.session) throw redirect("/");

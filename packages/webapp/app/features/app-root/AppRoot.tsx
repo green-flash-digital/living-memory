@@ -1,4 +1,4 @@
-import { href, Outlet, redirect } from "react-router";
+import { Outlet } from "react-router";
 import type { Route } from "./+types/AppRoot";
 import { requireSession } from "~/lib/middleware.auth";
 import { sessionContext } from "~/lib/context.session";
@@ -7,8 +7,6 @@ export const middleware: Route.MiddlewareFunction[] = [requireSession];
 
 export async function loader(args: Route.LoaderArgs) {
   const session = args.context.get(sessionContext);
-
-  console.log(session);
 
   return { isOnboarded: true };
 }
