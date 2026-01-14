@@ -1501,6 +1501,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@living-memories/server@workspace:^, @living-memories/server@workspace:packages/api":
+  version: 0.0.0-use.local
+  resolution: "@living-memories/server@workspace:packages/api"
+  dependencies:
+    "@better-auth/cli": "npm:^1.4.12"
+    "@cloudflare/vite-plugin": "npm:^1.2.3"
+    "@neondatabase/serverless": "npm:^1.0.2"
+    "@prisma/adapter-neon": "npm:^7.2.0"
+    "@prisma/adapter-pg": "npm:^7.2.0"
+    "@prisma/client": "npm:^7.2.0"
+    "@types/ws": "npm:^8.18.1"
+    better-auth: "npm:^1.4.12"
+    hono: "npm:^4.11.4"
+    prisma: "npm:^7.2.0"
+    tsx: "npm:^4.21.0"
+    typescript: "npm:^5.9.3"
+    vite: "npm:^6.3.5"
+    wrangler: "npm:^4.17.0"
+    ws: "npm:^8.19.0"
+  languageName: unknown
+  linkType: soft
+
 "@living-memory/root@workspace:.":
   version: 0.0.0-use.local
   resolution: "@living-memory/root@workspace:."
@@ -1514,6 +1536,7 @@ __metadata:
   resolution: "@living-memory/webapp@workspace:packages/webapp"
   dependencies:
     "@cloudflare/vite-plugin": "npm:1.20.2"
+    "@living-memories/server": "workspace:^"
     "@react-router/dev": "npm:7.12.0"
     "@types/node": "npm:25.0.7"
     "@types/react": "npm:19.2.8"
@@ -2189,28 +2212,6 @@ __metadata:
   checksum: 10c0/c2c9ab7599692d594b6a161559ada307b7a624fa4c7b03e3afdb5a5e31cd0e53269115b620fcab024c5ac6a6f37fa5eb2e004f076ad30f5f7e6b8b671f7b35fe
   languageName: node
   linkType: hard
-
-"api@workspace:packages/api":
-  version: 0.0.0-use.local
-  resolution: "api@workspace:packages/api"
-  dependencies:
-    "@better-auth/cli": "npm:^1.4.12"
-    "@cloudflare/vite-plugin": "npm:^1.2.3"
-    "@neondatabase/serverless": "npm:^1.0.2"
-    "@prisma/adapter-neon": "npm:^7.2.0"
-    "@prisma/adapter-pg": "npm:^7.2.0"
-    "@prisma/client": "npm:^7.2.0"
-    "@types/ws": "npm:^8.18.1"
-    better-auth: "npm:^1.4.12"
-    hono: "npm:^4.11.4"
-    prisma: "npm:^7.2.0"
-    tsx: "npm:^4.21.0"
-    typescript: "npm:^5.9.3"
-    vite: "npm:^6.3.5"
-    wrangler: "npm:^4.17.0"
-    ws: "npm:^8.19.0"
-  languageName: unknown
-  linkType: soft
 
 "arg@npm:^5.0.1":
   version: 5.0.2

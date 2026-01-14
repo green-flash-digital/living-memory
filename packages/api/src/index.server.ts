@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { auth } from "../src/utils/auth";
-import { LivingMemoryAPIContext } from "../src/utils/types";
-import { requireAuth } from "../src/middleware/auth.middleware";
+import { auth } from "./utils/auth";
+import { LivingMemoryAPIContext } from "./utils/types";
+import { requireAuth } from "./middleware/auth.middleware";
 import { env } from "cloudflare:workers";
 
 const app = new Hono<LivingMemoryAPIContext>({

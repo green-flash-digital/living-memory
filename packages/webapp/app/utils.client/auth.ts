@@ -1,9 +1,1 @@
-import { createAuthClient } from "better-auth/react";
-import { ClientEnvVar } from "./EnvVar";
-
-export const AuthClient = createAuthClient({
-  baseURL: ClientEnvVar.get("API_DOMAIN"),
-  fetchOptions: {
-    credentials: "include",
-  },
-});
+export { authClient as AuthClient } from "@living-memories/api/clients/auth";
