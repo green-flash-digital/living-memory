@@ -10,11 +10,16 @@ import {
 
 import type { Route } from "./+types/root";
 import { EnvVar } from "./lib/EnvVar";
+import { cloudflareContext } from "./lib/context.cloudflare";
 
 export const loader = ({ context }: Route.LoaderArgs) => {
+  const cloudflare = context.get(cloudflareContext);
+  if (!cloudflare) {
+    throw new Error("Cloudflare context is not available");
+  }
   EnvVar.register({
-    API_DOMAIN: context.env.API_DOMAIN,
-    LIVING_MEMORY_ENV: context.env.LIVING_MEMORY_ENV,
+    API_DOMAIN: cloudflare.env.API_DOMAIN,
+    LIVING_MEMORY_ENV: cloudflare.env.LIVING_MEMORY_ENV,
   });
   return EnvVar.vars;
 };

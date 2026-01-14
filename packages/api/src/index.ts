@@ -14,6 +14,7 @@ app.use(
   "*",
   cors({
     origin: [env.APP_DOMAIN, env.API_DOMAIN],
+    allowHeaders: ["Content-Type", "Authorization", "Cookie"],
     allowMethods: ["*"],
     exposeHeaders: ["Content-Length"],
     maxAge: 600,
@@ -26,17 +27,12 @@ app.get("/api/health", (c) => {
   return c.json({ status: "ok" });
 });
 
-// Better Auth routes
-app.on(["GET", "POST"], "/api/auth/*", async (c) => {
-  return auth.handler(c.req.raw);
+// Better Auth routes - handle all methods for /api/auth/*
+app.on(["POST", "GET"], "/api/auth/*", async (c) => {
+  return await auth.handler(c.req.raw);
 });
 
-// Root endpoint
-app.get("/", (c) => {
-  return c.json({ message: "Hello from Living Memory API!" });
-});
-
-app.get("/test", requireAuth, (c) => {
+app.get("/api/test", requireAuth, (c) => {
   return c.json({ message: "successfully logged in" });
 });
 

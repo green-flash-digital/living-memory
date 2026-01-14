@@ -7,6 +7,7 @@ import { getEnvVar } from "./util.getEnvVar";
 export const auth = betterAuth({
   database: prismaAdapter(prismaClient, {
     provider: "postgresql",
+    debugLogs: true,
   }),
   telemetry: { enabled: false },
   secret: getEnvVar("AUTH_SECRET"),

@@ -1,10 +1,28 @@
 import { useState, type FormEvent } from "react";
 import { authClient } from "../../lib/auth";
 import { redirect } from "react-router";
+import type { Route } from "./+types/SignIn.route";
+import { type SessionContext } from "~/lib/context.session";
+import { getCFContext } from "~/lib/context.cloudflare";
 
-export async function loader() {
-  const session = await authClient.getSession();
-  if (session) throw redirect("/home");
+export async function loader(args: Route.LoaderArgs) {
+  const cf = await getCFContext(args);
+
+  const url = `${cf.env.API_DOMAIN}/api/auth/get-session`;
+  const res = await fetch(url, {
+    headers: args.request.headers,
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    // If the request fails, allow the sign-in page to render
+    return null;
+  }
+
+  const session = (await res.json()) as SessionContext | null;
+  if (session?.session) throw redirect("/");
+
+  return null;
 }
 
 export default function SignInRoute() {
@@ -19,11 +37,18 @@ export default function SignInRoute() {
     setIsLoading(true);
 
     try {
-      await authClient.signIn.email({
-        email,
-        password,
-        callbackURL: "/",
-      });
+      await authClient.signIn.email(
+        {
+          email,
+          password,
+          callbackURL: "/",
+        },
+        {
+          onSuccess(ctx) {
+            debugger;
+          },
+        }
+      );
       // On success, you might want to redirect or update UI
       // For now, we'll just clear the form
       setEmail("");
