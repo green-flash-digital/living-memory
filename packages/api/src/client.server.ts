@@ -2,9 +2,9 @@ import { createAuthClient } from "better-auth/client";
 import type { auth } from "./auth";
 import { inferAdditionalFields } from "better-auth/client/plugins";
 
-function createClient(baseUrl: string) {
+function createClient(baseURL: string) {
   return createAuthClient({
-    baseUrl,
+    baseURL,
     plugins: [inferAdditionalFields<typeof auth>()],
   });
 }
@@ -12,8 +12,7 @@ function createClient(baseUrl: string) {
 export class MemoriesApiClientServer {
   auth: ReturnType<typeof createClient>;
 
-  constructor(args: { baseUrl: string }) {
-    console.log(args);
-    this.auth = createClient(args.baseUrl);
+  constructor(args: { baseURL: string }) {
+    this.auth = createClient(args.baseURL);
   }
 }
