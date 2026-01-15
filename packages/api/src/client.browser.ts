@@ -6,7 +6,7 @@ const authClient = createAuthClient({
   plugins: [inferAdditionalFields<typeof auth>()],
 });
 
-export class ApiClient {
+export class MemoriesApiClientBrowser {
   auth: typeof authClient;
 
   constructor() {

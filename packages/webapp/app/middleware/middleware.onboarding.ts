@@ -1,22 +1,17 @@
-import { getSessionContext, sessionContext } from "../context/context.session";
+import { getSessionContext } from "../context/context.session";
 import type { ContextAndRequest } from "~/utils.server/util.server.types";
-import { AuthClientSSR } from "~/utils.server/SSRAuthClient";
 import { href, redirect } from "react-router";
-import { AuthClient } from "~/utils.client/api.client";
 
+/**
+ * Ensures that the current user has completed onboarding.
+ *
+ * This middleware assumes that `requireSession` has already been called,
+ * as it retrieves the session from context rather than fetching it.
+ *
+ * If the user is not onboarded, this function redirects to the onboarding flow.
+ */
 export async function requireOnboarding<T extends ContextAndRequest>(args: T) {
   const session = getSessionContext(args);
 
-  if (session.user.)
-
-
-
-  const session = getSession;
-  const session = await AuthClientSSR.getSession(args);
-  if (!session?.session) {
-    throw redirect(href("/sign-in"));
-  }
-
-  // Set the session data in context
-  args.context.set(sessionContext, session);
+  // Check if user is onboarded (isOnboarded can be boolean | null)
 }

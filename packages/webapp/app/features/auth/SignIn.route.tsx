@@ -2,11 +2,11 @@ import { useState, type FormEvent } from "react";
 import { redirect, useNavigate } from "react-router";
 import type { Route } from "./+types/SignIn.route";
 
-import { AuthClientSSR } from "~/utils.server/SSRAuthClient";
-import { ApiClientBrowser } from "~/utils.client/api.client";
+import { ApiClientBrowser } from "~/utils.client/ApiClient.browser";
+import { ApiClientServer } from "~/utils.server/ApiClient.server";
 
 export async function loader(args: Route.LoaderArgs) {
-  const session = await AuthClientSSR.getSession(args);
+  const session = await ApiClientServer.auth.api.getSession(args.request);
   if (session?.session) throw redirect("/");
   return null;
 }

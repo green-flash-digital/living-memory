@@ -9,7 +9,7 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import { ClientEnvVar } from "./utils.client/EnvVar";
+import { ClientEnvVar } from "./utils/EnvVar";
 import { getCFContext } from "./context/context.cloudflare";
 
 export async function loader(args: Route.LoaderArgs) {

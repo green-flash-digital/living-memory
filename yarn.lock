@@ -1507,6 +1507,7 @@ __metadata:
   dependencies:
     "@better-auth/cli": "npm:^1.4.12"
     "@cloudflare/vite-plugin": "npm:^1.2.3"
+    "@living-memory/utils": "workspace:^"
     "@neondatabase/serverless": "npm:^1.0.2"
     "@prisma/adapter-neon": "npm:^7.2.0"
     "@prisma/adapter-pg": "npm:^7.2.0"
@@ -1528,6 +1529,14 @@ __metadata:
   resolution: "@living-memory/root@workspace:."
   dependencies:
     turbo: "npm:2.7.4"
+  languageName: unknown
+  linkType: soft
+
+"@living-memory/utils@workspace:^, @living-memory/utils@workspace:packages/utils":
+  version: 0.0.0-use.local
+  resolution: "@living-memory/utils@workspace:packages/utils"
+  dependencies:
+    typescript: "npm:^5.9.3"
   languageName: unknown
   linkType: soft
 
