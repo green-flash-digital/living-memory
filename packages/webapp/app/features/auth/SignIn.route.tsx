@@ -6,8 +6,10 @@ import { ApiClientBrowser } from "~/utils.client/ApiClient.browser";
 import { ApiClientServer } from "~/utils.server/ApiClient.server";
 
 export async function loader(args: Route.LoaderArgs) {
-  const session = await ApiClientServer.auth.api.getSession(args.request);
-  if (session?.session) throw redirect("/");
+  const res = await ApiClientServer.auth.getSession({
+    fetchOptions: { headers: args.request.headers },
+  });
+  if (res.data?.session) throw redirect("/");
   return null;
 }
 

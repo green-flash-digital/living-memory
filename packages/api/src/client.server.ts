@@ -1,19 +1,19 @@
-import { auth } from "./auth";
+import { createAuthClient } from "better-auth/client";
+import type { auth } from "./auth";
+import { inferAdditionalFields } from "better-auth/client/plugins";
 
-export class MemoriesAPIClientServer {
-  auth: typeof auth;
+function createClient(baseUrl: string) {
+  return createAuthClient({
+    baseUrl,
+    plugins: [inferAdditionalFields<typeof auth>()],
+  });
+}
 
-  constructor(_args: { apiDomain: string }) {
-    this.auth = auth;
+export class MemoriesApiClientServer {
+  auth: ReturnType<typeof createClient>;
+
+  constructor(args: { baseUrl: string }) {
+    console.log(args);
+    this.auth = createClient(args.baseUrl);
   }
-
-  /**
-   * Gets the current session from the auth API.
-   * Returns null if no valid session exists.
-   */
-  // async getSession<T extends ContextAndRequest>(args: T) {
-  //   return this.#fetch<Session | null>("/get-session", {
-  //     headers: args.request.headers,
-  //   });
-  // }
 }

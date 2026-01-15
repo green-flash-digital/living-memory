@@ -1,6 +1,8 @@
-import { MemoriesAPIClientServer } from "@living-memories/api/client/server";
+import { MemoriesApiClientServer } from "@living-memories/api/client/server";
 import { env } from "cloudflare:workers";
 
-export const ApiClientServer = new MemoriesAPIClientServer({
-  apiDomain: env.API_DOMAIN,
+console.log(env);
+
+export const ApiClientServer = new MemoriesApiClientServer({
+  baseUrl: env.API_DOMAIN,
 });

@@ -13,17 +13,20 @@ import { ApiClientServer } from "~/utils.server/ApiClient.server";
  * they will be redirected to the onboarding flow.
  */
 export async function requireSession<T extends ContextAndRequest>(args: T) {
-  const session = await ApiClientServer.auth.api.getSession(args.request);
-  if (!session?.session) {
+  const res = await ApiClientServer.auth.getSession({
+    fetchOptions: { headers: args.request.headers },
+  });
+  if (res.error) throw res.error;
+  if (!res.data?.session) {
     throw redirect(href("/sign-in"));
   }
 
   // Set the session data in context
-  args.context.set(sessionContext, session);
+  args.context.set(sessionContext, res.data);
 
   // Check if user needs onboarding
   // If not onboarded and not already on an onboarding route, redirect to onboarding
-  if (!session.user.isOnboarded) {
+  if (!res.data.user.isOnboarded) {
     const currentPath = new URL(args.request.url).pathname;
     const isOnboardingRoute = currentPath.startsWith("/onboarding");
 
