@@ -1,11 +1,12 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { auth } from "./auth";
-import { LivingMemoryAPIContext } from "./utils/types";
-import { requireAuth } from "./middleware/auth.middleware";
+import { withAuthenticatedSession } from "./middleware/session.middleware";
 import { env } from "cloudflare:workers";
+import { authentication } from "./features/authentication/authentication.route";
+import { health } from "./features/health/health.route";
+import { onboarding } from "./features/onboarding/onboarding.route._";
 
-const app = new Hono<LivingMemoryAPIContext>({
+const app = new Hono({
   strict: true,
 });
 
@@ -21,19 +22,12 @@ app.use(
   })
 );
 
-// Health check (public)
-app.get("/api/health", (c) => {
-  return c.json({ status: "ok" });
-});
+// Public routes
+app.route("/api/health", health);
+app.route("/api/auth/", authentication);
 
-// Better Auth routes - handle all methods for /api/auth/*
-app.all("/api/auth/*", async (c) => {
-  const res = auth.handler(c.req.raw);
-  return res;
-});
-
-app.get("/api/test", requireAuth, (c) => {
-  return c.json({ message: "successfully logged in" });
-});
+// Private routes
+app.use(withAuthenticatedSession);
+app.route("/api/onboarding", onboarding);
 
 export default app;

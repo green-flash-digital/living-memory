@@ -1,14 +1,16 @@
 import { tryHandle } from "@living-memory/utils";
 
-export class ClientFetch {
-  #rootUrl: string;
+export type ClientFetchArgs = { baseURL: string };
 
-  constructor({ apiDomain }: { apiDomain: string }) {
-    this.#rootUrl = apiDomain;
+export class ClientFetch {
+  protected _baseURL: string;
+
+  constructor({ baseURL }: ClientFetchArgs) {
+    this._baseURL = baseURL;
   }
 
   protected async _fetch<R>(endpoint: string, init: RequestInit): Promise<R> {
-    const url = this.#rootUrl.concat(endpoint);
+    const url = this._baseURL.concat(endpoint);
     const tRes = await tryHandle(fetch(url, init));
     if (!tRes.success) {
       // network or fetch error

@@ -1,11 +1,11 @@
 meta {
-  name: Get Session
+  name: Create household
   type: http
   seq: 2
 }
 
-get {
-  url: {{API_DOMAIN}}/api/auth/get-session
+post {
+  url: {{API_DOMAIN}}/api/onboarding/create-household
   body: none
   auth: inherit
 }

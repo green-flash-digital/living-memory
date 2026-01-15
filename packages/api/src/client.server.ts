@@ -1,46 +1,35 @@
 import { createAuthClient } from "better-auth/client";
-import type { auth } from "./auth";
-import {
-  deviceAuthorizationClient,
-  inferAdditionalFields,
-} from "better-auth/client/plugins";
-import {
-  organizationClient,
-  inferOrgAdditionalFields,
-} from "better-auth/client/plugins";
+import { betterAuthClientConfig } from "./features/authentication/authentication.utils";
+import { OnboardingClient } from "./features/onboarding/onboarding.client";
 
-function createBetterAuthClient(baseURL: string) {
+function createClient(baseURL: string) {
   return createAuthClient({
     baseURL,
-    plugins: [
-      inferAdditionalFields<typeof auth>(),
-      organizationClient({
-        schema: inferOrgAdditionalFields<typeof auth>(),
-      }),
-      deviceAuthorizationClient(),
-    ],
+    ...betterAuthClientConfig,
   });
 }
 
 class AuthClient {
-  raw: ReturnType<typeof createBetterAuthClient>;
+  #raw: ReturnType<typeof createClient>;
 
   constructor(args: { baseURL: string }) {
-    this.raw = createBetterAuthClient(args.baseURL);
+    this.#raw = createClient(args.baseURL);
   }
 
   /**
    * Retrieves the current authentication session for the given request.
    */
   getSession(request: Request) {
-    return this.raw.getSession({ fetchOptions: { headers: request.headers } });
+    return this.#raw.getSession({ fetchOptions: { headers: request.headers } });
   }
 }
 
 export class MemoriesApiClientServer {
   auth: AuthClient;
+  onboarding: OnboardingClient;
 
   constructor(args: { baseURL: string }) {
     this.auth = new AuthClient(args);
+    this.onboarding = new OnboardingClient(args);
   }
 }

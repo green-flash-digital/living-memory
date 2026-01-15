@@ -1,0 +1,65 @@
+import { Hono } from "hono";
+import { Route, SessionVars } from "../../utils/types";
+import { prismaClient } from "../../db/prisma-client";
+import { OnboardingStep } from "../../db/generated/enums";
+import z from "zod";
+
+/**
+ * Response schema for onboarding status
+ */
+export const OnboardingGetStatusResponseSchema = z.object({
+  currentStep: z.enum(["USER_INFO", "JOIN_HOUSEHOLD", "PAIR_DEVICE"]),
+  isOnboarded: z.boolean(),
+  hasHousehold: z.boolean(),
+  householdId: z.string().nullable(),
+  householdName: z.string().nullable(),
+  hasPairedDevice: z.boolean(),
+});
+
+/**
+ * GET `/api/onboarding/status`
+ *
+ * Retrieves the current onboarding status for the authenticated user, including
+ * their current step, household information, and device pairing status.
+ */
+export const getStatus = new Hono<Route<SessionVars>>().get("", async (c) => {
+  const user = c.get("user");
+  const session = c.get("session");
+
+  // Get user with household relationship
+  const userWithHousehold = await prismaClient.user.findUnique({
+    where: { id: user.id },
+    include: {
+      user_households: {
+        where: {
+          householdId: session.activeOrganizationId || undefined,
+        },
+        include: {
+          household: true,
+        },
+      },
+    },
+  });
+
+  const household = userWithHousehold?.user_households[0]?.household;
+  const hasHousehold = !!household;
+
+  // Check if user has paired devices
+  const hasPairedDevice = hasHousehold
+    ? (await prismaClient.device.count({
+        where: {
+          householdId: household.id,
+          isActive: true,
+        },
+      })) > 0
+    : false;
+
+  return c.json({
+    currentStep: user.currentOnboardingStep || OnboardingStep.USER_INFO,
+    isOnboarded: user.isOnboarded || false,
+    hasHousehold,
+    householdId: household?.id || null,
+    householdName: household?.name || null,
+    hasPairedDevice,
+  });
+});
