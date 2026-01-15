@@ -12,5 +12,5 @@
     "./src/client.server.ts",
     "worker-configuration.client.d.ts"
   ],
-  "exclude": ["/src/middleware/**/*", "/src/db"]
+  "exclude": ["/src/middleware/**/*", "/src/db/**/*"]
 }

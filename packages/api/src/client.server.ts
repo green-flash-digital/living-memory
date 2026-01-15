@@ -10,17 +10,17 @@ function createBetterAuthClient(baseURL: string) {
 }
 
 class AuthClient {
-  #raw: ReturnType<typeof createBetterAuthClient>;
+  raw: ReturnType<typeof createBetterAuthClient>;
 
   constructor(args: { baseURL: string }) {
-    this.#raw = createBetterAuthClient(args.baseURL);
+    this.raw = createBetterAuthClient(args.baseURL);
   }
 
   /**
    * Retrieves the current authentication session for the given request.
    */
   getSession(request: Request) {
-    return this.#raw.getSession({ fetchOptions: { headers: request.headers } });
+    return this.raw.getSession({ fetchOptions: { headers: request.headers } });
   }
 }
 

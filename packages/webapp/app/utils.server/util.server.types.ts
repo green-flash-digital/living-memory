@@ -6,4 +6,4 @@ export type ContextAndRequest = {
   request: Request;
 };
 
-export type Session = typeof ApiClientServer.auth.$Infer.Session;
+export type Session = typeof ApiClientServer.auth.raw.$Infer.Session;
