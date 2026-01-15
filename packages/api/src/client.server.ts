@@ -2,17 +2,32 @@ import { createAuthClient } from "better-auth/client";
 import type { auth } from "./auth";
 import { inferAdditionalFields } from "better-auth/client/plugins";
 
-function createClient(baseURL: string) {
+function createBetterAuthClient(baseURL: string) {
   return createAuthClient({
     baseURL,
     plugins: [inferAdditionalFields<typeof auth>()],
   });
 }
 
-export class MemoriesApiClientServer {
-  auth: ReturnType<typeof createClient>;
+class AuthClient {
+  #raw: ReturnType<typeof createBetterAuthClient>;
 
   constructor(args: { baseURL: string }) {
-    this.auth = createClient(args.baseURL);
+    this.#raw = createBetterAuthClient(args.baseURL);
+  }
+
+  /**
+   * Retrieves the current authentication session for the given request.
+   */
+  getSession(request: Request) {
+    return this.#raw.getSession({ fetchOptions: { headers: request.headers } });
+  }
+}
+
+export class MemoriesApiClientServer {
+  auth: AuthClient;
+
+  constructor(args: { baseURL: string }) {
+    this.auth = new AuthClient(args);
   }
 }

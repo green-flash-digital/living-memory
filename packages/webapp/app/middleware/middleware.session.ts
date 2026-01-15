@@ -13,9 +13,7 @@ import { ApiClientServer } from "~/utils.server/ApiClient.server";
  * they will be redirected to the onboarding flow.
  */
 export async function requireSession<T extends ContextAndRequest>(args: T) {
-  const res = await ApiClientServer.auth.getSession({
-    fetchOptions: { headers: args.request.headers },
-  });
+  const res = await ApiClientServer.auth.getSession(args.request);
   if (res.error) throw res.error;
   if (!res.data?.session) {
     throw redirect(href("/sign-in"));
