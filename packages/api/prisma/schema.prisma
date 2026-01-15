@@ -9,6 +9,12 @@ datasource db {
   provider = "postgresql"
 }
 
+enum OnboardingStep {
+  USER_INFO
+  JOIN_HOUSEHOLD
+  PAIR_DEVICE
+}
+
 model User {
   id                      String           @id
   name                    String
@@ -20,6 +26,7 @@ model User {
   sessions                Session[]
   accounts                Account[]
   isOnboarded             Boolean?         @default(false)
+  currentOnboardingStep   OnboardingStep   @default(USER_INFO)
   photos                  Photo[]
   playlistsCreateByUser   Playlist[]
   invitations             Invitation[]

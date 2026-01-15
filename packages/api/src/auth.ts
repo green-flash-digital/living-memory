@@ -4,6 +4,7 @@ import { organization } from "better-auth/plugins";
 import { deviceAuthorization } from "better-auth/plugins";
 
 import { prismaClient } from "./db/prisma-client";
+import { OnboardingStep } from "./db/generated/enums";
 
 export const auth = betterAuth({
   database: prismaAdapter(prismaClient, {
@@ -27,6 +28,17 @@ export const auth = betterAuth({
         type: "boolean",
         fieldName: "isOnboarded",
         defaultValue: false,
+        input: false,
+        returned: true,
+      },
+      currentOnboardingStep: {
+        type: [
+          OnboardingStep.USER_INFO,
+          OnboardingStep.JOIN_HOUSEHOLD,
+          OnboardingStep.PAIR_DEVICE,
+        ],
+        fieldName: "currentOnboardingStep",
+        defaultValue: OnboardingStep.USER_INFO,
         input: false,
         returned: true,
       },

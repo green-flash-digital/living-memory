@@ -33,6 +33,7 @@ export type UserMinAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   isOnboarded: boolean | null
+  currentOnboardingStep: $Enums.OnboardingStep | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -44,6 +45,7 @@ export type UserMaxAggregateOutputType = {
   createdAt: Date | null
   updatedAt: Date | null
   isOnboarded: boolean | null
+  currentOnboardingStep: $Enums.OnboardingStep | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -55,6 +57,7 @@ export type UserCountAggregateOutputType = {
   createdAt: number
   updatedAt: number
   isOnboarded: number
+  currentOnboardingStep: number
   _all: number
 }
 
@@ -68,6 +71,7 @@ export type UserMinAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   isOnboarded?: true
+  currentOnboardingStep?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -79,6 +83,7 @@ export type UserMaxAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   isOnboarded?: true
+  currentOnboardingStep?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -90,6 +95,7 @@ export type UserCountAggregateInputType = {
   createdAt?: true
   updatedAt?: true
   isOnboarded?: true
+  currentOnboardingStep?: true
   _all?: true
 }
 
@@ -174,6 +180,7 @@ export type UserGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   isOnboarded: boolean | null
+  currentOnboardingStep: $Enums.OnboardingStep
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -206,6 +213,7 @@ export type UserWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   isOnboarded?: Prisma.BoolNullableFilter<"User"> | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFilter<"User"> | $Enums.OnboardingStep
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   photos?: Prisma.PhotoListRelationFilter
@@ -225,6 +233,7 @@ export type UserOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   isOnboarded?: Prisma.SortOrderInput | Prisma.SortOrder
+  currentOnboardingStep?: Prisma.SortOrder
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   photos?: Prisma.PhotoOrderByRelationAggregateInput
@@ -247,6 +256,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   isOnboarded?: Prisma.BoolNullableFilter<"User"> | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFilter<"User"> | $Enums.OnboardingStep
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   photos?: Prisma.PhotoListRelationFilter
@@ -266,6 +276,7 @@ export type UserOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   isOnboarded?: Prisma.SortOrderInput | Prisma.SortOrder
+  currentOnboardingStep?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -283,6 +294,7 @@ export type UserScalarWhereWithAggregatesInput = {
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   isOnboarded?: Prisma.BoolNullableWithAggregatesFilter<"User"> | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepWithAggregatesFilter<"User"> | $Enums.OnboardingStep
 }
 
 export type UserCreateInput = {
@@ -294,6 +306,7 @@ export type UserCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isOnboarded?: boolean | null
+  currentOnboardingStep?: $Enums.OnboardingStep
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   photos?: Prisma.PhotoCreateNestedManyWithoutUserInput
@@ -313,6 +326,7 @@ export type UserUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isOnboarded?: boolean | null
+  currentOnboardingStep?: $Enums.OnboardingStep
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutUserInput
@@ -332,6 +346,7 @@ export type UserUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutUserNestedInput
@@ -351,6 +366,7 @@ export type UserUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutUserNestedInput
@@ -370,6 +386,7 @@ export type UserCreateManyInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isOnboarded?: boolean | null
+  currentOnboardingStep?: $Enums.OnboardingStep
 }
 
 export type UserUpdateManyMutationInput = {
@@ -381,6 +398,7 @@ export type UserUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -392,6 +410,7 @@ export type UserUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -403,6 +422,7 @@ export type UserCountOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   isOnboarded?: Prisma.SortOrder
+  currentOnboardingStep?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -414,6 +434,7 @@ export type UserMaxOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   isOnboarded?: Prisma.SortOrder
+  currentOnboardingStep?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -425,6 +446,7 @@ export type UserMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   isOnboarded?: Prisma.SortOrder
+  currentOnboardingStep?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -450,6 +472,10 @@ export type DateTimeFieldUpdateOperationsInput = {
 
 export type NullableBoolFieldUpdateOperationsInput = {
   set?: boolean | null
+}
+
+export type EnumOnboardingStepFieldUpdateOperationsInput = {
+  set?: $Enums.OnboardingStep
 }
 
 export type UserCreateNestedOneWithoutSessionsInput = {
@@ -573,6 +599,7 @@ export type UserCreateWithoutSessionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isOnboarded?: boolean | null
+  currentOnboardingStep?: $Enums.OnboardingStep
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   photos?: Prisma.PhotoCreateNestedManyWithoutUserInput
   playlistsCreateByUser?: Prisma.PlaylistCreateNestedManyWithoutCreatedByInput
@@ -591,6 +618,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isOnboarded?: boolean | null
+  currentOnboardingStep?: $Enums.OnboardingStep
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutUserInput
   playlistsCreateByUser?: Prisma.PlaylistUncheckedCreateNestedManyWithoutCreatedByInput
@@ -625,6 +653,7 @@ export type UserUpdateWithoutSessionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutUserNestedInput
   playlistsCreateByUser?: Prisma.PlaylistUpdateManyWithoutCreatedByNestedInput
@@ -643,6 +672,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutUserNestedInput
   playlistsCreateByUser?: Prisma.PlaylistUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -661,6 +691,7 @@ export type UserCreateWithoutAccountsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isOnboarded?: boolean | null
+  currentOnboardingStep?: $Enums.OnboardingStep
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   photos?: Prisma.PhotoCreateNestedManyWithoutUserInput
   playlistsCreateByUser?: Prisma.PlaylistCreateNestedManyWithoutCreatedByInput
@@ -679,6 +710,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isOnboarded?: boolean | null
+  currentOnboardingStep?: $Enums.OnboardingStep
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutUserInput
   playlistsCreateByUser?: Prisma.PlaylistUncheckedCreateNestedManyWithoutCreatedByInput
@@ -713,6 +745,7 @@ export type UserUpdateWithoutAccountsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutUserNestedInput
   playlistsCreateByUser?: Prisma.PlaylistUpdateManyWithoutCreatedByNestedInput
@@ -731,6 +764,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutUserNestedInput
   playlistsCreateByUser?: Prisma.PlaylistUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -749,6 +783,7 @@ export type UserCreateWithoutPhotosInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isOnboarded?: boolean | null
+  currentOnboardingStep?: $Enums.OnboardingStep
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   playlistsCreateByUser?: Prisma.PlaylistCreateNestedManyWithoutCreatedByInput
@@ -767,6 +802,7 @@ export type UserUncheckedCreateWithoutPhotosInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isOnboarded?: boolean | null
+  currentOnboardingStep?: $Enums.OnboardingStep
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   playlistsCreateByUser?: Prisma.PlaylistUncheckedCreateNestedManyWithoutCreatedByInput
@@ -801,6 +837,7 @@ export type UserUpdateWithoutPhotosInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   playlistsCreateByUser?: Prisma.PlaylistUpdateManyWithoutCreatedByNestedInput
@@ -819,6 +856,7 @@ export type UserUncheckedUpdateWithoutPhotosInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   playlistsCreateByUser?: Prisma.PlaylistUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -837,6 +875,7 @@ export type UserCreateWithoutPlaylistsCreateByUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isOnboarded?: boolean | null
+  currentOnboardingStep?: $Enums.OnboardingStep
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   photos?: Prisma.PhotoCreateNestedManyWithoutUserInput
@@ -855,6 +894,7 @@ export type UserUncheckedCreateWithoutPlaylistsCreateByUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isOnboarded?: boolean | null
+  currentOnboardingStep?: $Enums.OnboardingStep
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutUserInput
@@ -889,6 +929,7 @@ export type UserUpdateWithoutPlaylistsCreateByUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutUserNestedInput
@@ -907,6 +948,7 @@ export type UserUncheckedUpdateWithoutPlaylistsCreateByUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutUserNestedInput
@@ -925,6 +967,7 @@ export type UserCreateWithoutInvitationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isOnboarded?: boolean | null
+  currentOnboardingStep?: $Enums.OnboardingStep
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   photos?: Prisma.PhotoCreateNestedManyWithoutUserInput
@@ -943,6 +986,7 @@ export type UserUncheckedCreateWithoutInvitationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isOnboarded?: boolean | null
+  currentOnboardingStep?: $Enums.OnboardingStep
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutUserInput
@@ -977,6 +1021,7 @@ export type UserUpdateWithoutInvitationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutUserNestedInput
@@ -995,6 +1040,7 @@ export type UserUncheckedUpdateWithoutInvitationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutUserNestedInput
@@ -1013,6 +1059,7 @@ export type UserCreateWithoutUser_householdsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isOnboarded?: boolean | null
+  currentOnboardingStep?: $Enums.OnboardingStep
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   photos?: Prisma.PhotoCreateNestedManyWithoutUserInput
@@ -1031,6 +1078,7 @@ export type UserUncheckedCreateWithoutUser_householdsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isOnboarded?: boolean | null
+  currentOnboardingStep?: $Enums.OnboardingStep
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutUserInput
@@ -1065,6 +1113,7 @@ export type UserUpdateWithoutUser_householdsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutUserNestedInput
@@ -1083,6 +1132,7 @@ export type UserUncheckedUpdateWithoutUser_householdsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutUserNestedInput
@@ -1101,6 +1151,7 @@ export type UserCreateWithoutPlaylistsSharedWithUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isOnboarded?: boolean | null
+  currentOnboardingStep?: $Enums.OnboardingStep
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   photos?: Prisma.PhotoCreateNestedManyWithoutUserInput
@@ -1119,6 +1170,7 @@ export type UserUncheckedCreateWithoutPlaylistsSharedWithUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isOnboarded?: boolean | null
+  currentOnboardingStep?: $Enums.OnboardingStep
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutUserInput
@@ -1142,6 +1194,7 @@ export type UserCreateWithoutPlaylistsSharedByUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isOnboarded?: boolean | null
+  currentOnboardingStep?: $Enums.OnboardingStep
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   photos?: Prisma.PhotoCreateNestedManyWithoutUserInput
@@ -1160,6 +1213,7 @@ export type UserUncheckedCreateWithoutPlaylistsSharedByUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isOnboarded?: boolean | null
+  currentOnboardingStep?: $Enums.OnboardingStep
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   photos?: Prisma.PhotoUncheckedCreateNestedManyWithoutUserInput
@@ -1194,6 +1248,7 @@ export type UserUpdateWithoutPlaylistsSharedWithUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutUserNestedInput
@@ -1212,6 +1267,7 @@ export type UserUncheckedUpdateWithoutPlaylistsSharedWithUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutUserNestedInput
@@ -1241,6 +1297,7 @@ export type UserUpdateWithoutPlaylistsSharedByUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   photos?: Prisma.PhotoUpdateManyWithoutUserNestedInput
@@ -1259,6 +1316,7 @@ export type UserUncheckedUpdateWithoutPlaylistsSharedByUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isOnboarded?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  currentOnboardingStep?: Prisma.EnumOnboardingStepFieldUpdateOperationsInput | $Enums.OnboardingStep
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   photos?: Prisma.PhotoUncheckedUpdateManyWithoutUserNestedInput
@@ -1371,6 +1429,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdAt?: boolean
   updatedAt?: boolean
   isOnboarded?: boolean
+  currentOnboardingStep?: boolean
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   photos?: boolean | Prisma.User$photosArgs<ExtArgs>
@@ -1391,6 +1450,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   createdAt?: boolean
   updatedAt?: boolean
   isOnboarded?: boolean
+  currentOnboardingStep?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1402,6 +1462,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   createdAt?: boolean
   updatedAt?: boolean
   isOnboarded?: boolean
+  currentOnboardingStep?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -1413,9 +1474,10 @@ export type UserSelectScalar = {
   createdAt?: boolean
   updatedAt?: boolean
   isOnboarded?: boolean
+  currentOnboardingStep?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "isOnboarded", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "createdAt" | "updatedAt" | "isOnboarded" | "currentOnboardingStep", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
@@ -1451,6 +1513,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     createdAt: Date
     updatedAt: Date
     isOnboarded: boolean | null
+    currentOnboardingStep: $Enums.OnboardingStep
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1890,6 +1953,7 @@ export interface UserFieldRefs {
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly isOnboarded: Prisma.FieldRef<"User", 'Boolean'>
+  readonly currentOnboardingStep: Prisma.FieldRef<"User", 'OnboardingStep'>
 }
     
 

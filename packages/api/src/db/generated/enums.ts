@@ -9,7 +9,10 @@
 * 🟢 You can import this file directly.
 */
 
+export const OnboardingStep = {
+  USER_INFO: 'USER_INFO',
+  JOIN_HOUSEHOLD: 'JOIN_HOUSEHOLD',
+  PAIR_DEVICE: 'PAIR_DEVICE'
+} as const
 
-
-// This file is empty because there are no enums in the schema.
-export {}
+export type OnboardingStep = (typeof OnboardingStep)[keyof typeof OnboardingStep]
