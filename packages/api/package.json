@@ -1,16 +1,16 @@
 {
-  "name": "@living-memories/server",
+  "name": "@living-memories/api",
   "private": true,
   "type": "module",
   "exports": {
-    "./auth-client": "./dist-clients/index.client.auth.js"
+    "./client/browser": "./dist.client/client.browser.js",
+    "./client/server": "./dist.client/client.server.js"
   },
   "scripts": {
     "dev": "vite",
-    "build": "yarn build:api & yarn build:clients",
+    "build": "yarn build:api & yarn build:client",
     "build:api": "vite build",
-    "build:clients": "yarn tsc --project ./tsconfig.build-clients.json",
-    "preview": "yarn run build:api && vite preview",
+    "build:client": "yarn tsx scripts/generate-client-types.ts && yarn tsc --project ./tsconfig.build.client.json",
     "deploy": "yarn run build:api && wrangler deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
     "db:generate": "prisma generate",

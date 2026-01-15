@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist.client",
+    "noEmit": false,
+    "declaration": true,
+    "declarationMap": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "./src/client.browser.ts",
+    "./src/client.server.ts",
+    "worker-configuration.client.d.ts"
+  ],
+  "exclude": ["./src/middleware/**/*"]
+}

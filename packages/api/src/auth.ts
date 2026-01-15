@@ -3,8 +3,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { organization } from "better-auth/plugins";
 import { deviceAuthorization } from "better-auth/plugins";
 
-import { prismaClient } from "../db/prisma-client";
-import { getEnvVar } from "./util.getEnvVar";
+import { prismaClient } from "./db/prisma-client";
 
 export const auth = betterAuth({
   database: prismaAdapter(prismaClient, {
@@ -12,9 +11,13 @@ export const auth = betterAuth({
     debugLogs: true,
   }),
   telemetry: { enabled: false },
-  trustedOrigins: [getEnvVar("API_DOMAIN"), getEnvVar("APP_DOMAIN")],
-  secret: getEnvVar("AUTH_SECRET"),
-  baseURL: getEnvVar("API_DOMAIN"),
+  trustedOrigins: [process.env.API_DOMAIN, process.env.APP_DOMAIN],
+  secret: process.env.AUTH_SECRET,
+  baseURL: process.env.API_DOMAIN,
+  experimental: { joins: true },
+  advanced: {
+    disableOriginCheck: process.env.LIVING_MEMORY_ENV === "local",
+  },
   emailAndPassword: {
     enabled: true,
   },
@@ -59,13 +62,4 @@ export const auth = betterAuth({
       verificationUri: "/device",
     }),
   ],
-  experimental: { joins: true },
-  advanced: {
-    disableOriginCheck: getEnvVar("LIVING_MEMORY_ENV") === "local",
-  },
 });
-
-export type ContextVariablesAuth = {
-  user: typeof auth.$Infer.Session.user | null;
-  session: typeof auth.$Infer.Session.session | null;
-};

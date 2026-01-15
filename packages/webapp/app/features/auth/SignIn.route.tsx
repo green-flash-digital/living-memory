@@ -1,8 +1,9 @@
 import { useState, type FormEvent } from "react";
-import { AuthClient } from "../../utils.client/auth";
 import { redirect, useNavigate } from "react-router";
 import type { Route } from "./+types/SignIn.route";
+
 import { AuthClientSSR } from "~/utils.server/SSRAuthClient";
+import { ApiClientBrowser } from "~/utils.client/api.client";
 
 export async function loader(args: Route.LoaderArgs) {
   const session = await AuthClientSSR.getSession(args);
@@ -23,7 +24,7 @@ export default function SignInRoute() {
     setIsLoading(true);
 
     try {
-      await AuthClient.signIn.email({
+      await ApiClientBrowser.auth.signIn.email({
         email,
         password,
       });

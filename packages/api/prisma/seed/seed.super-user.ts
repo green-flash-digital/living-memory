@@ -1,14 +1,13 @@
 import "../../dev-utils/loadLocalEnvVars";
-import { getEnvVar } from "../../src/utils/util.getEnvVar";
-import { auth } from "../../src/utils/auth";
+import { auth } from "../../src/auth";
 
 /**
  * Creates a super user using Better Auth API methods
  */
 export async function seedSuperUser() {
-  const email = getEnvVar("SUPER_USER_EMAIL");
-  const password = getEnvVar("SUPER_USER_PASSWORD");
-  const name = getEnvVar("SUPER_USER_NAME");
+  const email = process.env.SUPER_USER_EMAIL;
+  const password = process.env.SUPER_USER_PASSWORD;
+  const name = process.env.SUPER_USER_NAME;
 
   console.log(`Creating super user with email: ${email}`);
 
