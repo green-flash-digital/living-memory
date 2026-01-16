@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist.client",
+    "outDir": "./dist-clients",
     "noEmit": false,
     "declaration": true,
     "declarationMap": true,
@@ -11,6 +11,5 @@
     "./src/client.react.ts",
     "./src/client.ssr.ts",
     "worker-configuration.client.d.ts"
-  ],
-  "exclude": ["/src/middleware/**/*", "/src/db/**/*"]
+  ]
 }

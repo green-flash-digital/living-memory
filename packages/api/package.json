@@ -3,14 +3,8 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./client/react": {
-      "import": "./dist.client/client.react.js",
-      "types": "./dist.client/client.react.d.ts"
-    },
-    "./client/ssr": {
-      "import": "./dist.client/client.ssr.js",
-      "types": "./dist.client/client.ssr.d.ts"
-    }
+    "./client/react": "./dist-clients/client.react.js",
+    "./client/ssr": "./dist-clients/client.ssr.js"
   },
   "scripts": {
     "dev": "vite",
