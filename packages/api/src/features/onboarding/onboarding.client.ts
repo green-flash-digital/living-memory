@@ -1,8 +1,4 @@
-import {
-  ClientFetch,
-  ClientFetchArgs,
-  type ClientFetchResult,
-} from "../../utils/ClientFetch";
+import { ClientFetch, ClientFetchArgs } from "../../utils/ClientFetch";
 import z from "zod";
 import { CreateHouseholdRequestSchema } from "./onboarding.route.createHousehold";
 import {

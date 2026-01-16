@@ -5,17 +5,11 @@ import { env } from "cloudflare:workers";
 import { authentication } from "./features/authentication/authentication.route";
 import { health } from "./features/health/health.route";
 import { onboarding } from "./features/onboarding/onboarding.route._";
-import { serializeError, ApiError } from "./utils/ApiError";
+import { serializeError } from "./utils/ApiError";
+import type { ContentfulStatusCode } from "hono/utils/http-status";
 
 const app = new Hono({
   strict: true,
-});
-
-// Global error handler - catches all errors and serializes them to ErrorResponse format
-app.onError((err, c) => {
-  const errorResponse = serializeError(err);
-  console.error(`Error [${errorResponse.status}] ${errorResponse.error_type}:`, errorResponse.message);
-  return c.json(errorResponse, errorResponse.status);
 });
 
 app.use(
@@ -37,5 +31,19 @@ app.route("/api/auth/", authentication);
 // Private routes
 app.use(withAuthenticatedSession);
 app.route("/api/onboarding", onboarding);
+
+// Error handler
+app.onError((err, c) => {
+  console.error(err);
+  const errorResponse = serializeError(err);
+  console.error(
+    `Error [${errorResponse.status}] ${errorResponse.error_type}:`,
+    errorResponse.message
+  );
+  // Use c.text() with JSON stringified and proper Content-Type header
+  // Cast status to ContentfulStatusCode since error responses always have content
+  console.log(errorResponse);
+  return c.json(errorResponse, errorResponse.status as ContentfulStatusCode);
+});
 
 export default app;
