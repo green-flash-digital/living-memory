@@ -2,7 +2,6 @@ import { Hono } from "hono";
 import type { Route, SessionVars } from "../../utils/types.js";
 import { zValidator } from "@hono/zod-validator";
 import { OnboardingStep } from "../../db/generated/enums.js";
-import { prismaClient } from "../../db/prisma-client.js";
 import z from "zod";
 
 /**
@@ -19,6 +18,7 @@ export const joinHousehold = new Hono<Route<SessionVars>>().post(
     const user = c.get("user");
     const session = c.get("session");
     const { invitationCode } = c.req.valid("json");
+    const db = c.get("db");
 
     // Check if user already has a household
     if (session.activeOrganizationId) {
@@ -28,7 +28,7 @@ export const joinHousehold = new Hono<Route<SessionVars>>().post(
     // Find invitation by code (assuming invitation code is stored somewhere)
     // For now, we'll search by email or a code field
     // You may need to adjust this based on your invitation model
-    const invitation = await prismaClient.invitation.findFirst({
+    const invitation = await db.invitation.findFirst({
       where: {
         email: user.email,
         status: "pending",
@@ -46,7 +46,7 @@ export const joinHousehold = new Hono<Route<SessionVars>>().post(
     }
 
     // Check if user is already a member
-    const existingMembership = await prismaClient.user_Household.findUnique({
+    const existingMembership = await db.user_Household.findUnique({
       where: {
         userId_householdId: {
           userId: user.id,
@@ -60,7 +60,7 @@ export const joinHousehold = new Hono<Route<SessionVars>>().post(
     }
 
     // Create user-household relationship
-    await prismaClient.user_Household.create({
+    await db.user_Household.create({
       data: {
         userId: user.id,
         householdId: invitation.organizationId,
@@ -69,13 +69,13 @@ export const joinHousehold = new Hono<Route<SessionVars>>().post(
     });
 
     // Update invitation status
-    await prismaClient.invitation.update({
+    await db.invitation.update({
       where: { id: invitation.id },
       data: { status: "accepted" },
     });
 
     // Update user's onboarding step
-    await prismaClient.user.update({
+    await db.user.update({
       where: { id: user.id },
       data: {
         currentOnboardingStep: OnboardingStep.PAIR_DEVICE,

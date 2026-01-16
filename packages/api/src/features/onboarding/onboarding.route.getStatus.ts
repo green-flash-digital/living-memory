@@ -1,6 +1,5 @@
 import { Hono } from "hono";
 import type { Route, SessionVars } from "../../utils/types.js";
-import { prismaClient } from "../../db/prisma-client.js";
 import { OnboardingStep } from "../../db/generated/enums.js";
 import z from "zod";
 
@@ -25,9 +24,10 @@ export const OnboardingGetStatusResponseSchema = z.object({
 export const getStatus = new Hono<Route<SessionVars>>().get("", async (c) => {
   const user = c.get("user");
   const session = c.get("session");
+  const db = c.get("db");
 
   // Get user with household relationship
-  const userWithHousehold = await prismaClient.user.findUnique({
+  const userWithHousehold = await db.user.findUnique({
     where: { id: user.id },
     include: {
       user_households: {
@@ -46,7 +46,7 @@ export const getStatus = new Hono<Route<SessionVars>>().get("", async (c) => {
 
   // Check if user has paired devices
   const hasPairedDevice = hasHousehold
-    ? (await prismaClient.device.count({
+    ? (await db.device.count({
         where: {
           householdId: household.id,
           isActive: true,
