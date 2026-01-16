@@ -1,6 +1,9 @@
 import { ClientFetch, ClientFetchArgs } from "../../utils/ClientFetch";
 import z from "zod";
-import { CreateHouseholdRequestSchema } from "./onboarding.route.createHousehold";
+import {
+  CreateHouseholdRequestSchema,
+  CreateHouseholdResponseSchema,
+} from "./onboarding.route.createHousehold";
 import {
   ValidateSlugRequestSchema,
   ValidateSlugResponseSchema,
@@ -25,7 +28,7 @@ export class OnboardingClient extends ClientFetch {
     body: z.infer<typeof CreateHouseholdRequestSchema>,
     request: Request
   ) {
-    return this._mutate({
+    return this._mutate<z.infer<typeof CreateHouseholdResponseSchema>>({
       method: "POST",
       path: "/create-household",
       body: [CreateHouseholdRequestSchema, body],

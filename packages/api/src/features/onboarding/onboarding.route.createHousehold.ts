@@ -3,6 +3,9 @@ import { Route, SessionVars } from "../../utils/types";
 import { zValidator } from "@hono/zod-validator";
 import z from "zod";
 import { OnboardingStep } from "../../db/generated/enums";
+import { HTTPError } from "../../utils/ApiError";
+import { response } from "../../utils/util.response";
+import { tryHandle } from "@living-memory/utils";
 
 export const CreateHouseholdRequestSchema = z.object({
   name: z.string().min(1, "Household name is required"),
@@ -13,6 +16,26 @@ export const CreateHouseholdRequestSchema = z.object({
       /^[a-z0-9-]+$/,
       "Slug must contain only lowercase letters, numbers, and hyphens"
     ),
+});
+
+const HouseholdMemberSchema = z.object({
+  id: z.string(),
+  organizationId: z.string(),
+  userId: z.string(),
+  role: z.string(),
+  createdAt: z.string().or(z.date()),
+  updatedAt: z.string().or(z.date()).optional(),
+});
+
+export const CreateHouseholdResponseSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  slug: z.string(),
+  logo: z.string().nullable().optional(),
+  metadata: z.any().nullable().optional(),
+  createdAt: z.string().or(z.date()),
+  updatedAt: z.string().or(z.date()).optional(),
+  members: HouseholdMemberSchema.array(),
 });
 
 /**
@@ -31,12 +54,16 @@ export const createHousehold = new Hono<Route<SessionVars>>().post(
     const db = c.get("db");
 
     // Check to see if the slug is taken
-    const isOrgSlugTaken = await betterAuth.checkOrganizationSlug({
-      headers: c.req.raw.headers,
-      body: { slug: reqBody.slug },
-    });
-    if (!isOrgSlugTaken.status) {
-      throw new Error("The slug is already taken");
+    const slugStatus = await tryHandle(
+      betterAuth.checkOrganizationSlug({
+        headers: c.req.raw.headers,
+        body: { slug: reqBody.slug },
+      })
+    );
+    if (!slugStatus.success) {
+      throw HTTPError.badRequest(
+        `The slug '${reqBody.slug}' is already taken. Please try another one.`
+      );
     }
 
     // Create the household
@@ -50,6 +77,10 @@ export const createHousehold = new Hono<Route<SessionVars>>().post(
       },
     });
 
+    if (!household) {
+      throw HTTPError.serverError("Failed to create household");
+    }
+
     // Update user's onboarding step
     await db.user.update({
       where: { id: user.id },
@@ -58,6 +89,15 @@ export const createHousehold = new Hono<Route<SessionVars>>().post(
       },
     });
 
-    return c.json(household);
+    return response.json(c, {
+      schema: CreateHouseholdResponseSchema,
+      data: {
+        ...household,
+        members: household.members.filter(
+          (member) => typeof member !== "undefined"
+        ),
+      },
+      context: "onboarding.createHousehold",
+    });
   }
 );

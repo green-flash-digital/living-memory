@@ -3,6 +3,8 @@ import { Route, SessionVars } from "../../utils/types";
 import { zValidator } from "@hono/zod-validator";
 import z from "zod";
 import { response } from "../../utils/util.response";
+import { tryHandle } from "@living-memory/utils";
+import { HTTPError } from "../../utils/ApiError";
 
 export const ValidateSlugRequestSchema = z.object({
   slug: z
@@ -30,16 +32,19 @@ export const validateSlug = new Hono<Route<SessionVars>>().get(
     const param = c.req.valid("param");
     const betterAuth = c.get("betterAuth");
 
-    const isAvailable = await betterAuth.checkOrganizationSlug({
-      body: { slug: param.slug },
-    });
+    const slugRes = await tryHandle(
+      betterAuth.checkOrganizationSlug({
+        body: { slug: param.slug },
+      })
+    );
+    if (!slugRes.success) {
+      throw HTTPError.badRequest(`The slug '${param.slug}' is already taken`);
+    }
 
     return response.json(c, {
       context: "onboarding.validateSlug",
       schema: ValidateSlugResponseSchema,
-      data: {
-        isAvailable: isAvailable.status,
-      },
+      data: { isAvailable: true },
     });
   }
 );
