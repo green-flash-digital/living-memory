@@ -2,6 +2,7 @@ import { auth } from "../auth";
 import { prismaClient } from "../db/prisma-client";
 import type { MaybeSessionVars, Middleware } from "../utils/types";
 import { createMiddleware } from "hono/factory";
+import { UnauthenticatedError } from "../utils/ApiError";
 
 /**
  * Hono middleware that enforces authentication via Better Auth.
@@ -21,7 +22,7 @@ export const withAuthenticatedSession = createMiddleware<
   // Retrieve the session from Better Auth
   const session = await auth.api.getSession({ headers });
   if (!session || !session.user) {
-    return c.json({ error: "Unauthorized" }, 401);
+    throw new UnauthenticatedError();
   }
 
   // Attach user and session to the context
