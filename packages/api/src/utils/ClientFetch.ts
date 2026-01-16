@@ -1,11 +1,6 @@
 import { exhaustiveMatchGuard, tryHandle } from "@living-memory/utils";
 import { z, type ZodType } from "zod";
-import {
-  ErrorResponseSchema,
-  ServerError,
-  UnknownError,
-  type ErrorResponse,
-} from "./ApiError";
+import { ErrorResponseSchema, HTTPError, type ErrorResponse } from "./ApiError";
 
 // Re-export error types for convenience
 export type { ErrorResponse };
@@ -62,7 +57,9 @@ export class ClientFetch {
   ): { success: false; error: ErrorResponse } {
     const errorMsg = error instanceof Error ? error.message : String(error);
     console.error(`${context} from ${url}:`, errorMsg);
-    const serverError = new ServerError(`${context} from ${url}: ${errorMsg}`);
+    const serverError = HTTPError.serverError(
+      `${context} from ${url}: ${errorMsg}`
+    );
     return { success: false, error: serverError.toJson() };
   }
 
@@ -202,7 +199,7 @@ export class ClientFetch {
     if (!res.ok) {
       const textErr = await res.text().catch(() => "Unknown");
       console.error(`Fetch failed with status ${res.status}:`, textErr);
-      const fallbackError = new UnknownError(textErr, res.status);
+      const fallbackError = HTTPError.unknown(textErr, res.status);
       return { success: false, error: fallbackError.toJson() };
     }
 
@@ -243,7 +240,7 @@ export class ClientFetch {
 
       case "unknown":
         const message = `Content type not recognized: ${contentTypeRaw}`;
-        const error = new ServerError(message).toJson();
+        const error = HTTPError.serverError(message).toJson();
         return { success: false, error };
 
       default:

@@ -4,10 +4,10 @@ This module provides a standardized error handling system for the API, with type
 
 ## Usage in Endpoints
 
-Simply throw the appropriate error class:
+Use the centralized `HTTPError` utility for creating errors:
 
 ```typescript
-import { NotFoundError, ValidationError, UnauthorizedError } from "../utils/ApiError";
+import { HTTPError } from "../utils/ApiError";
 
 // In your route handler
 export const myRoute = new Hono().get("/:id", async (c) => {
@@ -15,34 +15,44 @@ export const myRoute = new Hono().get("/:id", async (c) => {
   
   const resource = await db.find(id);
   if (!resource) {
-    throw new NotFoundError("Resource not found");
+    throw HTTPError.notFound("Resource not found");
   }
   
   if (!hasPermission(resource)) {
-    throw new UnauthorizedError("You don't have permission to access this");
+    throw HTTPError.unauthorized("You don't have permission to access this");
   }
   
   return c.json(resource);
 });
 ```
 
-## Available Error Classes
+**Alternative:** You can also use the error classes directly if you prefer:
+```typescript
+import { NotFoundError, UnauthorizedError } from "../utils/ApiError";
+throw new NotFoundError("Resource not found");
+```
 
-- `ValidationError(errors, message?)` - 400, for validation failures
-- `BadRequestError(message?)` - 400, for general bad requests
-- `UnauthenticatedError(message?)` - 401, user needs to sign in
-- `UnauthorizedError(message?)` - 403, user lacks permission
-- `NotFoundError(message?)` - 404, resource not found
-- `MethodNotAllowedError(method)` - 405, HTTP method not allowed
-- `ServerError(reason)` - 500, internal server error
-- `UnknownError(message?)` - 500, unknown error
+## Available Error Methods (HTTPError)
+
+The `HTTPError` utility provides a centralized API for creating errors:
+
+- `HTTPError.validation(errors, message?)` - 400, for validation failures
+- `HTTPError.badRequest(message?)` - 400, for general bad requests
+- `HTTPError.unauthenticated(message?)` - 401, user needs to sign in
+- `HTTPError.unauthorized(message?)` - 403, user lacks permission
+- `HTTPError.notFound(message?)` - 404, resource not found
+- `HTTPError.methodNotAllowed(method)` - 405, HTTP method not allowed
+- `HTTPError.serverError(reason)` - 500, internal server error
+- `HTTPError.unknown(message?, status?)` - 500, unknown error (status defaults to 500)
+
+**Note:** You can also use the error classes directly (e.g., `new NotFoundError()`), but `HTTPError` provides a cleaner, more consistent API.
 
 ## Validation Errors
 
 For Zod validation errors, you can create a ValidationError manually:
 
 ```typescript
-import { ValidationError } from "../utils/ApiError";
+import { HTTPError } from "../utils/ApiError";
 import { z } from "zod";
 
 const schema = z.object({ name: z.string().min(1) });
@@ -59,7 +69,7 @@ try {
       }
       fieldErrors[path].push(issue.message);
     });
-    throw new ValidationError(fieldErrors);
+    throw HTTPError.validation(fieldErrors);
   }
 }
 ```

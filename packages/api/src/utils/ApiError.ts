@@ -171,6 +171,61 @@ export class UnknownError extends ApiError<"unknown"> {
 }
 
 /**
+ * Centralized utility for creating HTTP/API errors.
+ * Provides a clean, consistent API for error creation.
+ *
+ * @example
+ * ```typescript
+ * throw HTTPError.validation({ email: ["Invalid email"] });
+ * throw HTTPError.notFound("User not found");
+ * throw HTTPError.serverError("Database connection failed");
+ * ```
+ */
+export class HTTPError {
+  static validation(
+    errors: Record<string, string[]>,
+    message = "Validation failed"
+  ): ValidationError {
+    return new ValidationError(errors, message);
+  }
+
+  static badRequest(message = "Bad request"): BadRequestError {
+    return new BadRequestError(message);
+  }
+
+  static unauthenticated(
+    message = "You need to sign in to access this resource."
+  ): UnauthenticatedError {
+    return new UnauthenticatedError(message);
+  }
+
+  static unauthorized(message = "Not authorized"): UnauthorizedError {
+    return new UnauthorizedError(message);
+  }
+
+  static notFound(
+    message = "The requested resource does not exist"
+  ): NotFoundError {
+    return new NotFoundError(message);
+  }
+
+  static methodNotAllowed(method: string): MethodNotAllowedError {
+    return new MethodNotAllowedError(method);
+  }
+
+  static serverError(reason: string): ServerError {
+    return new ServerError(reason);
+  }
+
+  static unknown(
+    message = "An unknown error occurred",
+    status = 500
+  ): UnknownError {
+    return new UnknownError(message, status);
+  }
+}
+
+/**
  * Converts any thrown value into a typed ErrorResponse payload.
  *
  * This is intended to be used on the server, typically in an error handler
@@ -195,8 +250,7 @@ export function serializeError(error: unknown): ErrorResponse {
       }
       fieldErrors[path].push(issue.message);
     });
-    const validationError = new ValidationError(fieldErrors);
-    return validationError.toJson();
+    return HTTPError.validation(fieldErrors).toJson();
   }
 
   if (error instanceof ApiError) {
@@ -212,7 +266,7 @@ export function serializeError(error: unknown): ErrorResponse {
   }
 
   // Fallback to unknown error
-  return new UnknownError(
+  return HTTPError.unknown(
     error instanceof Error ? error.message : String(error)
   ).toJson();
 }
@@ -265,7 +319,7 @@ export function deserializeError(
   // Try to parse as ErrorResponse
   const parsed = ErrorResponseSchema.safeParse(errorJson);
   if (!parsed.success) {
-    return new ServerError("Unknown error format received from server");
+    return HTTPError.serverError("Unknown error format received from server");
   }
 
   const error = parsed.data;
@@ -273,21 +327,21 @@ export function deserializeError(
   // Create the appropriate error class based on error_type
   switch (error.error_type) {
     case "validation":
-      return new ValidationError(error.errors, error.message);
+      return HTTPError.validation(error.errors, error.message);
     case "unauthenticated":
-      return new UnauthenticatedError(error.message);
+      return HTTPError.unauthenticated(error.message);
     case "unauthorized":
-      return new UnauthorizedError(error.message);
+      return HTTPError.unauthorized(error.message);
     case "not_found":
-      return new NotFoundError(error.message);
+      return HTTPError.notFound(error.message);
     case "method_not_allowed":
-      return new MethodNotAllowedError(method || "UNKNOWN");
+      return HTTPError.methodNotAllowed(method || "UNKNOWN");
     case "bad_request":
-      return new BadRequestError(error.message);
+      return HTTPError.badRequest(error.message);
     case "server_error":
-      return new ServerError(error.message);
+      return HTTPError.serverError(error.message);
     case "unknown":
     default:
-      return new UnknownError(error.message);
+      return HTTPError.unknown(error.message);
   }
 }
