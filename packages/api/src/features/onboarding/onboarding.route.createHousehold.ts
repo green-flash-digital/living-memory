@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { Route, SessionVars } from "../../utils/types";
+import type { Route, SessionVars } from "../../utils/types";
 import { zValidator } from "@hono/zod-validator";
 import z from "zod";
 import { OnboardingStep } from "../../db/generated/enums";

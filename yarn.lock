@@ -1559,6 +1559,7 @@ __metadata:
   dependencies:
     "@cloudflare/vite-plugin": "npm:1.20.2"
     "@living-memories/api": "workspace:^"
+    "@living-memory/utils": "workspace:^"
     "@react-router/dev": "npm:7.12.0"
     "@types/node": "npm:25.0.7"
     "@types/react": "npm:19.2.8"

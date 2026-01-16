@@ -1,6 +1,6 @@
-import { MemoriesApiClientBrowser } from "@living-memories/api/client/browser";
+import { MemoriesApiClientReact } from "@living-memories/api/client/react";
 import { env } from "cloudflare:workers";
 
-export const ApiClientBrowser = new MemoriesApiClientBrowser({
+export const ApiClientReact = new MemoriesApiClientReact({
   baseURL: env.API_DOMAIN,
 });

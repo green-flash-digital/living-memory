@@ -1,8 +1,23 @@
 import { createAuthClient } from "better-auth/client";
-import { betterAuthClientConfig } from "./authentication.utils";
+import {
+  inferAdditionalFields,
+  organizationClient,
+  inferOrgAdditionalFields,
+  deviceAuthorizationClient,
+} from "better-auth/client/plugins";
+import type { auth } from "../../auth";
 
 function createBetterAuthClient(baseURL: string) {
-  return createAuthClient({ baseURL, ...betterAuthClientConfig });
+  return createAuthClient({
+    baseURL,
+    plugins: [
+      inferAdditionalFields<typeof auth>(),
+      organizationClient({
+        schema: inferOrgAdditionalFields<typeof auth>(),
+      }),
+      deviceAuthorizationClient(),
+    ],
+  });
 }
 
 export class AuthClient {

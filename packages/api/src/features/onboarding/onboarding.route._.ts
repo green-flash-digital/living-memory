@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { Route, SessionVars } from "../../utils/types";
+import type { Route, SessionVars } from "../../utils/types";
 import { getStatus } from "./onboarding.route.getStatus";
 import { createHousehold } from "./onboarding.route.createHousehold";
 import { joinHousehold } from "./onboarding.route.joinHousehold";

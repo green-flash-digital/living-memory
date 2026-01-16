@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { Route, SessionVars } from "../../utils/types";
+import type { Route, SessionVars } from "../../utils/types";
 import { prismaClient } from "../../db/prisma-client";
 import { OnboardingStep } from "../../db/generated/enums";
 import z from "zod";

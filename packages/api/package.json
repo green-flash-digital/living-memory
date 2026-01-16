@@ -3,11 +3,12 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./client/browser": "./dist.client/client.browser.js",
-    "./client/server": "./dist.client/client.server.js"
+    "./client/react": "./dist.client/client.react.js",
+    "./client/ssr": "./dist.client/client.ssr.js"
   },
   "scripts": {
     "dev": "vite",
+    "dev:client": "yarn build:client --watch",
     "build": "yarn build:api & yarn build:client",
     "build:api": "vite build",
     "build:client": "yarn tsx scripts/generate-client-types.ts && yarn tsc --project ./tsconfig.build.client.json",

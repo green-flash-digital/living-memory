@@ -8,8 +8,8 @@
     "skipLibCheck": true
   },
   "include": [
-    "./src/client.browser.ts",
-    "./src/client.server.ts",
+    "./src/client.react.ts",
+    "./src/client.ssr.ts",
     "worker-configuration.client.d.ts"
   ],
   "exclude": ["/src/middleware/**/*", "/src/db/**/*"]

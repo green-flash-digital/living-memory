@@ -1,7 +1,7 @@
 import { sessionContext } from "../context/context.session";
 import type { ContextAndRequest } from "~/utils.server/util.server.types";
 import { href, redirect } from "react-router";
-import { ApiClientServer } from "~/utils.server/ApiClient.server";
+import { ApiClientSSR } from "~/utils.server/ApiClient.ssr";
 
 /**
  * Ensures that the current request is associated with a valid session.
@@ -13,7 +13,7 @@ import { ApiClientServer } from "~/utils.server/ApiClient.server";
  * they will be redirected to the onboarding flow.
  */
 export async function requireSession<T extends ContextAndRequest>(args: T) {
-  const res = await ApiClientServer.auth.getSession(args.request);
+  const res = await ApiClientSSR.auth.getSession(args.request);
   if (res.error) throw res.error;
   if (!res.data?.session) {
     throw redirect(href("/sign-in"));

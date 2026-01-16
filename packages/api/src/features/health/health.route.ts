@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { Route } from "../../utils/types";
+import type { Route } from "../../utils/types";
 
 export const health = new Hono<Route>();
 

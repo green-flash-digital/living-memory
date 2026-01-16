@@ -1,4 +1,4 @@
-import { ClientFetch, ClientFetchArgs } from "../../utils/ClientFetch";
+import { ClientFetch, type ClientFetchArgs } from "../../utils/ClientFetch";
 import z from "zod";
 import {
   CreateHouseholdRequestSchema,
@@ -8,10 +8,18 @@ import {
   ValidateSlugRequestSchema,
   ValidateSlugResponseSchema,
 } from "./onboarding.route.validateSlug";
+import { OnboardingGetStatusResponseSchema } from "./onboarding.route.getStatus";
 
 export class OnboardingClient extends ClientFetch {
   constructor(args: ClientFetchArgs) {
     super({ baseURL: args.baseURL.concat("/onboarding") });
+  }
+
+  getStatus(request: Request) {
+    return this._get<z.infer<typeof OnboardingGetStatusResponseSchema>>({
+      path: "/status",
+      request,
+    });
   }
 
   validateHouseholdSlug(

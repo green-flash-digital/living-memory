@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@living-memories/api": "workspace:^",
+    "@living-memory/utils": "workspace:^",
     "better-auth": "1.4.12",
     "isbot": "5.1.32",
     "react": "19.2.3",

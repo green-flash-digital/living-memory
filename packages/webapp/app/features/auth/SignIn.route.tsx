@@ -2,8 +2,8 @@ import { useState, type FormEvent } from "react";
 import { redirect, useNavigate } from "react-router";
 import type { Route } from "./+types/SignIn.route";
 
-import { ApiClientBrowser } from "~/utils.client/ApiClient.browser";
-import { ApiClientServer } from "~/utils.server/ApiClient.server";
+import { ApiClientReact } from "~/utils.client/ApiClient.browser";
+import { ApiClientServer } from "~/utils.server/ApiClient.ssr";
 
 export async function loader(args: Route.LoaderArgs) {
   const res = await ApiClientServer.auth.getSession(args.request);
@@ -24,7 +24,7 @@ export default function SignInRoute() {
     setIsLoading(true);
 
     try {
-      await ApiClientBrowser.auth.signIn.email({
+      await ApiClientReact.auth.signIn.email({
         email,
         password,
       });

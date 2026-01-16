@@ -1,4 +1,4 @@
-import { auth } from "../auth";
+import type { auth } from "../auth";
 import { prismaClient } from "../db/prisma-client";
 
 export type LMEnvs = Cloudflare.Env;
