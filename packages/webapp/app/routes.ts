@@ -16,6 +16,7 @@ export default [
         route("join", "./features/onboarding/OnboardingJoin.route.tsx"),
         route("pair", "./features/onboarding/OnboardingPair.route.tsx"),
         route("done", "./features/onboarding/OnboardingDone.route.tsx"),
+        route("error", "./features/onboarding/OnboardingError.route.tsx"),
       ]),
     ]),
     route(":household_id", "./features/household/Household.route.tsx", [

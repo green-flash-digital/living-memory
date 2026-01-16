@@ -9,7 +9,6 @@ import { OnboardingStep } from "./db/generated/enums.js";
 export const auth = betterAuth({
   database: prismaAdapter(prismaClient, {
     provider: "postgresql",
-    debugLogs: true,
   }),
   telemetry: { enabled: false },
   trustedOrigins: [process.env.API_DOMAIN, process.env.APP_DOMAIN],

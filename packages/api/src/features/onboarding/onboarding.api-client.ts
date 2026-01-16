@@ -12,7 +12,7 @@ import { OnboardingGetStatusResponseSchema } from "./onboarding.route.getStatus.
 
 export class OnboardingClient extends ClientFetch {
   constructor(args: ClientFetchArgs) {
-    super({ baseURL: args.baseURL.concat("/onboarding") });
+    super({ baseURL: args.baseURL.concat("/api/onboarding") });
   }
 
   getStatus(request: Request) {
