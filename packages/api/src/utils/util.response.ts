@@ -1,7 +1,7 @@
 import type { Context } from "hono";
 import z from "zod";
-import { HTTPError } from "./ApiError";
-import { colors } from "./util.colors";
+import { HTTPError } from "./ApiError.js";
+import { colors } from "./util.colors.js";
 
 /**
  * Validates response data against a schema and returns a JSON response.

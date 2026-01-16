@@ -1,5 +1,5 @@
 import "../../dev-utils/loadLocalEnvVars";
-import { auth } from "../../src/auth";
+import { auth } from "../../src/auth.js";
 
 /**
  * Creates a super user using Better Auth API methods

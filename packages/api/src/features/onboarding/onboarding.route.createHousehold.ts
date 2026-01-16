@@ -1,10 +1,10 @@
 import { Hono } from "hono";
-import type { Route, SessionVars } from "../../utils/types";
+import type { Route, SessionVars } from "../../utils/types.js";
 import { zValidator } from "@hono/zod-validator";
 import z from "zod";
-import { OnboardingStep } from "../../db/generated/enums";
-import { HTTPError } from "../../utils/ApiError";
-import { response } from "../../utils/util.response";
+import { OnboardingStep } from "../../db/generated/enums.js";
+import { HTTPError } from "../../utils/ApiError.js";
+import { response } from "../../utils/util.response.js";
 import { tryHandle } from "@living-memory/utils";
 
 export const CreateHouseholdRequestSchema = z.object({

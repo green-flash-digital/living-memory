@@ -1,8 +1,8 @@
-import { auth } from "../auth";
-import { prismaClient } from "../db/prisma-client";
-import type { MaybeSessionVars, Middleware } from "../utils/types";
+import { auth } from "../auth.js";
+import { prismaClient } from "../db/prisma-client.js";
+import type { MaybeSessionVars, Middleware } from "../utils/types.js";
 import { createMiddleware } from "hono/factory";
-import { HTTPError } from "../utils/ApiError";
+import { HTTPError } from "../utils/ApiError.js";
 
 /**
  * Hono middleware that enforces authentication via Better Auth.

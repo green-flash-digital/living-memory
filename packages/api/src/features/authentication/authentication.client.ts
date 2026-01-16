@@ -5,7 +5,7 @@ import {
   inferOrgAdditionalFields,
   deviceAuthorizationClient,
 } from "better-auth/client/plugins";
-import type { auth } from "../../auth";
+import type { auth } from "../../auth.js";
 
 function createBetterAuthClient(baseURL: string) {
   return createAuthClient({

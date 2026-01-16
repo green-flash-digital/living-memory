@@ -1,11 +1,11 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { withAuthenticatedSession } from "./middleware/session.middleware";
+import { withAuthenticatedSession } from "./middleware/session.middleware.js";
 import { env } from "cloudflare:workers";
-import { authentication } from "./features/authentication/authentication.route";
-import { health } from "./features/health/health.route";
-import { onboarding } from "./features/onboarding/onboarding.route._";
-import { serializeError } from "./utils/ApiError";
+import { authentication } from "./features/authentication/authentication.route.js";
+import { health } from "./features/health/health.route.js";
+import { onboarding } from "./features/onboarding/onboarding.route._.js";
+import { serializeError } from "./utils/ApiError.js";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
 
 const app = new Hono({

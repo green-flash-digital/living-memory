@@ -1,10 +1,10 @@
 import { Hono } from "hono";
-import type { Route, SessionVars } from "../../utils/types";
+import type { Route, SessionVars } from "../../utils/types.js";
 import { zValidator } from "@hono/zod-validator";
 import z from "zod";
-import { response } from "../../utils/util.response";
+import { response } from "../../utils/util.response.js";
 import { tryHandle } from "@living-memory/utils";
-import { HTTPError } from "../../utils/ApiError";
+import { HTTPError } from "../../utils/ApiError.js";
 
 export const ValidateSlugRequestSchema = z.object({
   slug: z

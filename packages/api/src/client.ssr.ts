@@ -1,7 +1,5 @@
-import { OnboardingClient } from "./features/onboarding/onboarding.client";
+import { OnboardingClient } from "./features/onboarding/onboarding.client.js";
 import { AuthClient } from "./features/authentication/authentication.client.js";
-
-console.log({ typeOfAuthClient: typeof AuthClient });
 
 export class MemoriesApiClientSSR {
   auth: AuthClient;

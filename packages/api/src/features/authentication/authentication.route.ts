@@ -1,6 +1,6 @@
 import { Hono } from "hono";
-import { auth } from "../../auth";
-import type { MaybeSessionVars, Route } from "../../utils/types";
+import { auth } from "../../auth.js";
+import type { MaybeSessionVars, Route } from "../../utils/types.js";
 
 export const authentication = new Hono<Route<MaybeSessionVars>>();
 

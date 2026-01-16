@@ -1,6 +1,10 @@
 import { exhaustiveMatchGuard, tryHandle } from "@living-memory/utils";
 import { z, type ZodType } from "zod";
-import { ErrorResponseSchema, HTTPError, type ErrorResponse } from "./ApiError";
+import {
+  ErrorResponseSchema,
+  HTTPError,
+  type ErrorResponse,
+} from "./ApiError.js";
 
 // Re-export error types for convenience
 export type { ErrorResponse };

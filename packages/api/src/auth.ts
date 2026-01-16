@@ -3,8 +3,8 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { organization } from "better-auth/plugins";
 import { deviceAuthorization } from "better-auth/plugins";
 
-import { prismaClient } from "./db/prisma-client";
-import { OnboardingStep } from "./db/generated/enums";
+import { prismaClient } from "./db/prisma-client.js";
+import { OnboardingStep } from "./db/generated/enums.js";
 
 export const auth = betterAuth({
   database: prismaAdapter(prismaClient, {

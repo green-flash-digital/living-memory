@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import type { Route, SessionVars } from "../../utils/types";
-import { prismaClient } from "../../db/prisma-client";
-import { OnboardingStep } from "../../db/generated/enums";
+import type { Route, SessionVars } from "../../utils/types.js";
+import { prismaClient } from "../../db/prisma-client.js";
+import { OnboardingStep } from "../../db/generated/enums.js";
 import z from "zod";
 
 /**

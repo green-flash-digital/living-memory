@@ -1,6 +1,5 @@
 import { getSessionContext } from "../context/context.session";
 import type { ContextAndRequest } from "~/utils.server/util.server.types";
-import { href, redirect } from "react-router";
 
 /**
  * Ensures that the current user has completed onboarding.

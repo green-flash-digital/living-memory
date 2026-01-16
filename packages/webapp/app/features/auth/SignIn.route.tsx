@@ -3,10 +3,10 @@ import { redirect, useNavigate } from "react-router";
 import type { Route } from "./+types/SignIn.route";
 
 import { ApiClientReact } from "~/utils.client/ApiClient.browser";
-import { ApiClientServer } from "~/utils.server/ApiClient.ssr";
+import { ApiClientSSR } from "~/utils.server/ApiClient.ssr";
 
 export async function loader(args: Route.LoaderArgs) {
-  const res = await ApiClientServer.auth.getSession(args.request);
+  const res = await ApiClientSSR.auth.getSession(args.request);
   if (res.data?.session) throw redirect("/");
   return null;
 }

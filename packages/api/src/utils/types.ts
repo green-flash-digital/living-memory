@@ -1,5 +1,5 @@
-import type { auth } from "../auth";
-import { prismaClient } from "../db/prisma-client";
+import type { auth } from "../auth.js";
+import { prismaClient } from "../db/prisma-client.js";
 
 export type LMEnvs = Cloudflare.Env;
 export type LMBindings = LMEnvs;

@@ -1,14 +1,14 @@
-import { ClientFetch, type ClientFetchArgs } from "../../utils/ClientFetch";
+import { ClientFetch, type ClientFetchArgs } from "../../utils/ClientFetch.js";
 import z from "zod";
 import {
   CreateHouseholdRequestSchema,
   CreateHouseholdResponseSchema,
-} from "./onboarding.route.createHousehold";
+} from "./onboarding.route.createHousehold.js";
 import {
   ValidateSlugRequestSchema,
   ValidateSlugResponseSchema,
-} from "./onboarding.route.validateSlug";
-import { OnboardingGetStatusResponseSchema } from "./onboarding.route.getStatus";
+} from "./onboarding.route.validateSlug.js";
+import { OnboardingGetStatusResponseSchema } from "./onboarding.route.getStatus.js";
 
 export class OnboardingClient extends ClientFetch {
   constructor(args: ClientFetchArgs) {

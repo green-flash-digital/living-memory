@@ -1,4 +1,4 @@
-import { seedSuperUser } from "./seed.super-user";
+import { seedSuperUser } from "./seed.super-user.js";
 
 const seedScripts = [seedSuperUser];
 
