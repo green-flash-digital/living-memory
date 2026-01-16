@@ -33,7 +33,8 @@ export const ErrorResponseSchema = z.discriminatedUnion("error_type", [
   }),
   ErrorResponseBase.extend({
     error_type: z.literal("validation"),
-    errors: z.record(z.string(), z.array(z.string())),
+    fieldErrors: z.record(z.string(), z.array(z.string())),
+    formErrors: z.array(z.string()),
   }),
 ]);
 
@@ -48,21 +49,24 @@ export class ApiError<
 > extends Error {
   readonly error_type: T;
   readonly status: number;
-  readonly errors?: Record<string, string[]>;
+  readonly fieldErrors?: Record<string, string[]>;
+  readonly formErrors?: string[];
 
   constructor(opts: {
     error_type: T;
     status: number;
     message: string;
-    errors?: T extends "validation" ? Record<string, string[]> : never;
+    fieldErrors?: T extends "validation" ? Record<string, string[]> : never;
+    formErrors?: T extends "validation" ? string[] : never;
   }) {
     super(opts.message);
     this.name = this.constructor.name;
     this.error_type = opts.error_type;
     this.status = opts.status;
 
-    if (opts.error_type === "validation" && opts.errors) {
-      this.errors = opts.errors;
+    if (opts.error_type === "validation") {
+      this.fieldErrors = opts.fieldErrors || {};
+      this.formErrors = opts.formErrors || [];
     }
 
     // Maintains proper prototype chain for instanceof checks
@@ -78,8 +82,11 @@ export class ApiError<
       error_type: this.error_type,
       status: this.status,
       message: this.message,
-      ...(this.error_type === "validation" && this.errors
-        ? { errors: this.errors }
+      ...(this.error_type === "validation"
+        ? {
+            fieldErrors: this.fieldErrors || {},
+            formErrors: this.formErrors || [],
+          }
         : {}),
     };
 
@@ -90,12 +97,17 @@ export class ApiError<
 // Specific error classes for common HTTP error scenarios
 
 export class ValidationError extends ApiError<"validation"> {
-  constructor(errors: Record<string, string[]>, message = "Validation failed") {
+  constructor(
+    fieldErrors: Record<string, string[]>,
+    formErrors: string[] = [],
+    message = "Validation failed"
+  ) {
     super({
       error_type: "validation",
       message,
       status: 400,
-      errors,
+      fieldErrors,
+      formErrors,
     });
   }
 }
@@ -122,6 +134,16 @@ export class UnauthenticatedError extends ApiError<"unauthenticated"> {
 
 export class UnauthorizedError extends ApiError<"unauthorized"> {
   constructor(message = "Not authorized") {
+    super({
+      error_type: "unauthorized",
+      message,
+      status: 403,
+    });
+  }
+}
+
+export class ForbiddenError extends ApiError<"unauthorized"> {
+  constructor(message = "Forbidden") {
     super({
       error_type: "unauthorized",
       message,
@@ -176,17 +198,36 @@ export class UnknownError extends ApiError<"unknown"> {
  *
  * @example
  * ```typescript
- * throw HTTPError.validation({ email: ["Invalid email"] });
+ * const result = schema.safeParse(data);
+ * if (!result.success) {
+ *   throw HTTPError.validation(result.error);
+ * }
  * throw HTTPError.notFound("User not found");
  * throw HTTPError.serverError("Database connection failed");
  * ```
  */
 export class HTTPError {
-  static validation(
-    errors: Record<string, string[]>,
-    message = "Validation failed"
-  ): ValidationError {
-    return new ValidationError(errors, message);
+  /**
+   * Creates a ValidationError from a ZodError.
+   * Automatically flattens the error using z.flattenError().
+   */
+  static validation(error: ZodError, message?: string): ValidationError {
+    const flattened = z.flattenError(error);
+    // Filter out undefined values from fieldErrors
+    const fieldErrors: Record<string, string[]> = {};
+    if (flattened.fieldErrors) {
+      Object.entries(flattened.fieldErrors).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          fieldErrors[key] = value;
+        }
+      });
+    }
+    const errorMessage = message || "Validation failed";
+    return new ValidationError(
+      fieldErrors,
+      flattened.formErrors || [],
+      errorMessage
+    );
   }
 
   static badRequest(message = "Bad request"): BadRequestError {
@@ -201,6 +242,10 @@ export class HTTPError {
 
   static unauthorized(message = "Not authorized"): UnauthorizedError {
     return new UnauthorizedError(message);
+  }
+
+  static forbidden(message = "Forbidden"): ForbiddenError {
+    return new ForbiddenError(message);
   }
 
   static notFound(
@@ -242,15 +287,7 @@ export class HTTPError {
  */
 export function serializeError(error: unknown): ErrorResponse {
   if (error instanceof ZodError) {
-    const fieldErrors: Record<string, string[]> = {};
-    error.issues.forEach((issue) => {
-      const path = issue.path.join(".");
-      if (!fieldErrors[path]) {
-        fieldErrors[path] = [];
-      }
-      fieldErrors[path].push(issue.message);
-    });
-    return HTTPError.validation(fieldErrors).toJson();
+    return HTTPError.validation(error).toJson();
   }
 
   if (error instanceof ApiError) {
@@ -327,7 +364,11 @@ export function deserializeError(
   // Create the appropriate error class based on error_type
   switch (error.error_type) {
     case "validation":
-      return HTTPError.validation(error.errors, error.message);
+      return new ValidationError(
+        error.fieldErrors,
+        error.formErrors,
+        error.message
+      );
     case "unauthenticated":
       return HTTPError.unauthenticated(error.message);
     case "unauthorized":

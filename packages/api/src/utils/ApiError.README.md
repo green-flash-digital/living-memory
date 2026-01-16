@@ -36,7 +36,7 @@ throw new NotFoundError("Resource not found");
 
 The `HTTPError` utility provides a centralized API for creating errors:
 
-- `HTTPError.validation(errors, message?)` - 400, for validation failures
+- `HTTPError.validation(zodError, message?)` - 422, for validation failures
 - `HTTPError.badRequest(message?)` - 400, for general bad requests
 - `HTTPError.unauthenticated(message?)` - 401, user needs to sign in
 - `HTTPError.unauthorized(message?)` - 403, user lacks permission
@@ -61,15 +61,7 @@ try {
   schema.parse({ name: "" });
 } catch (error) {
   if (error instanceof z.ZodError) {
-    const fieldErrors: Record<string, string[]> = {};
-    error.issues.forEach((issue) => {
-      const path = issue.path.join(".");
-      if (!fieldErrors[path]) {
-        fieldErrors[path] = [];
-      }
-      fieldErrors[path].push(issue.message);
-    });
-    throw HTTPError.validation(fieldErrors);
+    throw HTTPError.validation(error);
   }
 }
 ```
@@ -99,7 +91,8 @@ try {
   if (error instanceof NotFoundError) {
     console.log("Resource not found:", error.message);
   } else if (error instanceof ValidationError) {
-    console.log("Validation errors:", error.errors);
+    console.log("Field errors:", error.fieldErrors);
+    console.log("Form errors:", error.formErrors);
   } else if (error instanceof ApiError) {
     console.log(`API Error [${error.status}]:`, error.message);
   }
@@ -115,6 +108,7 @@ All errors follow this structure:
   error_type: "validation" | "not_found" | "unauthorized" | ...,
   status: number,
   message: string,
-  errors?: Record<string, string[]> // Only for validation errors
+  fieldErrors?: Record<string, string[]>, // Only for validation errors
+  formErrors?: string[] // Only for validation errors
 }
 ```
