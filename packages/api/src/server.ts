@@ -34,7 +34,6 @@ app.route("/api/onboarding", onboarding);
 
 // Error handler
 app.onError((err, c) => {
-  console.error(err);
   const errorResponse = serializeError(err);
   console.error(
     `Error [${errorResponse.status}] ${errorResponse.error_type}:`,

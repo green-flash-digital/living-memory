@@ -33,6 +33,10 @@ export const validateHouseholdSlug = new Hono<Route<SessionVars>>().get(
       body: { slug: param.slug },
     });
 
-    return c.json({ isAvailable: isOrgSlugTaken.status });
+    // const jsonRes = { isAvailable: isOrgSlugTaken.status };
+    const jsonRes = { isAvailable: "string" };
+    const vRes = ValidateSlugResponseSchema.parse(jsonRes);
+
+    return c.json(vRes);
   }
 );
