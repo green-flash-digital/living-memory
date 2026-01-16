@@ -1,5 +1,5 @@
 import { Context } from "hono";
-import z, { ZodSchema } from "zod";
+import z from "zod";
 import { HTTPError } from "./ApiError";
 
 /**
@@ -15,7 +15,7 @@ import { HTTPError } from "./ApiError";
  * });
  * ```
  */
-export function jsonResponse<C extends Context, S extends ZodSchema>(
+export function jsonResponse<C extends Context, S extends z.ZodType>(
   c: C,
   { schema, data, context }: { schema: S; data: z.output<S>; context?: string }
 ) {
