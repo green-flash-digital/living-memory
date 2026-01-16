@@ -1526,6 +1526,7 @@ __metadata:
     "@types/ws": "npm:^8.18.1"
     better-auth: "npm:^1.4.12"
     hono: "npm:^4.11.4"
+    picocolors: "npm:^1.1.1"
     prisma: "npm:^7.2.0"
     tsx: "npm:^4.21.0"
     typescript: "npm:^5.9.3"
