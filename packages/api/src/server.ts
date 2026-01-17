@@ -7,6 +7,7 @@ import { health } from "./features/health/health.route.js";
 import { onboarding } from "./features/onboarding/onboarding.route._.js";
 import { serializeError } from "./utils/ApiError.js";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
+import { household } from "./features/household/household.route._.js";
 
 const app = new Hono({
   strict: true,
@@ -31,6 +32,7 @@ app.route("/api/auth/", authentication);
 // Private routes
 app.use(withAuthenticatedSession);
 app.route("/api/onboarding", onboarding);
+app.route("/api/household", household);
 
 // Error handler
 app.onError((err, c) => {
