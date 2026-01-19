@@ -1,8 +1,9 @@
-import { useState, type ChangeEvent } from "react";
+import { useRef, useState, type ChangeEvent, type ChangeEventHandler } from "react";
 import { Form } from "react-router";
 import { match, P } from "ts-pattern";
 import { useDebounce } from "~/hooks/useDebounce";
 import { ApiClientReact } from "~/utils.client/ApiClient.browser";
+import { toKebabCase } from "~/utils/util.string";
 
 const START_ACTIONS = { CREATE: "create", JOIN: "join" } as const;
 type StartAction = (typeof START_ACTIONS)[keyof typeof START_ACTIONS];
@@ -13,17 +14,32 @@ export default function OnboardingJoin() {
   const [startAction, setStartAction] = useState<StartAction | undefined>();
   const [slugStatus, setSlugStatus] = useState<SlugValidationResult>(null);
   const [isCheckingSlug, setIsCheckingSlug] = useState(false);
-  const { debounce } = useDebounce(300);
+  const slugRef = useRef<HTMLInputElement | null>(null);
+  const { debounce: debounceSlug } = useDebounce(300);
+  const { debounce: debounceName } = useDebounce(300);
 
   function handleOnChange(e: ChangeEvent<HTMLInputElement>) {
     return setStartAction(e.currentTarget.value as StartAction);
+  }
+
+  function handleNameChange(e: ChangeEvent<HTMLInputElement>) {
+    const name = e.currentTarget.value;
+    debounceName(() => {
+      if (!slugRef.current) return;
+      if (!!slugRef.current.value) return;
+      const slug = toKebabCase(name);
+      slugRef.current.value = slug;
+      if (slug) {
+        handleSlugChange({ currentTarget: slugRef.current } as ChangeEvent<HTMLInputElement>);
+      }
+    });
   }
 
   function handleSlugChange(e: ChangeEvent<HTMLInputElement>) {
     const newSlug = e.currentTarget.value;
     setSlugStatus(null);
 
-    debounce(async () => {
+    debounceSlug(async () => {
       if (newSlug.trim() && /^[a-z0-9-]+$/.test(newSlug)) {
         setIsCheckingSlug(true);
         try {
@@ -79,7 +95,12 @@ export default function OnboardingJoin() {
               <div>
                 <label>
                   <div>Household name</div>
-                  <input type="text" name="name" placeholder="e.g., The Smith Family" />
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="e.g., The Smith Family"
+                    onChange={handleNameChange}
+                  />
                 </label>
               </div>
               <div>
@@ -90,6 +111,7 @@ export default function OnboardingJoin() {
                     name="slug"
                     placeholder="e.g., smith-family"
                     onChange={handleSlugChange}
+                    ref={slugRef}
                   />
                   <div style={{ fontSize: "0.875rem", color: "#666", marginTop: "0.25rem" }}>
                     This will be used in your household's shareable link
