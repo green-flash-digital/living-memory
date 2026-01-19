@@ -8,7 +8,7 @@ import z from "zod";
  * Schema for joining a household via invitation
  */
 export const joinHouseholdSchema = z.object({
-  invitationCode: z.string().min(1, "Invitation code is required"),
+  invitationCode: z.string().min(1, "Invitation code is required")
 });
 
 export const joinHousehold = new Hono<Route<SessionVars>>().post(
@@ -33,12 +33,12 @@ export const joinHousehold = new Hono<Route<SessionVars>>().post(
         email: user.email,
         status: "pending",
         expiresAt: {
-          gt: new Date(),
-        },
+          gt: new Date()
+        }
       },
       include: {
-        household: true,
-      },
+        household: true
+      }
     });
 
     if (!invitation) {
@@ -50,9 +50,9 @@ export const joinHousehold = new Hono<Route<SessionVars>>().post(
       where: {
         userId_householdId: {
           userId: user.id,
-          householdId: invitation.organizationId,
-        },
-      },
+          householdId: invitation.organizationId
+        }
+      }
     });
 
     if (existingMembership) {
@@ -64,28 +64,28 @@ export const joinHousehold = new Hono<Route<SessionVars>>().post(
       data: {
         userId: user.id,
         householdId: invitation.organizationId,
-        role: invitation.role || "member",
-      },
+        role: invitation.role || "member"
+      }
     });
 
     // Update invitation status
     await db.invitation.update({
       where: { id: invitation.id },
-      data: { status: "accepted" },
+      data: { status: "accepted" }
     });
 
     // Update user's onboarding step
     await db.user.update({
       where: { id: user.id },
       data: {
-        currentOnboardingStep: OnboardingStep.PAIR_DEVICE,
-      },
+        currentOnboardingStep: OnboardingStep.PAIR_DEVICE
+      }
     });
 
     return c.json({
       householdId: invitation.household.id,
       householdName: invitation.household.name,
-      message: "Successfully joined household",
+      message: "Successfully joined household"
     });
   }
 );

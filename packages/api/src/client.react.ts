@@ -7,6 +7,7 @@ import {
 import { createAuthClient } from "better-auth/react";
 import type { auth } from "./auth.js";
 import { OnboardingClientBrowser } from "./features/onboarding/onboarding.api-client.js";
+import type { ClientFetchResult } from "./utils/ClientFetch.js";
 
 function createClient(baseURL: string) {
   return createAuthClient({
@@ -34,3 +35,6 @@ export class MemoriesApiClientReact {
     this.onboarding = new OnboardingClientBrowser(args);
   }
 }
+
+// Re-export types for easier consumption
+export type { ClientFetchResult };

@@ -1,7 +1,7 @@
 import type { Context } from "hono";
 import z from "zod";
-import { HTTPError } from "./ApiError.js";
 import { colors } from "./util.colors.js";
+import { HTTPError } from "@living-memory/utils";
 
 /**
  * Validates response data against a schema and returns a JSON response.
@@ -33,5 +33,5 @@ export function jsonResponse<C extends Context, S extends z.ZodType>(
 }
 
 export const response = {
-  json: jsonResponse,
+  json: jsonResponse
 };

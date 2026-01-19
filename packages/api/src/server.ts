@@ -5,12 +5,12 @@ import { env } from "cloudflare:workers";
 import { authentication } from "./features/authentication/authentication.route.js";
 import { health } from "./features/health/health.route.js";
 import { onboarding } from "./features/onboarding/onboarding.route._.js";
-import { serializeError } from "./utils/ApiError.js";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
 import { household } from "./features/household/household.route._.js";
+import { serializeError } from "@living-memory/utils";
 
 const app = new Hono({
-  strict: true,
+  strict: true
 });
 
 app.use(
@@ -21,7 +21,7 @@ app.use(
     allowMethods: ["*"],
     exposeHeaders: ["Content-Length"],
     maxAge: 600,
-    credentials: true,
+    credentials: true
   })
 );
 

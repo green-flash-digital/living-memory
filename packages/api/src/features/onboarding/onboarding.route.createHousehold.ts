@@ -3,9 +3,8 @@ import type { Route, SessionVars } from "../../utils/types.js";
 import { zValidator } from "@hono/zod-validator";
 import z from "zod";
 import { OnboardingStep } from "../../db/generated/enums.js";
-import { HTTPError } from "../../utils/ApiError.js";
 import { response } from "../../utils/util.response.js";
-import { tryHandle } from "@living-memory/utils";
+import { tryHandle, HTTPError } from "@living-memory/utils";
 
 export const CreateHouseholdRequestSchema = z.object({
   name: z.string().min(1, "Household name is required"),

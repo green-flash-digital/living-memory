@@ -1,25 +1,36 @@
 import { useRef, useState, type ChangeEvent, type ChangeEventHandler } from "react";
-import { Form } from "react-router";
+import { Form, href, useActionData } from "react-router";
 import { match, P } from "ts-pattern";
 import { useDebounce } from "~/hooks/useDebounce";
 import { ApiClientReact } from "~/utils.client/ApiClient.browser";
 import { toKebabCase } from "~/utils/util.string";
+import type { Route } from "./+types/OnboardingJoin.route";
+import { ApiClientSSR } from "~/utils.server/ApiClient.ssr";
+import { actionResponse } from "~/utils.server/util.actionResponse";
+import { getValidationErrors } from "~/utils/util.getValidationErrors";
 
-const START_ACTIONS = { CREATE: "create", JOIN: "join" } as const;
-type StartAction = (typeof START_ACTIONS)[keyof typeof START_ACTIONS];
+const JOIN_ACTIONS = { CREATE: "create", JOIN: "join" } as const;
+type JoinAction = (typeof JOIN_ACTIONS)[keyof typeof JOIN_ACTIONS];
 
-type SlugValidationResult = { isAvailable: boolean } | null;
+export async function action(args: Route.ActionArgs) {
+  const formData = await args.request.formData();
+  const formObj = Object.fromEntries(formData.entries());
+  const result = await ApiClientSSR.onboarding.createHousehold(formObj, args.request);
+  return actionResponse(result, { redirectOnSuccess: href("/onboarding/pair") });
+}
 
 export default function OnboardingJoin() {
-  const [startAction, setStartAction] = useState<StartAction | undefined>();
-  const [slugStatus, setSlugStatus] = useState<SlugValidationResult>(null);
+  const [joinAction, setJoinAction] = useState<JoinAction | undefined>();
+  const [slugStatus, setSlugStatus] = useState<{ isAvailable: boolean } | null>(null);
   const [isCheckingSlug, setIsCheckingSlug] = useState(false);
   const slugRef = useRef<HTMLInputElement | null>(null);
   const { debounce: debounceSlug } = useDebounce(300);
   const { debounce: debounceName } = useDebounce(300);
+  const actionData = useActionData<typeof action>();
+  const validationErrors = getValidationErrors(actionData);
 
   function handleOnChange(e: ChangeEvent<HTMLInputElement>) {
-    return setStartAction(e.currentTarget.value as StartAction);
+    return setJoinAction(e.currentTarget.value as JoinAction);
   }
 
   function handleNameChange(e: ChangeEvent<HTMLInputElement>) {
@@ -64,7 +75,7 @@ export default function OnboardingJoin() {
             <input
               type="radio"
               name="household-action"
-              value={START_ACTIONS.CREATE}
+              value={JOIN_ACTIONS.CREATE}
               onChange={handleOnChange}
             />
             <span>Create a new household</span>
@@ -75,7 +86,7 @@ export default function OnboardingJoin() {
             <input
               type="radio"
               name="household-action"
-              value={START_ACTIONS.JOIN}
+              value={JOIN_ACTIONS.JOIN}
               onChange={handleOnChange}
             />
             <span>Join an existing household</span>
@@ -83,7 +94,7 @@ export default function OnboardingJoin() {
         </li>
       </ul>
       <div>
-        {match(startAction)
+        {match(joinAction)
           .with(P.nullish, () => null)
           .with("create", () => (
             <Form>
@@ -131,6 +142,9 @@ export default function OnboardingJoin() {
                   )}
                 </label>
               </div>
+              <button type="submit" name={JOIN_ACTIONS.CREATE} value={JOIN_ACTIONS.CREATE}>
+                Next
+              </button>
             </Form>
           ))
           .with("join", () => <div>WIP</div>)

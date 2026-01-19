@@ -6,36 +6,36 @@ import { z, ZodError } from "zod";
  */
 const ErrorResponseBase = z.object({
   status: z.number(),
-  message: z.string(),
+  message: z.string()
 });
 
 export const ErrorResponseSchema = z.discriminatedUnion("error_type", [
   ErrorResponseBase.extend({
-    error_type: z.literal("unknown"),
+    error_type: z.literal("unknown")
   }),
   ErrorResponseBase.extend({
-    error_type: z.literal("unauthenticated"),
+    error_type: z.literal("unauthenticated")
   }),
   ErrorResponseBase.extend({
-    error_type: z.literal("unauthorized"),
+    error_type: z.literal("unauthorized")
   }),
   ErrorResponseBase.extend({
-    error_type: z.literal("method_not_allowed"),
+    error_type: z.literal("method_not_allowed")
   }),
   ErrorResponseBase.extend({
-    error_type: z.literal("server_error"),
+    error_type: z.literal("server_error")
   }),
   ErrorResponseBase.extend({
-    error_type: z.literal("not_found"),
+    error_type: z.literal("not_found")
   }),
   ErrorResponseBase.extend({
-    error_type: z.literal("bad_request"),
+    error_type: z.literal("bad_request")
   }),
   ErrorResponseBase.extend({
     error_type: z.literal("validation"),
     fieldErrors: z.record(z.string(), z.array(z.string())),
-    formErrors: z.array(z.string()),
-  }),
+    formErrors: z.array(z.string())
+  })
 ]);
 
 export type ErrorResponse = z.infer<typeof ErrorResponseSchema>;
@@ -45,7 +45,7 @@ export type ErrorResponse = z.infer<typeof ErrorResponseSchema>;
  * All API errors extend this class and include status codes and error types.
  */
 export class ApiError<
-  T extends ErrorResponse["error_type"] = ErrorResponse["error_type"],
+  T extends ErrorResponse["error_type"] = ErrorResponse["error_type"]
 > extends Error {
   readonly error_type: T;
   readonly status: number;
@@ -85,9 +85,9 @@ export class ApiError<
       ...(this.error_type === "validation"
         ? {
             fieldErrors: this.fieldErrors || {},
-            formErrors: this.formErrors || [],
+            formErrors: this.formErrors || []
           }
-        : {}),
+        : {})
     };
 
     return ErrorResponseSchema.parse(payload);
@@ -107,7 +107,7 @@ export class ValidationError extends ApiError<"validation"> {
       message,
       status: 400,
       fieldErrors,
-      formErrors,
+      formErrors
     });
   }
 }
@@ -117,7 +117,7 @@ export class BadRequestError extends ApiError<"bad_request"> {
     super({
       error_type: "bad_request",
       message,
-      status: 400,
+      status: 400
     });
   }
 }
@@ -127,7 +127,7 @@ export class UnauthenticatedError extends ApiError<"unauthenticated"> {
     super({
       error_type: "unauthenticated",
       message,
-      status: 401,
+      status: 401
     });
   }
 }
@@ -137,7 +137,7 @@ export class UnauthorizedError extends ApiError<"unauthorized"> {
     super({
       error_type: "unauthorized",
       message,
-      status: 403,
+      status: 403
     });
   }
 }
@@ -147,7 +147,7 @@ export class ForbiddenError extends ApiError<"unauthorized"> {
     super({
       error_type: "unauthorized",
       message,
-      status: 403,
+      status: 403
     });
   }
 }
@@ -157,7 +157,7 @@ export class NotFoundError extends ApiError<"not_found"> {
     super({
       error_type: "not_found",
       message,
-      status: 404,
+      status: 404
     });
   }
 }
@@ -167,7 +167,7 @@ export class MethodNotAllowedError extends ApiError<"method_not_allowed"> {
     super({
       error_type: "method_not_allowed",
       message: `"${method}" is not allowed.`,
-      status: 405,
+      status: 405
     });
   }
 }
@@ -177,7 +177,7 @@ export class ServerError extends ApiError<"server_error"> {
     super({
       error_type: "server_error",
       message: `There was an internal server error: ${reason}`,
-      status: 500,
+      status: 500
     });
   }
 }
@@ -187,7 +187,7 @@ export class UnknownError extends ApiError<"unknown"> {
     super({
       error_type: "unknown",
       message,
-      status,
+      status
     });
   }
 }
@@ -223,11 +223,7 @@ export class HTTPError {
       });
     }
     const errorMessage = message || "Validation failed";
-    return new ValidationError(
-      fieldErrors,
-      flattened.formErrors || [],
-      errorMessage
-    );
+    return new ValidationError(fieldErrors, flattened.formErrors || [], errorMessage);
   }
 
   static badRequest(message = "Bad request"): BadRequestError {
@@ -248,9 +244,7 @@ export class HTTPError {
     return new ForbiddenError(message);
   }
 
-  static notFound(
-    message = "The requested resource does not exist"
-  ): NotFoundError {
+  static notFound(message = "The requested resource does not exist"): NotFoundError {
     return new NotFoundError(message);
   }
 
@@ -262,10 +256,7 @@ export class HTTPError {
     return new ServerError(reason);
   }
 
-  static unknown(
-    message = "An unknown error occurred",
-    status = 500
-  ): UnknownError {
+  static unknown(message = "An unknown error occurred", status = 500): UnknownError {
     return new UnknownError(message, status);
   }
 }
@@ -303,9 +294,7 @@ export function serializeError(error: unknown): ErrorResponse {
   }
 
   // Fallback to unknown error
-  return HTTPError.unknown(
-    error instanceof Error ? error.message : String(error)
-  ).toJson();
+  return HTTPError.unknown(error instanceof Error ? error.message : String(error)).toJson();
 }
 
 /**
@@ -344,10 +333,7 @@ export function serializeError(error: unknown): ErrorResponse {
  * }
  * ```
  */
-export function deserializeError(
-  errorJson: unknown,
-  method?: string
-): ApiError {
+export function deserializeError(errorJson: unknown, method?: string): ApiError {
   // If it's already an ApiError, return it as-is
   if (errorJson instanceof ApiError) {
     return errorJson;
@@ -364,11 +350,7 @@ export function deserializeError(
   // Create the appropriate error class based on error_type
   switch (error.error_type) {
     case "validation":
-      return new ValidationError(
-        error.fieldErrors,
-        error.formErrors,
-        error.message
-      );
+      return new ValidationError(error.fieldErrors, error.formErrors, error.message);
     case "unauthenticated":
       return HTTPError.unauthenticated(error.message);
     case "unauthorized":
