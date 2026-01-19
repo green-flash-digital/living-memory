@@ -12,8 +12,9 @@ export const OnboardingGetStatusResponseSchema = z.object({
   hasHousehold: z.boolean(),
   householdId: z.string().nullable(),
   householdName: z.string().nullable(),
-  hasPairedDevice: z.boolean(),
+  hasPairedDevice: z.boolean()
 });
+export type OnboardingGetStatusResponse = z.infer<typeof OnboardingGetStatusResponseSchema>;
 
 /**
  * GET `/api/onboarding/status`
@@ -32,13 +33,13 @@ export const getStatus = new Hono<Route<SessionVars>>().get("", async (c) => {
     include: {
       user_households: {
         where: {
-          householdId: session.activeOrganizationId || undefined,
+          householdId: session.activeOrganizationId || undefined
         },
         include: {
-          household: true,
-        },
-      },
-    },
+          household: true
+        }
+      }
+    }
   });
 
   const household = userWithHousehold?.user_households[0]?.household;
@@ -49,8 +50,8 @@ export const getStatus = new Hono<Route<SessionVars>>().get("", async (c) => {
     ? (await db.device.count({
         where: {
           householdId: household.id,
-          isActive: true,
-        },
+          isActive: true
+        }
       })) > 0
     : false;
 
@@ -60,6 +61,6 @@ export const getStatus = new Hono<Route<SessionVars>>().get("", async (c) => {
     hasHousehold,
     householdId: household?.id || null,
     householdName: household?.name || null,
-    hasPairedDevice,
+    hasPairedDevice
   });
 });

@@ -1,6 +1,6 @@
 import { MemoriesApiClientReact } from "@living-memories/api/client/react";
-import { env } from "cloudflare:workers";
+import { ClientEnvVar } from "~/utils/EnvVar";
 
 export const ApiClientReact = new MemoriesApiClientReact({
-  baseURL: env.API_DOMAIN,
+  baseURL: ClientEnvVar.get("API_DOMAIN")
 });

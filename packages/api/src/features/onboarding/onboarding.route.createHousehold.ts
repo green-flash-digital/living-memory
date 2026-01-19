@@ -12,11 +12,9 @@ export const CreateHouseholdRequestSchema = z.object({
   slug: z
     .string()
     .min(1, "Slug is required")
-    .regex(
-      /^[a-z0-9-]+$/,
-      "Slug must contain only lowercase letters, numbers, and hyphens"
-    ),
+    .regex(/^[a-z0-9-]+$/, "Slug must contain only lowercase letters, numbers, and hyphens")
 });
+export type CreateHouseholdRequest = z.infer<typeof CreateHouseholdRequestSchema>;
 
 const HouseholdMemberSchema = z.object({
   id: z.string(),
@@ -24,7 +22,7 @@ const HouseholdMemberSchema = z.object({
   userId: z.string(),
   role: z.string(),
   createdAt: z.string().or(z.date()),
-  updatedAt: z.string().or(z.date()).optional(),
+  updatedAt: z.string().or(z.date()).optional()
 });
 
 export const CreateHouseholdResponseSchema = z.object({
@@ -35,8 +33,9 @@ export const CreateHouseholdResponseSchema = z.object({
   metadata: z.any().nullable().optional(),
   createdAt: z.string().or(z.date()),
   updatedAt: z.string().or(z.date()).optional(),
-  members: HouseholdMemberSchema.array(),
+  members: HouseholdMemberSchema.array()
 });
+export type CreateHouseholdResponse = z.infer<typeof CreateHouseholdResponseSchema>;
 
 /**
  * POST `/api/onboarding/create-household`
@@ -57,7 +56,7 @@ export const createHousehold = new Hono<Route<SessionVars>>().post(
     const slugStatus = await tryHandle(
       betterAuth.checkOrganizationSlug({
         headers: c.req.raw.headers,
-        body: { slug: reqBody.slug },
+        body: { slug: reqBody.slug }
       })
     );
     if (!slugStatus.success) {
@@ -73,8 +72,8 @@ export const createHousehold = new Hono<Route<SessionVars>>().post(
         name: reqBody.name,
         slug: reqBody.slug,
         userId: user.id,
-        keepCurrentActiveOrganization: false,
-      },
+        keepCurrentActiveOrganization: false
+      }
     });
 
     if (!household) {
@@ -85,19 +84,17 @@ export const createHousehold = new Hono<Route<SessionVars>>().post(
     await db.user.update({
       where: { id: user.id },
       data: {
-        currentOnboardingStep: OnboardingStep.PAIR_DEVICE,
-      },
+        currentOnboardingStep: OnboardingStep.PAIR_DEVICE
+      }
     });
 
     return response.json(c, {
       schema: CreateHouseholdResponseSchema,
       data: {
         ...household,
-        members: household.members.filter(
-          (member) => typeof member !== "undefined"
-        ),
+        members: household.members.filter((member) => typeof member !== "undefined")
       },
-      context: "onboarding.createHousehold",
+      context: "onboarding.createHousehold"
     });
   }
 );

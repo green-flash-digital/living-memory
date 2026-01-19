@@ -1,15 +1,46 @@
 import { useState, type ChangeEvent } from "react";
 import { Form } from "react-router";
 import { match, P } from "ts-pattern";
+import { useDebounce } from "~/hooks/useDebounce";
+import { ApiClientReact } from "~/utils.client/ApiClient.browser";
 
 const START_ACTIONS = { CREATE: "create", JOIN: "join" } as const;
 type StartAction = (typeof START_ACTIONS)[keyof typeof START_ACTIONS];
 
+type SlugValidationResult = { isAvailable: boolean } | null;
+
 export default function OnboardingJoin() {
   const [startAction, setStartAction] = useState<StartAction | undefined>();
+  const [slugStatus, setSlugStatus] = useState<SlugValidationResult>(null);
+  const [isCheckingSlug, setIsCheckingSlug] = useState(false);
+  const { debounce } = useDebounce(300);
 
   function handleOnChange(e: ChangeEvent<HTMLInputElement>) {
     return setStartAction(e.currentTarget.value as StartAction);
+  }
+
+  function handleSlugChange(e: ChangeEvent<HTMLInputElement>) {
+    const newSlug = e.currentTarget.value;
+    setSlugStatus(null);
+
+    debounce(async () => {
+      if (newSlug.trim() && /^[a-z0-9-]+$/.test(newSlug)) {
+        setIsCheckingSlug(true);
+        try {
+          const res = await ApiClientReact.onboarding.validateHouseholdSlug({ slug: newSlug });
+          if (res.success) {
+            setSlugStatus({ isAvailable: res.data.isAvailable });
+          } else {
+            setSlugStatus({ isAvailable: false });
+          }
+        } catch (error) {
+          console.error("Error validating slug:", error);
+          setSlugStatus({ isAvailable: false });
+        } finally {
+          setIsCheckingSlug(false);
+        }
+      }
+    });
   }
 
   return (
@@ -58,11 +89,29 @@ export default function OnboardingJoin() {
                     type="text"
                     name="slug"
                     placeholder="e.g., smith-family"
-                    onChange={fetcher}
+                    onChange={handleSlugChange}
                   />
                   <div style={{ fontSize: "0.875rem", color: "#666", marginTop: "0.25rem" }}>
                     This will be used in your household's shareable link
                   </div>
+                  {isCheckingSlug && (
+                    <div style={{ fontSize: "0.875rem", color: "#666", marginTop: "0.25rem" }}>
+                      Checking availability...
+                    </div>
+                  )}
+                  {slugStatus && !isCheckingSlug && (
+                    <div
+                      style={{
+                        fontSize: "0.875rem",
+                        color: slugStatus.isAvailable ? "#22c55e" : "#ef4444",
+                        marginTop: "0.25rem"
+                      }}
+                    >
+                      {slugStatus.isAvailable
+                        ? "✓ This slug is available"
+                        : "✗ This slug is already taken"}
+                    </div>
+                  )}
                 </label>
               </div>
             </Form>

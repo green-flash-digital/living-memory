@@ -2,10 +2,11 @@ import {
   inferAdditionalFields,
   organizationClient,
   inferOrgAdditionalFields,
-  deviceAuthorizationClient,
+  deviceAuthorizationClient
 } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
 import type { auth } from "./auth.js";
+import { OnboardingClientBrowser } from "./features/onboarding/onboarding.api-client.js";
 
 function createClient(baseURL: string) {
   return createAuthClient({
@@ -13,10 +14,10 @@ function createClient(baseURL: string) {
     plugins: [
       inferAdditionalFields<typeof auth>(),
       organizationClient({
-        schema: inferOrgAdditionalFields<typeof auth>(),
+        schema: inferOrgAdditionalFields<typeof auth>()
       }),
-      deviceAuthorizationClient(),
-    ],
+      deviceAuthorizationClient()
+    ]
   });
 }
 /**
@@ -26,8 +27,10 @@ function createClient(baseURL: string) {
 
 export class MemoriesApiClientReact {
   auth: ReturnType<typeof createClient>;
+  onboarding: OnboardingClientBrowser;
 
   constructor(args: { baseURL: string }) {
     this.auth = createClient(args.baseURL);
+    this.onboarding = new OnboardingClientBrowser(args);
   }
 }

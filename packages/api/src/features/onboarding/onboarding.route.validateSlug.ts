@@ -10,14 +10,14 @@ export const ValidateSlugRequestSchema = z.object({
   slug: z
     .string()
     .min(1, "Slug is required")
-    .regex(
-      /^[a-z0-9-]+$/,
-      "Slug must contain only lowercase letters, numbers, and hyphens"
-    ),
+    .regex(/^[a-z0-9-]+$/, "Slug must contain only lowercase letters, numbers, and hyphens")
 });
+export type ValidateSlugRequest = z.infer<typeof ValidateSlugRequestSchema>;
+
 export const ValidateSlugResponseSchema = z.object({
-  isAvailable: z.boolean(),
+  isAvailable: z.boolean()
 });
+export type ValidateSlugResponse = z.infer<typeof ValidateSlugResponseSchema>;
 
 /**
  * GET `/api/onboarding/validate-slug/:slug`
@@ -34,7 +34,7 @@ export const validateSlug = new Hono<Route<SessionVars>>().get(
 
     const slugRes = await tryHandle(
       betterAuth.checkOrganizationSlug({
-        body: { slug: param.slug },
+        body: { slug: param.slug }
       })
     );
     if (!slugRes.success) {
@@ -44,7 +44,7 @@ export const validateSlug = new Hono<Route<SessionVars>>().get(
     return response.json(c, {
       context: "onboarding.validateSlug",
       schema: ValidateSlugResponseSchema,
-      data: { isAvailable: true },
+      data: { isAvailable: true }
     });
   }
 );
