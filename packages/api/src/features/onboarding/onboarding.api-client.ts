@@ -1,20 +1,14 @@
 import { type ClientFetchArgs } from "../../utils/ClientFetch.js";
 import {
   CreateHouseholdRequestSchema,
-  CreateHouseholdResponseSchema,
   type CreateHouseholdRequest,
   type CreateHouseholdResponse
 } from "./onboarding.route.createHousehold.js";
 import {
-  ValidateSlugRequestSchema,
-  ValidateSlugResponseSchema,
   type ValidateSlugRequest,
   type ValidateSlugResponse
 } from "./onboarding.route.validateSlug.js";
-import {
-  OnboardingGetStatusResponseSchema,
-  type OnboardingGetStatusResponse
-} from "./onboarding.route.getStatus.js";
+import { type OnboardingGetStatusResponse } from "./onboarding.route.getStatus.js";
 import { ClientFetchSSR } from "../../utils/ClientFetchSSR.js";
 import { ClientFetchBrowser } from "../../utils/ClientFetchBrowser.js";
 

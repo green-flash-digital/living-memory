@@ -42,19 +42,14 @@ export default function OnboardingJoin() {
     debounceSlug(async () => {
       if (newSlug.trim() && /^[a-z0-9-]+$/.test(newSlug)) {
         setIsCheckingSlug(true);
-        try {
-          const res = await ApiClientReact.onboarding.validateHouseholdSlug({ slug: newSlug });
-          if (res.success) {
-            setSlugStatus({ isAvailable: res.data.isAvailable });
-          } else {
-            setSlugStatus({ isAvailable: false });
-          }
-        } catch (error) {
-          console.error("Error validating slug:", error);
+        const res = await ApiClientReact.onboarding.validateHouseholdSlug({ slug: newSlug });
+        if (res.success) {
+          setSlugStatus({ isAvailable: res.data.isAvailable });
+        } else {
           setSlugStatus({ isAvailable: false });
-        } finally {
-          setIsCheckingSlug(false);
+          console.error("Error validating slug:", res.error);
         }
+        setIsCheckingSlug(false);
       }
     });
   }
