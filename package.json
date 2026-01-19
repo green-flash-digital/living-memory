@@ -18,6 +18,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "prettier": "3.8.0",
     "turbo": "2.7.4"
   }
 }

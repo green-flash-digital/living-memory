@@ -6,8 +6,15 @@ meta {
 
 post {
   url: {{API_DOMAIN}}/api/onboarding/create-household
-  body: none
+  body: json
   auth: inherit
+}
+
+body:json {
+  { 
+    "name": "The Turano Household",
+    "slug": "the-turanos"
+  }
 }
 
 settings {
