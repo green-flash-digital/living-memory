@@ -137,7 +137,6 @@ export class ClientFetch {
 
   /**
    * Prepares headers for the request. Override in subclasses to customize header handling.
-   * @param request - Optional Request object (required for SSR, not used in browser)
    */
   protected _prepareHeaders(request?: Request): Headers {
     if (request) {
