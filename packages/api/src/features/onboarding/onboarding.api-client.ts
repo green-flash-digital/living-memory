@@ -52,23 +52,9 @@ export class OnboardingClientBrowser extends ClientFetchBrowser {
     super({ baseURL: args.baseURL.concat("/api/onboarding") });
   }
 
-  getStatus() {
-    return this._get<OnboardingGetStatusResponse>({
-      path: "/status"
-    });
-  }
-
   validateHouseholdSlug(params: ValidateSlugRequest) {
     return this._get<ValidateSlugResponse>({
       path: `/validate-slug/${params.slug}`
-    });
-  }
-
-  createHousehold(body: CreateHouseholdRequest) {
-    return this._mutate<CreateHouseholdResponse>({
-      method: "POST",
-      path: "/create-household",
-      body: [CreateHouseholdRequestSchema, body]
     });
   }
 }
