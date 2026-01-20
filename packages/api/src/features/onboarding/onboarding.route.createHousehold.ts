@@ -6,16 +6,31 @@ import { OnboardingStep } from "../../db/generated/enums.js";
 import { response } from "../../utils/util.response.js";
 import { tryHandle, HTTPError } from "@living-memory/utils";
 
-export const CreateHouseholdRequestSchema = z.object({
+import { schemaFor } from "../../utils/schemaFor.js";
+
+export type CreateHouseholdRequest = {
+  name: string;
+  slug: string;
+};
+
+export const CreateHouseholdRequestSchema = schemaFor<CreateHouseholdRequest>({
   name: z.string().min(1, "Household name is required"),
   slug: z
     .string()
     .min(1, "Slug is required")
     .regex(/^[a-z0-9-]+$/, "Slug must contain only lowercase letters, numbers, and hyphens")
 });
-export type CreateHouseholdRequest = z.infer<typeof CreateHouseholdRequestSchema>;
 
-const HouseholdMemberSchema = z.object({
+type HouseholdMember = {
+  id: string;
+  organizationId: string;
+  userId: string;
+  role: string;
+  createdAt: string | Date;
+  updatedAt?: string | Date;
+};
+
+const HouseholdMemberSchema = schemaFor<HouseholdMember>({
   id: z.string(),
   organizationId: z.string(),
   userId: z.string(),
@@ -24,7 +39,18 @@ const HouseholdMemberSchema = z.object({
   updatedAt: z.string().or(z.date()).optional()
 });
 
-export const CreateHouseholdResponseSchema = z.object({
+export type CreateHouseholdResponse = {
+  id: string;
+  name: string;
+  slug: string;
+  logo?: string | null;
+  metadata?: any | null;
+  createdAt: string | Date;
+  updatedAt?: string | Date;
+  members: HouseholdMember[];
+};
+
+export const CreateHouseholdResponseSchema = schemaFor<CreateHouseholdResponse>({
   id: z.string(),
   name: z.string(),
   slug: z.string(),
@@ -34,7 +60,6 @@ export const CreateHouseholdResponseSchema = z.object({
   updatedAt: z.string().or(z.date()).optional(),
   members: HouseholdMemberSchema.array()
 });
-export type CreateHouseholdResponse = z.infer<typeof CreateHouseholdResponseSchema>;
 
 /**
  * POST `/api/onboarding/create-household`

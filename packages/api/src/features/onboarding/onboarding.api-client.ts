@@ -2,26 +2,14 @@ import { type ClientFetchArgs } from "../../utils/ClientFetch.js";
 import {
   CreateHouseholdRequestSchema,
   type CreateHouseholdRequest,
-  type CreateHouseholdResponse
-} from "./onboarding.route.createHousehold.js";
-import { z } from "zod";
-import {
+  type CreateHouseholdResponse,
+  ValidateSlugRequestSchema,
   type ValidateSlugRequest,
-  type ValidateSlugResponse
-} from "./onboarding.route.validateSlug.js";
-import { type OnboardingGetStatusResponse } from "./onboarding.route.getStatus.js";
+  type ValidateSlugResponse,
+  type OnboardingGetStatusResponse
+} from "./onboarding.schemas.js";
 import { ClientFetchSSR } from "../../utils/ClientFetchSSR.js";
 import { ClientFetchBrowser } from "../../utils/ClientFetchBrowser.js";
-
-// Re-export schema and types for better IntelliSense
-export { CreateHouseholdRequestSchema };
-export type {
-  CreateHouseholdRequest,
-  CreateHouseholdResponse,
-  OnboardingGetStatusResponse,
-  ValidateSlugRequest,
-  ValidateSlugResponse
-};
 
 export class OnboardingClient extends ClientFetchSSR {
   constructor(args: ClientFetchArgs) {

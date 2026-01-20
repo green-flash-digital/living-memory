@@ -1,7 +1,7 @@
 import type { ActionFunctionArgs } from "react-router";
-import { z, ZodObject } from "zod";
+import { z, ZodAny, ZodObject, ZodType } from "zod";
 
-export async function validateFormData<A extends ActionFunctionArgs, S extends ZodObject>(
+export async function validateFormData<A extends ActionFunctionArgs, S extends ZodType>(
   args: A,
   schema: S
 ) {
@@ -9,7 +9,7 @@ export async function validateFormData<A extends ActionFunctionArgs, S extends Z
   const obj = Object.fromEntries(formData.entries());
   const res = schema.safeParse(obj);
   if (!res.success) {
-    return { success: false, error: z.flattenError(res.error) };
+    return { success: false, error: z.flattenError(res.error) } as const;
   }
-  return { success: true, data: res.data };
+  return { success: true, data: res.data } as const;
 }

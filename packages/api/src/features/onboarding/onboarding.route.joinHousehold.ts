@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import type { Route, SessionVars } from "../../utils/types.js";
+import { schemaFor } from "../../utils/schemaFor.js";
 import { zValidator } from "@hono/zod-validator";
 import { OnboardingStep } from "../../db/generated/enums.js";
 import z from "zod";
@@ -7,7 +8,11 @@ import z from "zod";
 /**
  * Schema for joining a household via invitation
  */
-export const joinHouseholdSchema = z.object({
+export type JoinHouseholdRequest = {
+  invitationCode: string;
+};
+
+export const joinHouseholdSchema = schemaFor<JoinHouseholdRequest>({
   invitationCode: z.string().min(1, "Invitation code is required")
 });
 

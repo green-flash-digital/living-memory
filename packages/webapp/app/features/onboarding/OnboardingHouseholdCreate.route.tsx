@@ -3,19 +3,19 @@ import { useActionData, Form, href, redirect } from "react-router";
 import { useDebounce } from "~/hooks/useDebounce";
 import { ApiClientReact } from "~/utils.client/ApiClient.browser";
 import { toKebabCase } from "~/utils/util.string";
-import { schemas } from "@living-memories/api/schemas";
 import { ApiClientSSR } from "~/utils.server/ApiClient.ssr";
 import { ssrResponse } from "~/utils.server/util.ssrResponse";
 import { validateFormData } from "~/utils.server/util.validateFormData";
 import type { Route } from "./+types/OnboardingHouseholdCreate.route";
+import { CreateHouseholdRequestSchema } from "@living-memories/api/onboarding";
 
 export async function action(args: Route.ActionArgs) {
-  const formVal = await validateFormData(args, schemas.onboarding.createHouseholdRequest);
+  const formVal = await validateFormData(args, CreateHouseholdRequestSchema);
   if (!formVal.success) {
     return ssrResponse.validationError(formVal.error);
   }
 
-  const res = await ApiClientSSR.onboarding.createHousehold({}, args.request);
+  const res = await ApiClientSSR.onboarding.createHousehold(formVal.data, args.request);
   if (res.success) {
     throw redirect(href("/onboarding/pair"));
   }

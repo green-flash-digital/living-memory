@@ -1,22 +1,29 @@
 import { Hono } from "hono";
 import type { Route, SessionVars } from "../../utils/types.js";
+import { schemaFor } from "../../utils/schemaFor.js";
 import { zValidator } from "@hono/zod-validator";
 import z from "zod";
 import { response } from "../../utils/util.response.js";
 import { HTTPError, tryHandle } from "@living-memory/utils";
 
-export const ValidateSlugRequestSchema = z.object({
+export type ValidateSlugRequest = {
+  slug: string;
+};
+
+export const ValidateSlugRequestSchema = schemaFor<ValidateSlugRequest>({
   slug: z
     .string()
     .min(1, "Slug is required")
     .regex(/^[a-z0-9-]+$/, "Slug must contain only lowercase letters, numbers, and hyphens")
 });
-export type ValidateSlugRequest = z.infer<typeof ValidateSlugRequestSchema>;
 
-export const ValidateSlugResponseSchema = z.object({
+export type ValidateSlugResponse = {
+  isAvailable: boolean;
+};
+
+export const ValidateSlugResponseSchema = schemaFor<ValidateSlugResponse>({
   isAvailable: z.boolean()
 });
-export type ValidateSlugResponse = z.infer<typeof ValidateSlugResponseSchema>;
 
 /**
  * GET `/api/onboarding/validate-slug/:slug`

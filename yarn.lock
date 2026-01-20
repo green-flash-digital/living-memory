@@ -1525,6 +1525,7 @@ __metadata:
     "@prisma/client": "npm:^7.2.0"
     "@types/ws": "npm:^8.18.1"
     better-auth: "npm:^1.4.12"
+    glob: "npm:^13.0.0"
     hono: "npm:^4.11.4"
     picocolors: "npm:^1.1.1"
     prisma: "npm:^7.2.0"

@@ -1,16 +1,10 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist-clients",
-    "noEmit": false,
+    "outDir": "dist-clients",
     "declaration": true,
-    "declarationMap": true,
-    "skipLibCheck": true
+    "declarationDir": "dist-clients",
+    "noEmit": false
   },
-  "include": [
-    "./src/client.react.ts",
-    "./src/client.ssr.ts",
-    "./src/schemas.ts",
-    "worker-configuration.client.d.ts"
-  ]
+  "include": ["./src/client.react.ts", "./src/client.ssr.ts", "worker-configuration.client.d.ts"]
 }

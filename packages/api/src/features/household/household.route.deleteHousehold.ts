@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import type { Route, SessionVars } from "../../utils/types.js";
+import { schemaFor } from "../../utils/types.js";
 import { zValidator } from "@hono/zod-validator";
 import z from "zod";
 import { response } from "../../utils/util.response.js";
@@ -7,10 +8,13 @@ import { HTTPError } from "@living-memory/utils";
 
 export const deleteHousehold = new Hono<Route<SessionVars>>();
 
-export const DeleteHouseholdResponseSchema = z.object({
+export type DeleteHouseholdResponse = {
+  message: string;
+};
+
+export const DeleteHouseholdResponseSchema = schemaFor<DeleteHouseholdResponse>({
   message: z.string()
 });
-export type DeleteHouseholdResponse = z.infer<typeof DeleteHouseholdResponseSchema>;
 
 deleteHousehold.delete(
   "/:id",

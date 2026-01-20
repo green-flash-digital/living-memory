@@ -1,12 +1,22 @@
 import { Hono } from "hono";
 import type { Route, SessionVars } from "../../utils/types.js";
+import { schemaFor } from "../../utils/schemaFor.js";
 import { OnboardingStep } from "../../db/generated/enums.js";
 import z from "zod";
 
 /**
  * Response schema for onboarding status
  */
-export const OnboardingGetStatusResponseSchema = z.object({
+export type OnboardingGetStatusResponse = {
+  currentStep: "USER_INFO" | "JOIN_HOUSEHOLD" | "PAIR_DEVICE";
+  isOnboarded: boolean;
+  hasHousehold: boolean;
+  householdId: string | null;
+  householdName: string | null;
+  hasPairedDevice: boolean;
+};
+
+export const OnboardingGetStatusResponseSchema = schemaFor<OnboardingGetStatusResponse>({
   currentStep: z.enum(["USER_INFO", "JOIN_HOUSEHOLD", "PAIR_DEVICE"]),
   isOnboarded: z.boolean(),
   hasHousehold: z.boolean(),
@@ -14,7 +24,6 @@ export const OnboardingGetStatusResponseSchema = z.object({
   householdName: z.string().nullable(),
   hasPairedDevice: z.boolean()
 });
-export type OnboardingGetStatusResponse = z.infer<typeof OnboardingGetStatusResponseSchema>;
 
 /**
  * GET `/api/onboarding/status`
