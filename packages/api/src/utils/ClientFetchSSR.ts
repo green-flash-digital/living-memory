@@ -19,7 +19,7 @@ export class ClientFetchSSR extends ClientFetch {
   /**
    * Override _get to require Request parameter for SSR.
    */
-  protected async _get<T = unknown, Q extends ZodType = ZodType>({
+  protected async _get<T, Q extends ZodType = ZodType>({
     path,
     query,
     request
@@ -34,7 +34,7 @@ export class ClientFetchSSR extends ClientFetch {
   /**
    * Override _mutate to require Request parameter for SSR.
    */
-  protected async _mutate<R = unknown, B extends ZodType = ZodType, Q extends ZodType = ZodType>({
+  protected async _mutate<R, B extends ZodType = ZodType, Q extends ZodType = ZodType>({
     path,
     method,
     body,

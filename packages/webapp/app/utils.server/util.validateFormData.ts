@@ -11,5 +11,5 @@ export async function validateFormData<A extends ActionFunctionArgs, S extends Z
   if (!res.success) {
     return { success: false, error: z.flattenError(res.error) };
   }
-  return { success: true, data: res.data as z.core.output<S> };
+  return { success: true, data: res.data };
 }

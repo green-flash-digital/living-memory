@@ -14,8 +14,11 @@ export default [
     ...prefix("onboarding", [
       layout("./features/onboarding/Onboarding.layout.tsx", [
         index("./features/onboarding/Onboarding.index.route.tsx"),
-        route("create", "./features/onboarding/OnboardingCreate.route.tsx"),
-        route("join", "./features/onboarding/OnboardingJoin.route.tsx"),
+        ...prefix("household", [
+          index("./features/onboarding/OnboardingHousehold.route.tsx"),
+          route("create", "./features/onboarding/OnboardingHouseholdCreate.route.tsx"),
+          route("join", "./features/onboarding/OnboardingHouseholdJoin.route.tsx")
+        ]),
         route("pair", "./features/onboarding/OnboardingPair.route.tsx"),
         route("done", "./features/onboarding/OnboardingDone.route.tsx"),
         route("error", "./features/onboarding/OnboardingError.route.tsx")

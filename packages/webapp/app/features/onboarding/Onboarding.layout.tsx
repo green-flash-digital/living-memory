@@ -33,7 +33,7 @@ export async function loader(args: Route.LoaderArgs) {
       break;
 
     case "JOIN_HOUSEHOLD":
-      targetRoute = href("/onboarding/join");
+      targetRoute = href("/onboarding/household");
       break;
 
     case "PAIR_DEVICE":
@@ -45,7 +45,7 @@ export async function loader(args: Route.LoaderArgs) {
       exhaustiveMatchGuard(status.data.currentStep);
   }
 
-  if (currentPath !== targetRoute) {
+  if (!currentPath.startsWith(targetRoute)) {
     throw redirect(targetRoute);
   }
 

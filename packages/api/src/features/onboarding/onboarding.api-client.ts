@@ -4,6 +4,7 @@ import {
   type CreateHouseholdRequest,
   type CreateHouseholdResponse
 } from "./onboarding.route.createHousehold.js";
+import { z } from "zod";
 import {
   type ValidateSlugRequest,
   type ValidateSlugResponse
@@ -11,6 +12,16 @@ import {
 import { type OnboardingGetStatusResponse } from "./onboarding.route.getStatus.js";
 import { ClientFetchSSR } from "../../utils/ClientFetchSSR.js";
 import { ClientFetchBrowser } from "../../utils/ClientFetchBrowser.js";
+
+// Re-export schema and types for better IntelliSense
+export { CreateHouseholdRequestSchema };
+export type {
+  CreateHouseholdRequest,
+  CreateHouseholdResponse,
+  OnboardingGetStatusResponse,
+  ValidateSlugRequest,
+  ValidateSlugResponse
+};
 
 export class OnboardingClient extends ClientFetchSSR {
   constructor(args: ClientFetchArgs) {

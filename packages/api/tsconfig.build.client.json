@@ -10,6 +10,7 @@
   "include": [
     "./src/client.react.ts",
     "./src/client.ssr.ts",
+    "./src/schemas.ts",
     "worker-configuration.client.d.ts"
   ]
 }

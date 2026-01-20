@@ -17,3 +17,7 @@ export class MemoriesApiClientSSR {
 
 // Re-export types for easier consumption
 export type { ClientFetchResult };
+export type {
+  CreateHouseholdRequest,
+  CreateHouseholdResponse
+} from "./features/onboarding/onboarding.api-client.js";

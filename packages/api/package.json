@@ -4,7 +4,8 @@
   "type": "module",
   "exports": {
     "./client/react": "./dist-clients/client.react.js",
-    "./client/ssr": "./dist-clients/client.ssr.js"
+    "./client/ssr": "./dist-clients/client.ssr.js",
+    "./schemas": "./dist-clients/schemas.js"
   },
   "scripts": {
     "dev": "vite",
