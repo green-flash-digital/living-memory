@@ -1,10 +1,10 @@
 import { Hono } from "hono";
 import type { Route, SessionVars } from "../../utils/types.js";
-import { schemaFor } from "../../utils/types.js";
 import { zValidator } from "@hono/zod-validator";
 import z from "zod";
 import { response } from "../../utils/util.response.js";
 import { HTTPError } from "@living-memory/utils";
+import { schemaFor } from "../../utils/schemaFor.js";
 
 export const deleteHousehold = new Hono<Route<SessionVars>>();
 
@@ -43,7 +43,7 @@ deleteHousehold.delete(
     });
 
     return response.json(c, {
-      context: "deleteHousehold",
+      context: "household.deleteHousehold",
       schema: DeleteHouseholdResponseSchema,
       data: { message: `Successfully deleted '${res.name}' household` }
     });
