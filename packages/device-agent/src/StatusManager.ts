@@ -68,8 +68,10 @@ export type PairingData = {
 
 type DeviceAuthFile = {
   client_id: string;
-  device_code: string;
   access_token: string | null;
+  token_type: string | null;
+  expires_in: number | null;
+  scope: string | null;
 };
 
 export class StatusManager {
@@ -116,8 +118,52 @@ export class StatusManager {
 
     await this.#writeDeviceAuth({
       client_id: this.clientId,
-      device_code: pairingData.device_code,
-      access_token: null
+      access_token: null,
+      expires_in: null,
+      scope: null,
+      token_type: null
+    });
+  }
+
+  setDenied(message: string) {
+    console.error(message);
+    this.setStatus({
+      state: "DENIED",
+      authorized: false,
+      playlist: null,
+      message
+    });
+  }
+
+  setExpired(message: string) {
+    console.error(message);
+    this.setStatus({
+      state: "EXPIRED",
+      authorized: false,
+      playlist: null,
+      message
+    });
+  }
+
+  setError(message: string) {
+    console.error(message);
+    this.setStatus({
+      state: "ERROR",
+      authorized: false,
+      playlist: null,
+      message
+    });
+  }
+
+  async setAuthorized(args: Required<Omit<DeviceAuthFile, "client_id">>) {
+    await this.#writeDeviceAuth({
+      client_id: this.clientId,
+      ...args
+    });
+    this.setStatus({
+      state: "AUTHORIZED",
+      authorized: true,
+      playlist: "TEST!!!"
     });
   }
 
