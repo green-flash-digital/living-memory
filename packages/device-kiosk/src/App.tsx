@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { tryFetch } from "@living-memory/utils";
 
 type Status = {
   state: string;
@@ -10,23 +11,25 @@ export default function App() {
   const [status, setStatus] = useState<Status | null>(null);
 
   useEffect(() => {
-    fetch("/status")
-      .then((res) => res.json())
-      .then(setStatus)
-      .catch((err) => {
-        console.error(err);
+    async function loadStatus() {
+      const result = await tryFetch<Status>("/status");
+      if (result.success) {
+        setStatus(result.data);
+      } else {
+        console.error("Failed to load status:", result.error);
         setStatus(null);
-      });
+      }
+    }
+    loadStatus();
   }, []);
 
   useEffect(() => {
     async function startPairing() {
-      try {
-        const res = await fetch("/pair/start");
-        const json = await res.json();
-        console.log(json);
-      } catch (error) {
-        throw new Error(String(error));
+      const result = await tryFetch("/pair/start");
+      if (result.success) {
+        console.log(result.data);
+      } else {
+        console.error("Failed to start pairing:", result.error);
       }
     }
     startPairing();

@@ -1,10 +1,4 @@
-import {
-  ErrorResponseSchema,
-  exhaustiveMatchGuard,
-  HTTPError,
-  tryHandle,
-  type ErrorResponse
-} from "@living-memory/utils";
+import { tryFetch, type ErrorResponse } from "@living-memory/utils";
 import { z, type ZodType } from "zod";
 
 export type ClientFetchArgs = { baseURL: string };
@@ -24,44 +18,6 @@ export class ClientFetch {
     this._baseURL = baseURL;
   }
 
-  #getContentType(headers: Headers) {
-    const contentType = headers.get("Content-Type") ?? "";
-    // Extract the MIME type (ignore charset and other parameters)
-    const mimeType = contentType.split(";")[0].trim().toLowerCase();
-
-    if (mimeType === "application/json" || mimeType.endsWith("+json")) {
-      return "json" as const;
-    }
-    if (mimeType.startsWith("text/")) {
-      return "text" as const;
-    }
-    if (
-      mimeType.startsWith("image/") ||
-      mimeType.startsWith("video/") ||
-      mimeType.startsWith("audio/") ||
-      mimeType === "application/octet-stream" ||
-      mimeType === "application/pdf" ||
-      mimeType === "application/zip"
-    ) {
-      return "blob" as const;
-    }
-    return "unknown";
-  }
-
-  /**
-   * Helper to create an error response from an unknown error.
-   * Extracts the error message and creates a ServerError.
-   */
-  #errorResponse(
-    error: unknown,
-    context: string,
-    url: string
-  ): { success: false; error: ErrorResponse } {
-    const errorMsg = error instanceof Error ? error.message : String(error);
-    console.error(`${context} from ${url}:`, errorMsg);
-    const serverError = HTTPError.serverError(`${context} from ${url}: ${errorMsg}`);
-    return { success: false, error: serverError.toJson() };
-  }
 
   /**
    * Copies all headers from the provided Request object into a new Headers instance.
@@ -233,86 +189,6 @@ export class ClientFetch {
   }
 
   protected async _fetch<R>(url: string, init: RequestInit): Promise<ClientFetchResult<R>> {
-    const fetchRes = await tryHandle(fetch(url, init));
-
-    // Network or fetch error - return as ErrorResponse
-    if (!fetchRes.success) {
-      const message = "Network error while fetching";
-      return this.#errorResponse(fetchRes.error, message, url);
-    }
-
-    // Get the full response
-    const res = fetchRes.data;
-    const contentType = this.#getContentType(res.headers);
-    const contentTypeRaw = res.headers.get("Content-Type") ?? "(not set)";
-    const contentLength = res.headers.get("Content-Length");
-
-    // Failed to fetch + JSON
-    if (!res.ok && contentType === "json") {
-      const jsonErr = await tryHandle(res.json());
-      if (jsonErr.success) {
-        // Validate and parse as ErrorResponse
-        const parsed = ErrorResponseSchema.safeParse(jsonErr.data);
-        if (parsed.success) {
-          console.error(
-            `API error [${parsed.data.status}] ${parsed.data.error_type}:`,
-            parsed.data.message
-          );
-          return { success: false, error: parsed.data };
-        }
-      }
-    }
-
-    // Failed to fetch
-    if (!res.ok) {
-      const textErr = await res.text().catch(() => "Unknown");
-      console.error(`Fetch failed with status ${res.status}:`, textErr);
-      const fallbackError = HTTPError.unknown(textErr, res.status);
-      return { success: false, error: fallbackError.toJson() };
-    }
-
-    // Fetch Successful - Empty response (204 No Content, etc.)
-    if (contentLength === "0" || res.status === 204) {
-      return { success: true, data: undefined as R };
-    }
-
-    // Fetch Successful - parse the request
-    switch (contentType) {
-      case "blob":
-        const blob = await tryHandle<Blob>(res.blob());
-        if (!blob.success) {
-          const message = "Failed to read Blob response";
-          return this.#errorResponse(blob.error, message, url);
-        }
-        return { success: true, data: blob.data as R };
-
-      case "text":
-        const tText = await tryHandle<string>(res.text());
-        if (!tText.success) {
-          const message = "Failed to read text response";
-          return this.#errorResponse(tText.error, message, url);
-        }
-        return { success: true, data: tText.data as R };
-
-      case "json":
-        const tJson = await tryHandle<R>(res.json());
-        // failed json parsing
-        if (!tJson.success) {
-          const message = await res
-            .clone()
-            .text()
-            .catch(() => "Unable to read response body");
-          return this.#errorResponse(tJson.error, message, url);
-        }
-        return { success: true, data: tJson.data };
-
-      case "unknown":
-        const message = `Content type not recognized: ${contentTypeRaw}`;
-        const error = HTTPError.serverError(message).toJson();
-        return { success: false, error };
-
-      default:
-        exhaustiveMatchGuard(contentType);
-    }
+    return tryFetch<R>(url, init);
   }
 }
