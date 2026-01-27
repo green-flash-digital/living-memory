@@ -1,39 +1,15 @@
-import { useEffect, useState } from "react";
-import { tryFetch } from "@living-memory/utils";
-
-type Status = {
-  state: string;
-  authorized: boolean;
-  playlist: string | null;
-};
+import { match } from "ts-pattern";
+import { useStatus } from "./hooks/useStatus";
+import { StateBooting } from "./components/StateBooting";
+import { StateIdle } from "./components/StateIdle";
+import { StatePairing } from "./components/StatePairing";
+import { StateAuthorized } from "./components/StateAuthorized";
+import { StateDenied } from "./components/StateDenied";
+import { StateExpired } from "./components/StateExpired";
+import { StateError } from "./components/StateError";
 
 export default function App() {
-  const [status, setStatus] = useState<Status | null>(null);
-
-  useEffect(() => {
-    async function loadStatus() {
-      const result = await tryFetch<Status>("/status");
-      if (result.success) {
-        setStatus(result.data);
-      } else {
-        console.error("Failed to load status:", result.error);
-        setStatus(null);
-      }
-    }
-    loadStatus();
-  }, []);
-
-  useEffect(() => {
-    async function startPairing() {
-      const result = await tryFetch("/pair/start");
-      if (result.success) {
-        console.log(result.data);
-      } else {
-        console.error("Failed to start pairing:", result.error);
-      }
-    }
-    startPairing();
-  }, []);
+  const status = useStatus(3_000);
 
   if (!status) {
     return <div>Connecting to device agent…</div>;
@@ -42,7 +18,15 @@ export default function App() {
   return (
     <div style={{ padding: 24 }}>
       <h1>Device Kiosk</h1>
-      <pre>{JSON.stringify(status, null, 2)}</pre>
+      {match(status)
+        .with({ state: "BOOTING" }, (s) => <StateBooting {...s} />)
+        .with({ state: "IDLE" }, (s) => <StateIdle {...s} />)
+        .with({ state: "PAIRING" }, (s) => <StatePairing {...s} />)
+        .with({ state: "AUTHORIZED" }, (s) => <StateAuthorized {...s} />)
+        .with({ state: "DENIED" }, (s) => <StateDenied {...s} />)
+        .with({ state: "EXPIRED" }, (s) => <StateExpired {...s} />)
+        .with({ state: "ERROR" }, (s) => <StateError {...s} />)
+        .exhaustive()}
     </div>
   );
 }

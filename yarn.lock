@@ -1707,11 +1707,27 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@living-memory/device-agent@workspace:^, @living-memory/device-agent@workspace:packages/device-agent":
+  version: 0.0.0-use.local
+  resolution: "@living-memory/device-agent@workspace:packages/device-agent"
+  dependencies:
+    "@hono/node-server": "npm:^1.19.9"
+    "@living-memories/api": "workspace:*"
+    "@living-memory/utils": "workspace:*"
+    "@types/node": "npm:^20.11.17"
+    hono: "npm:^4.11.6"
+    tsx: "npm:^4.7.1"
+    typescript: "npm:^5.8.3"
+  languageName: unknown
+  linkType: soft
+
 "@living-memory/device-kiosk@workspace:packages/device-kiosk":
   version: 0.0.0-use.local
   resolution: "@living-memory/device-kiosk@workspace:packages/device-kiosk"
   dependencies:
     "@eslint/js": "npm:^9.39.1"
+    "@living-memory/device-agent": "workspace:^"
+    "@living-memory/utils": "workspace:^"
     "@types/node": "npm:^24.10.1"
     "@types/react": "npm:^19.2.5"
     "@types/react-dom": "npm:^19.2.3"
@@ -1720,8 +1736,10 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^7.0.1"
     eslint-plugin-react-refresh: "npm:^0.4.24"
     globals: "npm:^16.5.0"
+    qrcode.react: "npm:4.2.0"
     react: "npm:^19.2.0"
     react-dom: "npm:^19.2.0"
+    ts-pattern: "npm:5.9.0"
     typescript: "npm:~5.9.3"
     typescript-eslint: "npm:^8.46.4"
     vite: "npm:rolldown-vite@7.2.5"
@@ -3427,20 +3445,6 @@ __metadata:
   checksum: 10c0/acc675c29a5649fa1fb6e255f993b8ee829e510b6b56b0910666949c80c364738833417d0edb5f90e4e46be17228b0f2b66a010513984e18b15deeeac49369c4
   languageName: node
   linkType: hard
-
-"device-agent@workspace:packages/device-agent":
-  version: 0.0.0-use.local
-  resolution: "device-agent@workspace:packages/device-agent"
-  dependencies:
-    "@hono/node-server": "npm:^1.19.9"
-    "@living-memories/api": "workspace:*"
-    "@living-memory/utils": "workspace:*"
-    "@types/node": "npm:^20.11.17"
-    hono: "npm:^4.11.6"
-    tsx: "npm:^4.7.1"
-    typescript: "npm:^5.8.3"
-  languageName: unknown
-  linkType: soft
 
 "dotenv@npm:^16.6.1":
   version: 16.6.1
@@ -5593,6 +5597,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"qrcode.react@npm:4.2.0":
+  version: 4.2.0
+  resolution: "qrcode.react@npm:4.2.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/68c691d130e5fda2f57cee505ed7aea840e7d02033100687b764601f9595e1116e34c13876628a93e1a5c2b85e4efc27d30b2fda72e2050c02f3e1c4e998d248
+  languageName: node
+  linkType: hard
+
 "rc9@npm:^2.1.2":
   version: 2.1.2
   resolution: "rc9@npm:2.1.2"
@@ -6271,7 +6284,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-pattern@npm:^5.9.0":
+"ts-pattern@npm:5.9.0, ts-pattern@npm:^5.9.0":
   version: 5.9.0
   resolution: "ts-pattern@npm:5.9.0"
   checksum: 10c0/7640db25c39d29b287471b2b82d4f7b4674a02098c6ba4d10fed180adfb07d0e0c71930d9e59dc0d90654145e02fd320af63cf0df3c41e100d4154658a612a0a

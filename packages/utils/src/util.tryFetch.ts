@@ -1,8 +1,4 @@
-import {
-  ErrorResponseSchema,
-  HTTPError,
-  type ErrorResponse
-} from "./HTTPError.js";
+import { ErrorResponseSchema, HTTPError, type ErrorResponse } from "./HTTPError.js";
 import { exhaustiveMatchGuard } from "./util.exhaustiveMatchGuard.js";
 import { tryHandle } from "./util.try-handle.js";
 
