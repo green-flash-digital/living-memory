@@ -8,7 +8,7 @@ import { OnboardingStep } from "./db/generated/enums.js";
 
 export const auth = betterAuth({
   database: prismaAdapter(prismaClient, {
-    provider: "postgresql",
+    provider: "postgresql"
   }),
   telemetry: { enabled: false },
   trustedOrigins: [process.env.API_DOMAIN, process.env.APP_DOMAIN],
@@ -16,10 +16,10 @@ export const auth = betterAuth({
   baseURL: process.env.API_DOMAIN,
   experimental: { joins: true },
   advanced: {
-    disableOriginCheck: process.env.LIVING_MEMORY_ENV === "local",
+    disableOriginCheck: process.env.LIVING_MEMORY_ENV === "local"
   },
   emailAndPassword: {
-    enabled: true,
+    enabled: true
   },
   user: {
     additionalFields: {
@@ -28,20 +28,16 @@ export const auth = betterAuth({
         fieldName: "isOnboarded",
         defaultValue: false,
         input: false,
-        returned: true,
+        returned: true
       },
       currentOnboardingStep: {
-        type: [
-          OnboardingStep.USER_INFO,
-          OnboardingStep.JOIN_HOUSEHOLD,
-          OnboardingStep.PAIR_DEVICE,
-        ],
+        type: [OnboardingStep.USER_INFO, OnboardingStep.JOIN_HOUSEHOLD, OnboardingStep.PAIR_DEVICE],
         fieldName: "currentOnboardingStep",
         defaultValue: OnboardingStep.USER_INFO,
         input: false,
-        returned: true,
-      },
-    },
+        returned: true
+      }
+    }
   },
   plugins: [
     organization({
@@ -50,8 +46,8 @@ export const auth = betterAuth({
         organization: {
           modelName: "Household",
           fields: {
-            name: "name",
-          },
+            name: "name"
+          }
         },
         // Map to UserHousehold join table
         member: {
@@ -59,18 +55,18 @@ export const auth = betterAuth({
           fields: {
             userId: "userId",
             organizationId: "householdId",
-            role: "role",
+            role: "role"
           },
           additionalFields: {
             updatedAt: {
-              type: "date",
-            },
-          },
-        },
-      },
+              type: "date"
+            }
+          }
+        }
+      }
     }),
     deviceAuthorization({
-      verificationUri: "/device",
-    }),
-  ],
+      verificationUri: "/device"
+    })
+  ]
 });

@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "dist-clients",
     "declaration": true,
+    "declarationMap": true,
     "declarationDir": "dist-clients",
     "noEmit": false
   },

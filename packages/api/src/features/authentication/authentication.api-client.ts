@@ -3,7 +3,7 @@ import {
   inferAdditionalFields,
   organizationClient,
   inferOrgAdditionalFields,
-  deviceAuthorizationClient,
+  deviceAuthorizationClient
 } from "better-auth/client/plugins";
 import type { auth } from "../../auth.js";
 
@@ -13,10 +13,10 @@ function createBetterAuthClient(baseURL: string) {
     plugins: [
       inferAdditionalFields<typeof auth>(),
       organizationClient({
-        schema: inferOrgAdditionalFields<typeof auth>(),
+        schema: inferOrgAdditionalFields<typeof auth>()
       }),
-      deviceAuthorizationClient(),
-    ],
+      deviceAuthorizationClient()
+    ]
   });
 }
 
