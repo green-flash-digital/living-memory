@@ -29,3 +29,4 @@ lerna-debug.log*
 
 # data
 device.json
+device-auth.json

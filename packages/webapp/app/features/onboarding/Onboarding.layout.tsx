@@ -36,8 +36,16 @@ export async function loader(args: Route.LoaderArgs) {
       targetRoute = href("/onboarding");
       break;
 
-    case "JOIN_HOUSEHOLD":
+    case "PICK_HOUSEHOLD_OPTION":
       targetRoute = href("/onboarding/household");
+      break;
+
+    case "CREATE_HOUSEHOLD":
+      targetRoute = href("/onboarding/household/create");
+      break;
+
+    case "JOIN_HOUSEHOLD":
+      targetRoute = href("/onboarding/household/join");
       break;
 
     case "PAIR_DEVICE": {

@@ -1,3 +1,4 @@
+import type { OnboardingStep } from "../../db/generated/browser.js";
 import { schemaFor } from "../../utils/schemaFor.js";
 import z from "zod";
 
@@ -77,7 +78,7 @@ export const ValidateSlugResponseSchema = schemaFor<ValidateSlugResponse>({
 });
 
 export type OnboardingGetStatusResponse = {
-  currentStep: "USER_INFO" | "JOIN_HOUSEHOLD" | "PAIR_DEVICE";
+  currentStep: OnboardingStep;
   isOnboarded: boolean;
   hasHousehold: boolean;
   householdId: string | null;
@@ -86,7 +87,13 @@ export type OnboardingGetStatusResponse = {
 };
 
 export const OnboardingGetStatusResponseSchema = schemaFor<OnboardingGetStatusResponse>({
-  currentStep: z.enum(["USER_INFO", "JOIN_HOUSEHOLD", "PAIR_DEVICE"]),
+  currentStep: z.enum([
+    "USER_INFO",
+    "PICK_HOUSEHOLD_OPTION",
+    "JOIN_HOUSEHOLD",
+    "CREATE_HOUSEHOLD",
+    "PAIR_DEVICE"
+  ]),
   isOnboarded: z.boolean(),
   hasHousehold: z.boolean(),
   householdId: z.string().nullable(),

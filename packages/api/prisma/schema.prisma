@@ -11,7 +11,9 @@ datasource db {
 
 enum OnboardingStep {
   USER_INFO
+  PICK_HOUSEHOLD_OPTION
   JOIN_HOUSEHOLD
+  CREATE_HOUSEHOLD
   PAIR_DEVICE
 }
 

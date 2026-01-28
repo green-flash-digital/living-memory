@@ -2,7 +2,6 @@ import { Hono } from "hono";
 import type { Route, SessionVars } from "../../utils/types.js";
 import { zValidator } from "@hono/zod-validator";
 import z from "zod";
-import { OnboardingStep } from "../../db/generated/enums.js";
 import { response } from "../../utils/util.response.js";
 import { tryHandle, HTTPError } from "@living-memory/utils";
 
@@ -104,11 +103,17 @@ export const createHousehold = new Hono<Route<SessionVars>>().post(
       throw HTTPError.serverError("Failed to create household");
     }
 
+    // Set the household as active
+    await betterAuth.setActiveOrganization({
+      headers: c.req.raw.headers,
+      body: { organizationId: household.id }
+    });
+
     // Update user's onboarding step
     await db.user.update({
       where: { id: user.id },
       data: {
-        currentOnboardingStep: OnboardingStep.PAIR_DEVICE
+        currentOnboardingStep: "PAIR_DEVICE"
       }
     });
 

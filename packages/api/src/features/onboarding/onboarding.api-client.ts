@@ -3,17 +3,28 @@ import {
   CreateHouseholdRequestSchema,
   type CreateHouseholdRequest,
   type CreateHouseholdResponse,
-  ValidateSlugRequestSchema,
   type ValidateSlugRequest,
   type ValidateSlugResponse,
   type OnboardingGetStatusResponse
 } from "./onboarding.schemas.js";
+import {
+  SetOnboardingStepRequestSchema,
+  type SetOnboardingStepRequest,
+  type SetOnboardingStepResponse
+} from "./onboarding.route.setStep.js";
 import { ClientFetchSSR } from "../../utils/ClientFetchSSR.js";
 import { ClientFetchBrowser } from "../../utils/ClientFetchBrowser.js";
 import {
   ApproveDevicePairingRequestSchema,
-  type ApproveDevicePairingRequest
+  type ApproveDevicePairingRequest,
+  DenyDevicePairingRequestSchema,
+  type DenyDevicePairingRequest
 } from "./onboarding.route.pairDevice.js";
+import {
+  UpdateUserInfoRequestSchema,
+  type UpdateUserInfoRequest,
+  type UpdateUserInfoResponse
+} from "./onboarding.route.updateUserInfo.js";
 
 export class OnboardingClient extends ClientFetchSSR {
   constructor(args: ClientFetchArgs) {
@@ -30,6 +41,15 @@ export class OnboardingClient extends ClientFetchSSR {
   validateHouseholdSlug(params: ValidateSlugRequest, request: Request) {
     return this._get<ValidateSlugResponse>({
       path: `/validate-slug/${params.slug}`,
+      request
+    });
+  }
+
+  updateUserInfo(body: UpdateUserInfoRequest, request: Request) {
+    return this._mutate<UpdateUserInfoResponse>({
+      method: "POST",
+      path: "/user",
+      body: [UpdateUserInfoRequestSchema, body],
       request
     });
   }
@@ -52,7 +72,23 @@ export class OnboardingClient extends ClientFetchSSR {
     });
   }
 
-  denyDevicePairing() {}
+  denyDevicePairing(body: DenyDevicePairingRequest, request: Request) {
+    return this._mutate<DenyDevicePairingRequest>({
+      method: "POST",
+      path: "/pair/deny",
+      body: [DenyDevicePairingRequestSchema, body],
+      request
+    });
+  }
+
+  setStep(body: SetOnboardingStepRequest, request: Request) {
+    return this._mutate<SetOnboardingStepResponse>({
+      method: "POST",
+      path: "/set-step",
+      body: [SetOnboardingStepRequestSchema, body],
+      request
+    });
+  }
 }
 
 export class OnboardingClientBrowser extends ClientFetchBrowser {

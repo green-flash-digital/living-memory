@@ -10,6 +10,11 @@ export const ApproveDevicePairingRequestSchema = schemaFor<ApproveDevicePairingR
   user_code: z.string().length(8, { error: "User code must be 8 characters" })
 });
 
+export type DenyDevicePairingRequest = { user_code: string };
+export const DenyDevicePairingRequestSchema = schemaFor<DenyDevicePairingRequest>({
+  user_code: z.string().length(8, { error: "User code must be 8 characters" })
+});
+
 export type OnboardingPairDeviceApprovalResponse = { message: string };
 export const OnboardingPairDeviceApprovalResponseSchema =
   schemaFor<OnboardingPairDeviceApprovalResponse>({
@@ -39,4 +44,17 @@ pairDevice.post("/approve", zValidator("json", ApproveDevicePairingRequestSchema
   });
 });
 
-pairDevice.post("/deny", async (c) => {});
+pairDevice.post("/deny", zValidator("json", DenyDevicePairingRequestSchema), async (c) => {
+  const betterAuth = c.get("betterAuth");
+  const body = c.req.valid("json");
+
+  const denyRes = await tryHandle(
+    betterAuth.deviceDeny({ body: { userCode: body.user_code }, headers: c.req.raw.headers })
+  );
+  if (!denyRes.success) {
+    console.error(denyRes.error);
+    throw HTTPError.badRequest(
+      denyRes.error.message || "There was an error when trying to deny the device."
+    );
+  }
+});

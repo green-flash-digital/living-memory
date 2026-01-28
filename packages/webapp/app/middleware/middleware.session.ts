@@ -2,6 +2,7 @@ import { sessionContext } from "../context/context.session";
 import type { ContextAndRequest } from "~/utils.server/util.server.types";
 import { href, redirect } from "react-router";
 import { ApiClientSSR } from "~/utils.server/ApiClient.ssr";
+import { HTTPError } from "@living-memory/utils";
 
 /**
  * Ensures that the current request is associated with a valid session.
@@ -37,10 +38,21 @@ export async function requireSession<T extends ContextAndRequest>(args: T) {
   // Preserve query params (e.g., user_code for device pairing)
   if (!res.data.user.isOnboarded) {
     const isOnboardingRoute = currentPath.startsWith("/onboarding");
+
     if (!isOnboardingRoute) {
       const qs = currentSearchParams.toString();
       const redirectPath = qs ? `${href("/onboarding")}?${qs}` : href("/onboarding");
       throw redirect(redirectPath);
     }
+    return;
   }
+
+  console.log("here");
+
+  const householdRes = await ApiClientSSR.auth.raw.organization.getFullOrganization();
+  if (householdRes.error) {
+    throw HTTPError.badRequest("There was an issue trying to get your active household.");
+  }
+
+  throw redirect(href("/:household_id", { household_id: householdRes.data.slug }));
 }

@@ -1,12 +1,6 @@
-import { Form, useLoaderData } from "react-router";
-
-export async function loader() {}
-
-export async function action() {}
+import { Form } from "react-router";
 
 export default function PairDeviceRoute() {
-  const {} = useLoaderData();
-
   return (
     <Form>
       <input type="text" placeholder="Enter device code (e.g., ABCD-1234)" maxLength={12} />
