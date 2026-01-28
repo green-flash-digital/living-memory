@@ -13,6 +13,8 @@ import { exhaustiveMatchGuard } from "@living-memory/utils";
 export async function loader(args: Route.LoaderArgs) {
   const session = getSessionContext(args);
 
+  console.log("running onboarding loader...");
+
   // If user is already onboarded, they shouldn't be here
   // (This is a safety check - middleware should have caught this)
   if (session.user.isOnboarded) {
@@ -24,7 +26,9 @@ export async function loader(args: Route.LoaderArgs) {
     throw redirect("/onboarding/error");
   }
 
-  const currentPath = new URL(args.request.url).pathname;
+  const currentUrl = new URL(args.request.url);
+  const currentPath = currentUrl.pathname;
+  const currentQueryString = currentUrl.searchParams.toString();
   let targetRoute = href("/onboarding");
 
   switch (status.data.currentStep) {
@@ -36,16 +40,34 @@ export async function loader(args: Route.LoaderArgs) {
       targetRoute = href("/onboarding/household");
       break;
 
-    case "PAIR_DEVICE":
-      targetRoute = href("/onboarding/pair");
+    case "PAIR_DEVICE": {
+      const queryString = currentQueryString ? `?${currentQueryString}` : "";
+      const hasUserCode = currentUrl.searchParams.has("user_code");
+      const isOnPairRoute = currentPath === href("/onboarding/pair");
+      const isOnConfirmRoute = currentPath === href("/onboarding/confirm");
+
+      // Valid routes for PAIR_DEVICE step: /onboarding/pair and /onboarding/confirm
+      if (isOnConfirmRoute && !hasUserCode) {
+        // Can't be on confirm without user_code, redirect to pair
+        targetRoute = href("/onboarding/pair");
+      } else if (!isOnPairRoute && !isOnConfirmRoute) {
+        // If not on a valid route, redirect to pair (preserving user_code if present)
+        targetRoute = `${href("/onboarding/pair")}${queryString}`;
+      } else {
+        // Already on a valid route (pair or confirm), stay there with query params
+        targetRoute = `${currentPath}${queryString}`;
+      }
       break;
+    }
 
     default:
       targetRoute = href("/onboarding/done");
       exhaustiveMatchGuard(status.data.currentStep);
   }
 
-  if (!currentPath.startsWith(targetRoute)) {
+  // Compare only pathnames to avoid redirect loops when query strings are present
+  const targetPath = new URL(targetRoute, args.request.url).pathname;
+  if (currentPath !== targetPath) {
     throw redirect(targetRoute);
   }
 

@@ -10,6 +10,14 @@ export default [
         route("validate-slug/:slug", "./resources/household.validate-slug.ts")
       ])
     ]),
+    ...prefix("pair-device", [
+      layout("./features/pair-device/PairDevice.layout.tsx", [
+        index("./features/pair-device/PairDevice.route.tsx"),
+        route("confirm", "./features/pair-device/PairDeviceConfirm.route.tsx"),
+        route("success", "./features/pair-device/PairDeviceSuccess.route.tsx"),
+        route("error", "./features/pair-device/PairDeviceError.route.tsx")
+      ])
+    ]),
     // Feature routes
     ...prefix("onboarding", [
       layout("./features/onboarding/Onboarding.layout.tsx", [
@@ -20,6 +28,7 @@ export default [
           route("join", "./features/onboarding/OnboardingHouseholdJoin.route.tsx")
         ]),
         route("pair", "./features/onboarding/OnboardingPair.route.tsx"),
+        route("confirm", "./features/onboarding/OnboardingPairConfirm.route.tsx"),
         route("done", "./features/onboarding/OnboardingDone.route.tsx"),
         route("error", "./features/onboarding/OnboardingError.route.tsx")
       ])

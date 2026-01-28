@@ -13,6 +13,11 @@ import { ApiClientSSR } from "~/utils.server/ApiClient.ssr";
  * they will be redirected to the onboarding flow.
  */
 export async function requireSession<T extends ContextAndRequest>(args: T) {
+  console.log("Running session middleware");
+  const currentUrl = new URL(args.request.url);
+  const currentSearchParams = currentUrl.searchParams;
+  const currentPath = new URL(args.request.url).pathname;
+
   const res = await ApiClientSSR.auth.getSession(args.request);
   if (res.error) throw res.error;
   if (!res.data?.session) {
@@ -22,14 +27,20 @@ export async function requireSession<T extends ContextAndRequest>(args: T) {
   // Set the session data in context
   args.context.set(sessionContext, res.data);
 
+  console.log({
+    currentPath,
+    currentSearchParams: currentSearchParams.toString()
+  });
+
   // Check if user needs onboarding
   // If not onboarded and not already on an onboarding route, redirect to onboarding
+  // Preserve query params (e.g., user_code for device pairing)
   if (!res.data.user.isOnboarded) {
-    const currentPath = new URL(args.request.url).pathname;
     const isOnboardingRoute = currentPath.startsWith("/onboarding");
-
     if (!isOnboardingRoute) {
-      throw redirect(href("/onboarding"));
+      const qs = currentSearchParams.toString();
+      const redirectPath = qs ? `${href("/onboarding")}?${qs}` : href("/onboarding");
+      throw redirect(redirectPath);
     }
   }
 }

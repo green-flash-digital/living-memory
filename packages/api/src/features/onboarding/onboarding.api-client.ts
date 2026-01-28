@@ -10,6 +10,10 @@ import {
 } from "./onboarding.schemas.js";
 import { ClientFetchSSR } from "../../utils/ClientFetchSSR.js";
 import { ClientFetchBrowser } from "../../utils/ClientFetchBrowser.js";
+import {
+  ApproveDevicePairingRequestSchema,
+  type ApproveDevicePairingRequest
+} from "./onboarding.route.pairDevice.js";
 
 export class OnboardingClient extends ClientFetchSSR {
   constructor(args: ClientFetchArgs) {
@@ -38,6 +42,17 @@ export class OnboardingClient extends ClientFetchSSR {
       request
     });
   }
+
+  approveDevicePairing(body: ApproveDevicePairingRequest, request: Request) {
+    return this._mutate<ApproveDevicePairingRequest>({
+      method: "POST",
+      path: "/pair/approve",
+      body: [ApproveDevicePairingRequestSchema, body],
+      request
+    });
+  }
+
+  denyDevicePairing() {}
 }
 
 export class OnboardingClientBrowser extends ClientFetchBrowser {

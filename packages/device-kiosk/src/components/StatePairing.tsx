@@ -21,7 +21,9 @@ export function StatePairing(props: StatusPairing) {
         </code>
       </div>
       <b>
-        <a href={props.verification_uri}>http://localhost:12100/pair</a>
+        <a target="_blank" href={props.verification_uri_complete}>
+          {props.verification_uri_complete}
+        </a>
       </b>
     </div>
   );

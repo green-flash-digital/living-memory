@@ -2,7 +2,7 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { organization } from "better-auth/plugins";
 import { deviceAuthorization } from "better-auth/plugins";
-
+import { bearer } from "better-auth/plugins";
 import { prismaClient } from "./db/prisma-client.js";
 import { OnboardingStep } from "./db/generated/enums.js";
 
@@ -65,8 +65,9 @@ export const auth = betterAuth({
         }
       }
     }),
+    bearer(),
     deviceAuthorization({
-      verificationUri: `${process.env.APP_DOMAIN}/device`
+      verificationUri: `${process.env.APP_DOMAIN}/pair-device`
     })
   ]
 });
