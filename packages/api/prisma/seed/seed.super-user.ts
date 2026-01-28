@@ -1,4 +1,3 @@
-import "../../dev-utils/loadLocalEnvVars";
 import { auth } from "../../src/auth.js";
 
 /**
@@ -17,8 +16,8 @@ export async function seedSuperUser() {
       body: {
         email,
         password,
-        name,
-      },
+        name
+      }
     });
 
     if (result.user) {
@@ -29,13 +28,8 @@ export async function seedSuperUser() {
     }
   } catch (error: any) {
     // Check if user already exists
-    if (
-      error.message?.includes("already exists") ||
-      error.message?.includes("unique constraint")
-    ) {
-      console.log(
-        `⚠️  User with email ${email} already exists. Skipping creation.`
-      );
+    if (error.message?.includes("already exists") || error.message?.includes("unique constraint")) {
+      console.log(`⚠️  User with email ${email} already exists. Skipping creation.`);
       return null;
     }
 

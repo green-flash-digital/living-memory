@@ -1,4 +1,7 @@
+import "../../dev-utils/loadLocalEnvVars.js";
 import { seedSuperUser } from "./seed.super-user.js";
+
+console.log(process.env);
 
 const seedScripts = [seedSuperUser];
 

@@ -14,14 +14,14 @@
     }
   },
   "dependencies": {
-    "@hono/node-server": "^1.19.9",
+    "@hono/node-server": "1.19.9",
     "@living-memories/api": "workspace:*",
     "@living-memory/utils": "workspace:*",
-    "hono": "^4.11.6"
+    "hono": "4.11.7"
   },
   "devDependencies": {
-    "@types/node": "^20.11.17",
-    "tsx": "^4.7.1",
-    "typescript": "^5.8.3"
+    "@types/node": "20.19.30",
+    "tsx": "4.21.0",
+    "typescript": "5.9.3"
   }
 }

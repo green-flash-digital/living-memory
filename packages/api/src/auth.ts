@@ -31,7 +31,7 @@ export const auth = betterAuth({
         returned: true
       },
       currentOnboardingStep: {
-        type: [OnboardingStep.USER_INFO, OnboardingStep.JOIN_HOUSEHOLD, OnboardingStep.PAIR_DEVICE],
+        type: Object.values(OnboardingStep),
         fieldName: "currentOnboardingStep",
         defaultValue: OnboardingStep.USER_INFO,
         input: false,
