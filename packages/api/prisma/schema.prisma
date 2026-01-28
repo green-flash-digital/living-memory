@@ -3,6 +3,7 @@ generator client {
   output       = "../src/db/generated"
   moduleFormat = "esm"
   runtime      = "cloudflare"
+  engineType   = "client"
 }
 
 datasource db {

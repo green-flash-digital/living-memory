@@ -8,5 +8,5 @@ export const prismaClient = new PrismaClient({
   adapter:
     process.env.LIVING_MEMORY_ENV === "local"
       ? new PrismaPg({ connectionString, maxUses: 1 })
-      : new PrismaNeon({ connectionString }),
+      : new PrismaNeon({ connectionString })
 });

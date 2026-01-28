@@ -5,8 +5,6 @@
 import { defineConfig } from "prisma/config";
 import "./dev-utils/loadLocalEnvVars.js";
 
-console.log(process.env);
-
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
