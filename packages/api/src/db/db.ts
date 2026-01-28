@@ -2,7 +2,7 @@ import { drizzle as drizzleNeon } from "drizzle-orm/neon-http";
 import { drizzle as drizzleNode } from "drizzle-orm/node-postgres";
 import { neon } from "@neondatabase/serverless";
 import { Pool } from "pg";
-import * as schema from "./schema.js";
+import * as schema from "./schema/schema.js";
 
 import "../../dev-utils/loadLocalEnvVars.js";
 

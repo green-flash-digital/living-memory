@@ -9,6 +9,7 @@ import {
   uniqueIndex
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
+import { household, user } from "./schema.auth.js";
 
 // Enums
 export const onboardingStepEnum = pgEnum("OnboardingStep", [
@@ -19,38 +20,7 @@ export const onboardingStepEnum = pgEnum("OnboardingStep", [
   "PAIR_DEVICE"
 ]);
 
-export const verification = pgTable(
-  "verification",
-  {
-    id: text("id").primaryKey(),
-    identifier: text("identifier").notNull(),
-    value: text("value").notNull(),
-    expiresAt: timestamp("expiresAt").notNull(),
-    createdAt: timestamp("createdAt").notNull().defaultNow(),
-    updatedAt: timestamp("updatedAt").notNull().defaultNow()
-  },
-  (table) => ({
-    identifierIdx: index("verification_identifier_idx").on(table.identifier)
-  })
-);
-
 // Application tables
-export const household = pgTable(
-  "household",
-  {
-    id: text("id").primaryKey(),
-    name: text("name").notNull(),
-    slug: text("slug").notNull().unique(),
-    logo: text("logo"),
-    metadata: text("metadata"),
-    createdAt: timestamp("createdAt").notNull().defaultNow(),
-    updatedAt: timestamp("updatedAt").notNull().defaultNow()
-  },
-  (table) => ({
-    slugIdx: uniqueIndex("household_slug_key").on(table.slug)
-  })
-);
-
 export const device = pgTable(
   "device",
   {
@@ -186,34 +156,6 @@ export const playlistShare = pgTable(
   })
 );
 
-// Relations (for Better Auth joins support)
-export const userRelations = relations(user, ({ many }) => ({
-  sessions: many(session),
-  accounts: many(account),
-  photos: many(photo),
-  playlistsCreateByUser: many(playlist),
-  invitations: many(invitation),
-  playlistsSharedWithUser: many(playlistShare, { relationName: "SharedPlaylists" }),
-  playlistsSharedByUser: many(playlistShare, { relationName: "SharedByUser" }),
-  userHouseholds: many(userHousehold)
-}));
-
-export const sessionRelations = relations(session, ({ one }) => ({
-  user: one(user, { fields: [session.userId], references: [user.id] })
-}));
-
-export const accountRelations = relations(account, ({ one }) => ({
-  user: one(user, { fields: [account.userId], references: [user.id] })
-}));
-
-export const householdRelations = relations(household, ({ many }) => ({
-  devices: many(device),
-  playlists: many(playlist),
-  photos: many(photo),
-  userHouseholds: many(userHousehold),
-  invitations: many(invitation)
-}));
-
 export const deviceRelations = relations(device, ({ one, many }) => ({
   household: one(household, { fields: [device.householdId], references: [household.id] }),
   authorizations: many(deviceAuthorization)
@@ -239,16 +181,6 @@ export const playlistRelations = relations(playlist, ({ one, many }) => ({
 export const playlistItemRelations = relations(playlistItem, ({ one }) => ({
   playlist: one(playlist, { fields: [playlistItem.playlistId], references: [playlist.id] }),
   photo: one(photo, { fields: [playlistItem.photoId], references: [photo.id] })
-}));
-
-export const invitationRelations = relations(invitation, ({ one }) => ({
-  household: one(household, { fields: [invitation.organizationId], references: [household.id] }),
-  user: one(user, { fields: [invitation.inviterId], references: [user.id] })
-}));
-
-export const userHouseholdRelations = relations(userHousehold, ({ one }) => ({
-  user: one(user, { fields: [userHousehold.userId], references: [user.id] }),
-  household: one(household, { fields: [userHousehold.householdId], references: [household.id] })
 }));
 
 export const playlistShareRelations = relations(playlistShare, ({ one }) => ({
