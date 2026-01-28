@@ -3,6 +3,8 @@ import type { Route, SessionVars } from "../../utils/types.js";
 import { zValidator } from "@hono/zod-validator";
 import { response } from "../../utils/util.response.js";
 import { schemaFor } from "../../utils/schemaFor.js";
+import { eq } from "drizzle-orm";
+import { db, schema } from "../../db/db.js";
 import z from "zod";
 
 export type UpdateUserInfoRequest = {
@@ -43,13 +45,14 @@ export const updateUserInfo = new Hono<Route<SessionVars>>().post(
     const fullName = `${reqBody.firstName} ${reqBody.lastName}`.trim();
 
     // Update user's name and onboarding step
-    await db.user.update({
-      where: { id: user.id },
-      data: {
+    await db
+      .update(schema.user)
+      .set({
         name: fullName,
-        currentOnboardingStep: "PICK_HOUSEHOLD_OPTION"
-      }
-    });
+        currentOnboardingStep: "PICK_HOUSEHOLD_OPTION",
+        updatedAt: new Date()
+      })
+      .where(eq(schema.user.id, user.id));
 
     return response.json(c, {
       schema: UpdateUserInfoResponseSchema,

@@ -4,7 +4,8 @@ import { zValidator } from "@hono/zod-validator";
 import z from "zod";
 import { response } from "../../utils/util.response.js";
 import { tryHandle, HTTPError } from "@living-memory/utils";
-
+import { eq } from "drizzle-orm";
+import { db, schema } from "../../db/db.js";
 import { schemaFor } from "../../utils/schemaFor.js";
 
 export type CreateHouseholdRequest = {
@@ -110,12 +111,13 @@ export const createHousehold = new Hono<Route<SessionVars>>().post(
     });
 
     // Update user's onboarding step
-    await db.user.update({
-      where: { id: user.id },
-      data: {
-        currentOnboardingStep: "PAIR_DEVICE"
-      }
-    });
+    await db
+      .update(schema.user)
+      .set({
+        currentOnboardingStep: "PAIR_DEVICE",
+        updatedAt: new Date()
+      })
+      .where(eq(schema.user.id, user.id));
 
     return response.json(c, {
       schema: CreateHouseholdResponseSchema,

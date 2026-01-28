@@ -1,4 +1,4 @@
-import type { OnboardingStep } from "../../db/generated/browser.js";
+import { OnboardingStep } from "../../db/enums.js";
 import { schemaFor } from "../../utils/schemaFor.js";
 import z from "zod";
 

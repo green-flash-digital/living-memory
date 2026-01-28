@@ -5,6 +5,8 @@ import z from "zod";
 import { response } from "../../utils/util.response.js";
 import { HTTPError } from "@living-memory/utils";
 import { schemaFor } from "../../utils/schemaFor.js";
+import { eq } from "drizzle-orm";
+import { db, schema } from "../../db/db.js";
 
 export const deleteHousehold = new Hono<Route<SessionVars>>();
 
@@ -37,10 +39,14 @@ deleteHousehold.delete(
     }
 
     // Reset their onboarding status
-    await db.user.update({
-      data: { currentOnboardingStep: "JOIN_HOUSEHOLD", isOnboarded: false },
-      where: { id: user.id }
-    });
+    await db
+      .update(schema.user)
+      .set({
+        currentOnboardingStep: "JOIN_HOUSEHOLD",
+        isOnboarded: false,
+        updatedAt: new Date()
+      })
+      .where(eq(schema.user.id, user.id));
 
     return response.json(c, {
       context: "household.deleteHousehold",

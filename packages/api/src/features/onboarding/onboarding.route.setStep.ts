@@ -3,17 +3,24 @@ import type { Route, SessionVars } from "../../utils/types.js";
 import { zValidator } from "@hono/zod-validator";
 import { response } from "../../utils/util.response.js";
 import { schemaFor } from "../../utils/schemaFor.js";
+import { eq } from "drizzle-orm";
+import { db, schema } from "../../db/db.js";
 import z from "zod";
-import {
-  type OnboardingStep as OnboardingStepType,
-  OnboardingStep
-} from "../../db/generated/browser.js";
+import { OnboardingStep } from "../../db/enums.js";
+
+type OnboardingStepType = keyof typeof OnboardingStep;
 
 export type SetOnboardingStepRequest = {
   step: OnboardingStepType;
 };
 export const SetOnboardingStepRequestSchema = schemaFor<SetOnboardingStepRequest>({
-  step: z.enum(OnboardingStep)
+  step: z.enum([
+    OnboardingStep.USER_INFO,
+    OnboardingStep.PICK_HOUSEHOLD_OPTION,
+    OnboardingStep.JOIN_HOUSEHOLD,
+    OnboardingStep.CREATE_HOUSEHOLD,
+    OnboardingStep.PAIR_DEVICE
+  ])
 });
 
 export type SetOnboardingStepResponse = {
@@ -38,12 +45,13 @@ export const setStep = new Hono<Route<SessionVars>>().post(
     const db = c.get("db");
 
     // Update user's onboarding step with the provided step
-    await db.user.update({
-      where: { id: user.id },
-      data: {
-        currentOnboardingStep: reqBody.step
-      }
-    });
+    await db
+      .update(schema.user)
+      .set({
+        currentOnboardingStep: reqBody.step as any,
+        updatedAt: new Date()
+      })
+      .where(eq(schema.user.id, user.id));
 
     return response.json(c, {
       schema: SetOnboardingStepResponseSchema,

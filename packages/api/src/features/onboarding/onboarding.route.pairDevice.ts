@@ -4,6 +4,8 @@ import { zValidator } from "@hono/zod-validator";
 import z from "zod";
 import { schemaFor } from "../../utils/schemaFor.js";
 import { HTTPError, tryHandle } from "@living-memory/utils";
+import { eq } from "drizzle-orm";
+import { db, schema } from "../../db/db.js";
 
 export type ApproveDevicePairingRequest = { user_code: string };
 export const ApproveDevicePairingRequestSchema = schemaFor<ApproveDevicePairingRequest>({
@@ -38,10 +40,14 @@ pairDevice.post("/approve", zValidator("json", ApproveDevicePairingRequestSchema
       approveRes.error.message || "There was an error when trying to approve the device."
     );
   }
-  await db.user.update({
-    data: { currentOnboardingStep: "PAIR_DEVICE", isOnboarded: true },
-    where: { id: user.id }
-  });
+  await db
+    .update(schema.user)
+    .set({
+      currentOnboardingStep: "PAIR_DEVICE",
+      isOnboarded: true,
+      updatedAt: new Date()
+    })
+    .where(eq(schema.user.id, user.id));
 });
 
 pairDevice.post("/deny", zValidator("json", DenyDevicePairingRequestSchema), async (c) => {

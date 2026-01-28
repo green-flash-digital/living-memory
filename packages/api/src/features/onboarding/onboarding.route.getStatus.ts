@@ -1,7 +1,9 @@
 import { Hono } from "hono";
 import type { Route, SessionVars } from "../../utils/types.js";
 import { schemaFor } from "../../utils/schemaFor.js";
-import { OnboardingStep } from "../../db/generated/enums.js";
+import { OnboardingStep } from "../../db/enums.js";
+import { eq, and, count } from "drizzle-orm";
+import { db, schema } from "../../db/db.js";
 import z from "zod";
 
 /**
@@ -36,33 +38,35 @@ export const getStatus = new Hono<Route<SessionVars>>().get("", async (c) => {
   const session = c.get("session");
   const db = c.get("db");
 
-  // Get user with household relationship
-  const userWithHousehold = await db.user.findUnique({
-    where: { id: user.id },
-    include: {
-      user_households: {
-        where: {
-          householdId: session.activeOrganizationId || undefined
-        },
-        include: {
-          household: true
-        }
-      }
-    }
-  });
+  // Get user household relationship
+  const userHouseholds = session.activeOrganizationId
+    ? await db
+        .select({
+          household: schema.household
+        })
+        .from(schema.userHousehold)
+        .innerJoin(schema.household, eq(schema.userHousehold.householdId, schema.household.id))
+        .where(
+          and(
+            eq(schema.userHousehold.userId, user.id),
+            eq(schema.userHousehold.householdId, session.activeOrganizationId)
+          )
+        )
+        .limit(1)
+    : [];
 
-  const household = userWithHousehold?.user_households[0]?.household;
+  const household = userHouseholds[0]?.household || null;
   const hasHousehold = !!household;
 
   // Check if user has paired devices
-  const hasPairedDevice = hasHousehold
-    ? (await db.device.count({
-        where: {
-          householdId: household.id,
-          isActive: true
-        }
-      })) > 0
-    : false;
+  const deviceCount = hasHousehold
+    ? await db
+        .select({ count: count() })
+        .from(schema.device)
+        .where(and(eq(schema.device.householdId, household!.id), eq(schema.device.isActive, true)))
+    : [{ count: 0 }];
+
+  const hasPairedDevice = (deviceCount[0]?.count || 0) > 0;
 
   return c.json({
     currentStep: user.currentOnboardingStep || OnboardingStep.USER_INFO,

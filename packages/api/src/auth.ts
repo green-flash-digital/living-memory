@@ -1,14 +1,20 @@
 import { betterAuth } from "better-auth";
-import { prismaAdapter } from "better-auth/adapters/prisma";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { organization } from "better-auth/plugins";
 import { deviceAuthorization } from "better-auth/plugins";
 import { bearer } from "better-auth/plugins";
-import { prismaClient } from "./db/prisma-client.js";
-import { OnboardingStep } from "./db/generated/enums.js";
+import { db, schema } from "./db/db.js";
+import { OnboardingStep } from "./db/enums.js";
 
 export const auth = betterAuth({
-  database: prismaAdapter(prismaClient, {
-    provider: "postgresql"
+  database: drizzleAdapter(db, {
+    provider: "pg",
+    schema: {
+      user: schema.user,
+      session: schema.session,
+      account: schema.account,
+      verification: schema.verification
+    }
   }),
   telemetry: { enabled: false },
   trustedOrigins: [process.env.API_DOMAIN, process.env.APP_DOMAIN],
@@ -44,14 +50,14 @@ export const auth = betterAuth({
       schema: {
         // Map to Household model
         organization: {
-          modelName: "Household",
+          modelName: "household",
           fields: {
             name: "name"
           }
         },
         // Map to UserHousehold join table
         member: {
-          modelName: "User_Household",
+          modelName: "user_household",
           fields: {
             userId: "userId",
             organizationId: "householdId",

@@ -1,6 +1,6 @@
 import { HTTPError } from "@living-memory/utils";
 import { auth } from "../auth.js";
-import { prismaClient } from "../db/prisma-client.js";
+import { db } from "../db/db.js";
 import type { MaybeSessionVars, Middleware } from "../utils/types.js";
 import { createMiddleware } from "hono/factory";
 
@@ -28,7 +28,7 @@ export const withAuthenticatedSession = createMiddleware<Middleware<MaybeSession
     c.set("user", session.user);
     c.set("session", session.session);
     c.set("betterAuth", auth.api);
-    c.set("db", prismaClient);
+    c.set("db", db);
 
     return next();
   }
