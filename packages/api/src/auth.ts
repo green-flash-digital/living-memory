@@ -66,7 +66,7 @@ export const auth = betterAuth({
       }
     }),
     deviceAuthorization({
-      verificationUri: "/device"
+      verificationUri: `${process.env.APP_DOMAIN}/device`
     })
   ]
 });

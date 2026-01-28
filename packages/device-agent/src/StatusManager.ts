@@ -105,14 +105,14 @@ export class StatusManager {
     return JSON.parse(file);
   }
 
-  async setPairing(pairingData: PairingData): Promise<void> {
-    const expiresAt = new Date(Date.now() + pairingData.expires_in * 1000).toISOString();
+  async setPairing({ device_code, ...restData }: PairingData): Promise<void> {
+    const expiresAt = new Date(Date.now() + restData.expires_in * 1000).toISOString();
 
     this.setStatus({
       state: "PAIRING",
       authorized: false,
       playlist: null,
-      ...pairingData,
+      ...restData,
       expires_at: expiresAt
     });
 
