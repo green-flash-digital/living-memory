@@ -7,8 +7,6 @@ import type { Database } from "./db/index.js";
 import { createDb, schema } from "./db/index.js";
 import { OnboardingStep } from "./db/enums.js";
 
-import "../scripts/load-local-env-esm.js";
-
 const db = createDb();
 export const auth = createAuth(db.db);
 

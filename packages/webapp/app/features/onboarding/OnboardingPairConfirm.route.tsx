@@ -57,7 +57,6 @@ export async function action(args: Route.ActionArgs) {
     case "approve": {
       const api = await getApiClient(args);
       const res = await api.onboarding.approveDevicePairing({ user_code }, args.request);
-      console.log("HERE!!!", res);
       if (res.success) throw redirect(href("/onboarding/done"));
       return ssrResponse.error(res.error);
     }

@@ -36,3 +36,8 @@ export {
   type UpdateUserInfoResponse,
   UpdateUserInfoResponseSchema
 } from "./update-user-info/schema.js";
+
+export {
+  type CompleteOnboardingResponse,
+  CompleteOnboardingResponseSchema
+} from "./complete/schema.js";

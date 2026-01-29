@@ -7,6 +7,7 @@ import { validateSlug } from "./validate-slug/route.js";
 import { pairDevice } from "./pair-device/route.js";
 import { setStep } from "./set-step/route.js";
 import { updateUserInfo } from "./update-user-info/route.js";
+import { completeOnboarding } from "./complete/route.js";
 
 export const onboarding = new Hono<Route<SessionVars>>()
   .route("/status", getStatus)
@@ -15,5 +16,6 @@ export const onboarding = new Hono<Route<SessionVars>>()
   .route("/create-household", createHousehold)
   .route("/join-household", joinHousehold)
   .route("/set-step", setStep)
-  .route("/pair", pairDevice);
+  .route("/pair", pairDevice)
+  .route("/complete", completeOnboarding);
 

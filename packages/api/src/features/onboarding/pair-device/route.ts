@@ -33,7 +33,6 @@ pairDevice.post("/approve", zValidator("json", ApproveDevicePairingRequestSchema
     .update(schema.user)
     .set({
       currentOnboardingStep: "COMPLETE",
-      isOnboarded: true,
       updatedAt: new Date()
     })
     .where(eq(schema.user.id, user.id));

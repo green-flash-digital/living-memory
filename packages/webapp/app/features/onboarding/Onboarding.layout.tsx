@@ -69,8 +69,11 @@ export async function loader(args: Route.LoaderArgs) {
       break;
     }
 
-    default:
+    case "COMPLETE":
       targetRoute = href("/onboarding/done");
+      break;
+
+    default:
       exhaustiveMatchGuard(status.data.currentStep);
   }
 

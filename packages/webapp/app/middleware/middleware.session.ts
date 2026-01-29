@@ -48,8 +48,6 @@ export async function requireSession<T extends ContextAndRequest>(args: T) {
     return;
   }
 
-  console.log("here");
-
   const householdRes = await api.auth.getActiveHousehold(args.request);
   if (householdRes.error) {
     throw HTTPError.badRequest("There was an issue trying to get your active household.");

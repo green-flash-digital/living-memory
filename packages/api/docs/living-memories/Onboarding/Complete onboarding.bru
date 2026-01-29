@@ -1,0 +1,17 @@
+meta {
+  name: Complete onboarding
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{API_DOMAIN}}/api/onboarding/complete
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+

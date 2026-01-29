@@ -25,6 +25,9 @@ import {
   type UpdateUserInfoRequest,
   type UpdateUserInfoResponse
 } from "./update-user-info/schema.js";
+import {
+  type CompleteOnboardingResponse
+} from "./complete/schema.js";
 
 export class OnboardingClient extends ClientFetchSSR {
   constructor(args: ClientFetchArgs) {
@@ -89,6 +92,14 @@ export class OnboardingClient extends ClientFetchSSR {
       request
     });
   }
+
+  complete(request: Request) {
+    return this._mutate<CompleteOnboardingResponse>({
+      method: "POST",
+      path: "/complete",
+      request
+    });
+  }
 }
 
 export class OnboardingClientBrowser extends ClientFetchBrowser {
@@ -99,6 +110,13 @@ export class OnboardingClientBrowser extends ClientFetchBrowser {
   validateHouseholdSlug(params: ValidateSlugRequest) {
     return this._get<ValidateSlugResponse>({
       path: `/validate-slug/${params.slug}`
+    });
+  }
+
+  complete() {
+    return this._mutate<CompleteOnboardingResponse>({
+      method: "POST",
+      path: "/complete"
     });
   }
 }
