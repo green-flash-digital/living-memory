@@ -9,7 +9,7 @@ import {
   uniqueIndex
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
-import { household, user } from "./schema.auth.js";
+import { household, user } from "./schema.auth";
 
 // Enums
 export const onboardingStepEnum = pgEnum("OnboardingStep", [

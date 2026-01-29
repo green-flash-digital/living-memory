@@ -20,7 +20,7 @@
     "hono": "4.11.7"
   },
   "devDependencies": {
-    "@types/node": "20.19.30",
+    "@types/node": "25.1.0",
     "tsx": "4.21.0",
     "typescript": "5.9.3"
   }
