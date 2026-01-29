@@ -3,7 +3,6 @@
     "target": "ESNext",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "allowImportingTsExtensions": true,
     "strict": true,
     "lib": ["ESNext"],
     "verbatimModuleSyntax": true,

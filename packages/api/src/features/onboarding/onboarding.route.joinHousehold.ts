@@ -4,7 +4,7 @@ import { schemaFor } from "../../utils/schemaFor.js";
 import { zValidator } from "@hono/zod-validator";
 import { OnboardingStep } from "../../db/enums.js";
 import { eq, and, gt } from "drizzle-orm";
-import { db, schema } from "../../db/index.js";
+import { schema } from "../../db/index.js";
 import z from "zod";
 
 /**

@@ -3,7 +3,7 @@ import type { Route, SessionVars } from "../../utils/types.js";
 import { schemaFor } from "../../utils/schemaFor.js";
 import { OnboardingStep } from "../../db/enums.js";
 import { eq, and, count } from "drizzle-orm";
-import { db, schema } from "../../db/index.js";
+import { schema } from "../../db/index.js";
 import z from "zod";
 
 /**

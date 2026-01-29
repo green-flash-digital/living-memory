@@ -8,7 +8,7 @@ import {
   index,
   uniqueIndex
 } from "drizzle-orm/pg-core";
-import { household, user } from "./schema.auth.ts";
+import { household, user } from "./schema.auth.js";
 
 // Enums
 export const onboardingStepEnum = pgEnum("OnboardingStep", [

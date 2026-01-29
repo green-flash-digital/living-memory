@@ -2,7 +2,7 @@ import { drizzle as drizzleNeon } from "drizzle-orm/neon-http";
 import { drizzle as drizzleNode } from "drizzle-orm/postgres-js";
 
 import { relations } from "./relations.js";
-import { schema } from "./schema/schema._.ts";
+import { schema } from "./schema/index.js";
 
 const connectionString = process.env.DATABASE_URL;
 
