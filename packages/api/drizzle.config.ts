@@ -22,5 +22,12 @@ export default defineConfig({
   dialect: "postgresql",
   dbCredentials: {
     url: process.env.DATABASE_URL
+  },
+  // By default drizzle-kit uses a separate "drizzle" schema for its migration log table
+  // and will run: CREATE SCHEMA IF NOT EXISTS "drizzle"
+  // If your DB user can't create schemas, keep this in "public".
+  migrations: {
+    schema: "public"
+    // table: "__drizzle_migrations", // default; uncomment if you want it explicit
   }
 });

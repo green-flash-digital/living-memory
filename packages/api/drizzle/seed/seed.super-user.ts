@@ -20,7 +20,7 @@ export async function seedSuperUser() {
     // Create mock headers for Better Auth API (required for auth.api methods)
     const headers = new Headers();
     headers.set("Content-Type", "application/json");
-    
+
     // Use auth.api.signUpEmail() to create the user
     // This now works perfectly in Node.js with Drizzle!
     const result = await auth.api.signUpEmail({

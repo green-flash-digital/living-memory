@@ -20,7 +20,6 @@ export const auth = betterAuth({
   trustedOrigins: [process.env.API_DOMAIN, process.env.APP_DOMAIN],
   secret: process.env.AUTH_SECRET,
   baseURL: process.env.API_DOMAIN,
-  experimental: { joins: true },
   advanced: {
     disableOriginCheck: process.env.LIVING_MEMORY_ENV === "local"
   },
