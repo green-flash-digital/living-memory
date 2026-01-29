@@ -1,9 +1,9 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "a226dc3a-8c59-454f-b5a1-9db40064339c",
+  "id": "90816c13-ade8-4bbf-b23a-2b8818702cb5",
   "prevIds": [
-    "1c5a46f3-6a29-4563-ac5a-639ccfe273df"
+    "00000000-0000-0000-0000-000000000000"
   ],
   "ddl": [
     {
@@ -1669,27 +1669,6 @@
       "entityType": "indexes",
       "schema": "public",
       "table": "device"
-    },
-    {
-      "nameExplicit": true,
-      "columns": [
-        {
-          "value": "code",
-          "isExpression": false,
-          "asc": true,
-          "nullsFirst": false,
-          "opclass": null
-        }
-      ],
-      "isUnique": true,
-      "where": null,
-      "with": "",
-      "method": "btree",
-      "concurrently": false,
-      "name": "device_authorization_code_key",
-      "entityType": "indexes",
-      "schema": "public",
-      "table": "device_authorization"
     },
     {
       "nameExplicit": true,

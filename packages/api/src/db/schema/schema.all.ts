@@ -51,7 +51,6 @@ export const deviceAuthorization = pgTable(
     updatedAt: timestamp("updatedAt").notNull().defaultNow()
   },
   (table) => [
-    uniqueIndex("device_authorization_code_key").on(table.code),
     index("device_authorization_householdId_idx").on(table.householdId),
     index("device_authorization_deviceId_idx").on(table.deviceId)
   ]

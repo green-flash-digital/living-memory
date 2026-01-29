@@ -161,7 +161,6 @@ CREATE TABLE "verification" (
 );
 --> statement-breakpoint
 CREATE INDEX "device_householdId_idx" ON "device" ("householdId");--> statement-breakpoint
-CREATE UNIQUE INDEX "device_authorization_code_key" ON "device_authorization" ("code");--> statement-breakpoint
 CREATE INDEX "device_authorization_householdId_idx" ON "device_authorization" ("householdId");--> statement-breakpoint
 CREATE INDEX "device_authorization_deviceId_idx" ON "device_authorization" ("deviceId");--> statement-breakpoint
 CREATE INDEX "photo_userId_idx" ON "photo" ("userId");--> statement-breakpoint
