@@ -4,7 +4,7 @@ import { schemaFor } from "../../utils/schemaFor.js";
 import { zValidator } from "@hono/zod-validator";
 import { OnboardingStep } from "../../db/enums.js";
 import { eq, and, gt } from "drizzle-orm";
-import { db, schema } from "../../db/db.js";
+import { db, schema } from "../../db/index.js";
 import z from "zod";
 
 /**
@@ -78,9 +78,12 @@ export const joinHousehold = new Hono<Route<SessionVars>>().post(
 
     // Create user-household relationship
     await db.insert(schema.userHousehold).values({
+      id: crypto.randomUUID(),
       userId: user.id,
       householdId: invitation.organizationId,
-      role: invitation.role || "member"
+      role: invitation.role || "member",
+      createdAt: new Date(),
+      updatedAt: new Date()
     });
 
     // Update invitation status

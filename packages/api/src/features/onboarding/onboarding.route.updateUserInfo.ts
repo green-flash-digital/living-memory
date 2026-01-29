@@ -4,7 +4,7 @@ import { zValidator } from "@hono/zod-validator";
 import { response } from "../../utils/util.response.js";
 import { schemaFor } from "../../utils/schemaFor.js";
 import { eq } from "drizzle-orm";
-import { db, schema } from "../../db/db.js";
+import { db, schema } from "../../db/index.js";
 import z from "zod";
 
 export type UpdateUserInfoRequest = {

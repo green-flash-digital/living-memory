@@ -11,7 +11,9 @@ config({ path: rootEnv });
 config({ path: localEnv });
 
 if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL is not set. Make sure your .env file exists and contains DATABASE_URL.");
+  throw new Error(
+    "DATABASE_URL is not set. Make sure your .env file exists and contains DATABASE_URL."
+  );
 }
 
 export default defineConfig({
@@ -19,6 +21,6 @@ export default defineConfig({
   out: "./drizzle/migrations",
   dialect: "postgresql",
   dbCredentials: {
-    url: process.env.DATABASE_URL!
+    url: process.env.DATABASE_URL
   }
 });

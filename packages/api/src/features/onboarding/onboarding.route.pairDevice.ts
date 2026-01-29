@@ -5,7 +5,7 @@ import z from "zod";
 import { schemaFor } from "../../utils/schemaFor.js";
 import { HTTPError, tryHandle } from "@living-memory/utils";
 import { eq } from "drizzle-orm";
-import { db, schema } from "../../db/db.js";
+import { db, schema } from "../../db/index.js";
 
 export type ApproveDevicePairingRequest = { user_code: string };
 export const ApproveDevicePairingRequestSchema = schemaFor<ApproveDevicePairingRequest>({

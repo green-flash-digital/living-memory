@@ -5,7 +5,7 @@ import z from "zod";
 import { response } from "../../utils/util.response.js";
 import { tryHandle, HTTPError } from "@living-memory/utils";
 import { eq } from "drizzle-orm";
-import { db, schema } from "../../db/db.js";
+import { db, schema } from "../../db/index.js";
 import { schemaFor } from "../../utils/schemaFor.js";
 
 export type CreateHouseholdRequest = {

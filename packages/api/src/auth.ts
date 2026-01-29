@@ -3,7 +3,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { organization } from "better-auth/plugins";
 import { deviceAuthorization } from "better-auth/plugins";
 import { bearer } from "better-auth/plugins";
-import { db, schema } from "./db/db.js";
+import { db, schema } from "./db/index.js";
 import { OnboardingStep } from "./db/enums.js";
 
 export const auth = betterAuth({

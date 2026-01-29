@@ -1,9 +1,8 @@
 import { drizzle as drizzleNeon } from "drizzle-orm/neon-http";
-import { drizzle as drizzleNode } from "drizzle-orm/node-postgres";
-import { neon } from "@neondatabase/serverless";
-import { Pool } from "pg";
+import { drizzle as drizzleNode } from "drizzle-orm/postgres-js";
 import * as schemaAll from "./schema/schema.all.js";
 import * as schemaAuth from "./schema/schema.auth.js";
+import { relations } from "./relations.js";
 
 import "../../dev-utils/loadLocalEnvVars.js";
 
@@ -21,8 +20,8 @@ const schema = {
 
 export const db =
   process.env.LIVING_MEMORY_ENV === "local"
-    ? drizzleNode(new Pool({ connectionString }), { schema })
-    : drizzleNeon(neon(connectionString), { schema });
+    ? drizzleNode(connectionString, { schema, relations })
+    : drizzleNeon(connectionString, { schema, relations });
 
 export type Database = typeof db;
 export { schema };

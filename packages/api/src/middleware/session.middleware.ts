@@ -1,6 +1,6 @@
 import { HTTPError } from "@living-memory/utils";
 import { auth } from "../auth.js";
-import { db } from "../db/db.js";
+import { db } from "../db/index.js";
 import type { MaybeSessionVars, Middleware } from "../utils/types.js";
 import { createMiddleware } from "hono/factory";
 
