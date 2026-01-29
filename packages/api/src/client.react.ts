@@ -8,6 +8,7 @@ import { createAuthClient } from "better-auth/react";
 import type { AuthInstance } from "./auth.js";
 import { OnboardingClientBrowser } from "./features/onboarding/onboarding.clients.js";
 import type { ClientFetchResult } from "./utils/ClientFetch.js";
+export * from "./db/enums.js";
 
 function createClient(baseURL: string) {
   return createAuthClient({

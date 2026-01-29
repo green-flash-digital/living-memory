@@ -4,6 +4,8 @@ import { HouseholdClient } from "./features/household/household.api-client.js";
 
 export type { ClientFetchResult } from "./utils/ClientFetch.js";
 
+export * from "./db/enums.js";
+
 export class MemoriesApiClientSSR {
   auth: AuthClient;
   onboarding: OnboardingClient;

@@ -53,7 +53,7 @@ export function createAuth(db: Database) {
           },
           // Map to UserHousehold join table
           member: {
-            modelName: "user_household",
+            modelName: "userHousehold",
             fields: {
               userId: "userId",
               organizationId: "householdId",

@@ -9,6 +9,9 @@ const CONFIRM_ACTION = {
   deny: "deny"
 } as const;
 
+type ConfirmActionKey = keyof typeof CONFIRM_ACTION;
+type ConfirmAction = (typeof CONFIRM_ACTION)[ConfirmActionKey];
+
 export async function loader(args: Route.LoaderArgs) {
   const currentUrl = new URL(args.request.url);
   const userCode = currentUrl.searchParams.get("user_code");
@@ -31,7 +34,7 @@ export async function loader(args: Route.LoaderArgs) {
 
 export async function action(args: Route.ActionArgs) {
   const formData = await args.request.formData();
-  const action = CONFIRM_ACTION[formData.get("action") as keyof typeof CONFIRM_ACTION];
+  const action = formData.get("action") as ConfirmAction;
   const user_code = formData.get("user_code") as string;
 
   if (!user_code) {

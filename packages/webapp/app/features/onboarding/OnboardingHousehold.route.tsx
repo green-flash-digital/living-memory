@@ -8,9 +8,13 @@ const OPTIONS = {
   JOIN: "join"
 } as const;
 
-export async function actions(args: Route.ActionArgs) {
+type OptionKey = keyof typeof OPTIONS; // "CREATE" | "JOIN"
+type OptionValue = (typeof OPTIONS)[OptionKey]; // "create" | "join"
+
+export async function action(args: Route.ActionArgs) {
   const formData = await args.request.formData();
-  const choice = OPTIONS[formData.get("choice") as keyof typeof OPTIONS];
+  console.log(formData.get("choice"));
+  const choice = formData.get("choice") as OptionValue;
   const api = await getApiClient(args);
 
   switch (choice) {
