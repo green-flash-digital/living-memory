@@ -21,4 +21,3 @@ export type CreatePlaylistResponse = {
 export const CreatePlaylistResponseSchema = schemaFor<CreatePlaylistResponse>({
   playlist: PlaylistSchema
 });
-
