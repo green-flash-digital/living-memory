@@ -5,7 +5,8 @@
   "exports": {
     "./client/react": "./dist-clients/client.react.js",
     "./client/ssr": "./dist-clients/client.ssr.js",
-    "./onboarding": "./src/features/onboarding/onboarding.index.ts"
+    "./onboarding": "./src/features/onboarding/onboarding.index.ts",
+    "./playlists": "./src/features/playlists/playlists.index.ts"
   },
   "scripts": {
     "dev": "vite",
