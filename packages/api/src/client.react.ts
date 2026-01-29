@@ -5,7 +5,7 @@ import {
   deviceAuthorizationClient
 } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
-import type { auth } from "./auth.js";
+import type { AuthInstance } from "./auth.js";
 import { OnboardingClientBrowser } from "./features/onboarding/onboarding.clients.js";
 import type { ClientFetchResult } from "./utils/ClientFetch.js";
 
@@ -13,9 +13,9 @@ function createClient(baseURL: string) {
   return createAuthClient({
     baseURL,
     plugins: [
-      inferAdditionalFields<typeof auth>(),
+      inferAdditionalFields<AuthInstance>(),
       organizationClient({
-        schema: inferOrgAdditionalFields<typeof auth>()
+        schema: inferOrgAdditionalFields<AuthInstance>()
       }),
       deviceAuthorizationClient()
     ]

@@ -6,7 +6,7 @@ import { response } from "../../utils/util.response.js";
 import { HTTPError } from "@living-memory/utils";
 import { schemaFor } from "../../utils/schemaFor.js";
 import { eq } from "drizzle-orm";
-import { db, schema } from "../../db/index.js";
+import { schema } from "../../db/index.js";
 
 export const deleteHousehold = new Hono<Route<SessionVars>>();
 

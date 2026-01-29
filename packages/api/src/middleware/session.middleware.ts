@@ -1,6 +1,6 @@
 import { HTTPError } from "@living-memory/utils";
-import { auth } from "../auth.js";
-import { db } from "../db/index.js";
+import { createAuth } from "../auth.js";
+import { createDb } from "../db/index.js";
 import type { MaybeSessionVars, Middleware } from "../utils/types.js";
 import { createMiddleware } from "hono/factory";
 
@@ -18,18 +18,25 @@ export const withAuthenticatedSession = createMiddleware<Middleware<MaybeSession
     // Clone headers to avoid immutability issues
     const headers = new Headers(c.req.raw.headers);
 
+    const { db, close } = createDb();
+    const auth = createAuth(db);
+
     // Retrieve the session from Better Auth
-    const session = await auth.api.getSession({ headers });
-    if (!session || !session.user) {
-      throw HTTPError.unauthenticated();
+    try {
+      const session = await auth.api.getSession({ headers });
+      if (!session || !session.user) {
+        throw HTTPError.unauthenticated();
+      }
+
+      // Attach user and session to the context
+      c.set("user", session.user);
+      c.set("session", session.session);
+      c.set("betterAuth", auth.api);
+      c.set("db", db);
+
+      return await next();
+    } finally {
+      await close?.();
     }
-
-    // Attach user and session to the context
-    c.set("user", session.user);
-    c.set("session", session.session);
-    c.set("betterAuth", auth.api);
-    c.set("db", db);
-
-    return next();
   }
 );
