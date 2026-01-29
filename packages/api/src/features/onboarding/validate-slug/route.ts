@@ -1,29 +1,9 @@
 import { Hono } from "hono";
-import type { Route, SessionVars } from "../../utils/types.js";
-import { schemaFor } from "../../utils/schemaFor.js";
+import type { Route, SessionVars } from "../../../utils/types.js";
 import { zValidator } from "@hono/zod-validator";
-import z from "zod";
-import { response } from "../../utils/util.response.js";
+import { response } from "../../../utils/util.response.js";
 import { HTTPError, tryHandle } from "@living-memory/utils";
-
-export type ValidateSlugRequest = {
-  slug: string;
-};
-
-export const ValidateSlugRequestSchema = schemaFor<ValidateSlugRequest>({
-  slug: z
-    .string()
-    .min(1, "Slug is required")
-    .regex(/^[a-z0-9-]+$/, "Slug must contain only lowercase letters, numbers, and hyphens")
-});
-
-export type ValidateSlugResponse = {
-  isAvailable: boolean;
-};
-
-export const ValidateSlugResponseSchema = schemaFor<ValidateSlugResponse>({
-  isAvailable: z.boolean()
-});
+import { ValidateSlugRequestSchema, ValidateSlugResponseSchema } from "./schema.js";
 
 /**
  * GET `/api/onboarding/validate-slug/:slug`
@@ -54,3 +34,4 @@ export const validateSlug = new Hono<Route<SessionVars>>().get(
     });
   }
 );
+

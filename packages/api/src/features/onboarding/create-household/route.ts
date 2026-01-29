@@ -1,65 +1,11 @@
 import { Hono } from "hono";
-import type { Route, SessionVars } from "../../utils/types.js";
+import type { Route, SessionVars } from "../../../utils/types.js";
 import { zValidator } from "@hono/zod-validator";
-import z from "zod";
-import { response } from "../../utils/util.response.js";
+import { response } from "../../../utils/util.response.js";
 import { tryHandle, HTTPError } from "@living-memory/utils";
 import { eq } from "drizzle-orm";
-import { schema } from "../../db/index.js";
-import { schemaFor } from "../../utils/schemaFor.js";
-
-export type CreateHouseholdRequest = {
-  name: string;
-  slug: string;
-};
-
-export const CreateHouseholdRequestSchema = schemaFor<CreateHouseholdRequest>({
-  name: z.string().min(1, "Household name is required"),
-  slug: z
-    .string()
-    .min(1, "Slug is required")
-    .regex(/^[a-z0-9-]+$/, "Slug must contain only lowercase letters, numbers, and hyphens")
-});
-
-type HouseholdMember = {
-  id: string;
-  organizationId: string;
-  userId: string;
-  role: string;
-  createdAt: string | Date;
-  updatedAt?: string | Date;
-};
-
-const HouseholdMemberSchema = schemaFor<HouseholdMember>({
-  id: z.string(),
-  organizationId: z.string(),
-  userId: z.string(),
-  role: z.string(),
-  createdAt: z.string().or(z.date()),
-  updatedAt: z.string().or(z.date()).optional()
-});
-
-export type CreateHouseholdResponse = {
-  id: string;
-  name: string;
-  slug: string;
-  logo?: string | null;
-  metadata?: any | null;
-  createdAt: string | Date;
-  updatedAt?: string | Date;
-  members: HouseholdMember[];
-};
-
-export const CreateHouseholdResponseSchema = schemaFor<CreateHouseholdResponse>({
-  id: z.string(),
-  name: z.string(),
-  slug: z.string(),
-  logo: z.string().nullable().optional(),
-  metadata: z.any().nullable().optional(),
-  createdAt: z.string().or(z.date()),
-  updatedAt: z.string().or(z.date()).optional(),
-  members: HouseholdMemberSchema.array()
-});
+import { schema } from "../../../db/index.js";
+import { CreateHouseholdRequestSchema, CreateHouseholdResponseSchema } from "./schema.js";
 
 /**
  * POST `/api/onboarding/create-household`
@@ -84,9 +30,7 @@ export const createHousehold = new Hono<Route<SessionVars>>().post(
       })
     );
     if (!slugStatus.success) {
-      throw HTTPError.badRequest(
-        `The slug '${reqBody.slug}' is already taken. Please try another one.`
-      );
+      throw HTTPError.badRequest(`The slug '${reqBody.slug}' is already taken. Please try another one.`);
     }
 
     // Create the household
@@ -129,3 +73,4 @@ export const createHousehold = new Hono<Route<SessionVars>>().post(
     });
   }
 );
+

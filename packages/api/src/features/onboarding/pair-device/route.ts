@@ -1,27 +1,15 @@
 import { Hono } from "hono";
-import type { Route, SessionVars } from "../../utils/types.js";
+import type { Route, SessionVars } from "../../../utils/types.js";
 import { zValidator } from "@hono/zod-validator";
-import z from "zod";
-import { schemaFor } from "../../utils/schemaFor.js";
 import { HTTPError, tryHandle } from "@living-memory/utils";
 import { eq } from "drizzle-orm";
-import { schema } from "../../db/index.js";
-
-export type ApproveDevicePairingRequest = { user_code: string };
-export const ApproveDevicePairingRequestSchema = schemaFor<ApproveDevicePairingRequest>({
-  user_code: z.string().length(8, { error: "User code must be 8 characters" })
-});
-
-export type DenyDevicePairingRequest = { user_code: string };
-export const DenyDevicePairingRequestSchema = schemaFor<DenyDevicePairingRequest>({
-  user_code: z.string().length(8, { error: "User code must be 8 characters" })
-});
-
-export type OnboardingPairDeviceApprovalResponse = { message: string };
-export const OnboardingPairDeviceApprovalResponseSchema =
-  schemaFor<OnboardingPairDeviceApprovalResponse>({
-    message: z.string()
-  });
+import { schema } from "../../../db/index.js";
+import { response } from "../../../utils/util.response.js";
+import {
+  ApproveDevicePairingRequestSchema,
+  DenyDevicePairingRequestSchema,
+  OnboardingPairDeviceApprovalResponseSchema
+} from "./schema.js";
 
 export const pairDevice = new Hono<Route<SessionVars>>();
 
@@ -40,6 +28,7 @@ pairDevice.post("/approve", zValidator("json", ApproveDevicePairingRequestSchema
       approveRes.error.message || "There was an error when trying to approve the device."
     );
   }
+
   await db
     .update(schema.user)
     .set({
@@ -48,6 +37,12 @@ pairDevice.post("/approve", zValidator("json", ApproveDevicePairingRequestSchema
       updatedAt: new Date()
     })
     .where(eq(schema.user.id, user.id));
+
+  return response.json(c, {
+    schema: OnboardingPairDeviceApprovalResponseSchema,
+    data: { message: "Device approved" },
+    context: "onboarding.pairDevice.approve"
+  });
 });
 
 pairDevice.post("/deny", zValidator("json", DenyDevicePairingRequestSchema), async (c) => {
@@ -63,4 +58,11 @@ pairDevice.post("/deny", zValidator("json", DenyDevicePairingRequestSchema), asy
       denyRes.error.message || "There was an error when trying to deny the device."
     );
   }
+
+  return response.json(c, {
+    schema: OnboardingPairDeviceApprovalResponseSchema,
+    data: { message: "Device denied" },
+    context: "onboarding.pairDevice.deny"
+  });
 });
+

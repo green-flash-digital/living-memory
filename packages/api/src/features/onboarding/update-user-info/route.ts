@@ -1,31 +1,10 @@
 import { Hono } from "hono";
-import type { Route, SessionVars } from "../../utils/types.js";
+import type { Route, SessionVars } from "../../../utils/types.js";
 import { zValidator } from "@hono/zod-validator";
-import { response } from "../../utils/util.response.js";
-import { schemaFor } from "../../utils/schemaFor.js";
+import { response } from "../../../utils/util.response.js";
 import { eq } from "drizzle-orm";
-import { schema } from "../../db/index.js";
-import z from "zod";
-
-export type UpdateUserInfoRequest = {
-  firstName: string;
-  lastName: string;
-};
-
-export const UpdateUserInfoRequestSchema = schemaFor<UpdateUserInfoRequest>({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required")
-});
-
-export type UpdateUserInfoResponse = {
-  success: boolean;
-  name: string;
-};
-
-export const UpdateUserInfoResponseSchema = schemaFor<UpdateUserInfoResponse>({
-  success: z.boolean(),
-  name: z.string()
-});
+import { schema } from "../../../db/index.js";
+import { UpdateUserInfoRequestSchema, UpdateUserInfoResponseSchema } from "./schema.js";
 
 /**
  * POST `/api/onboarding/update-user-info`
@@ -41,10 +20,8 @@ export const updateUserInfo = new Hono<Route<SessionVars>>().post(
     const user = c.get("user");
     const db = c.get("db");
 
-    // Combine first and last name
     const fullName = `${reqBody.firstName} ${reqBody.lastName}`.trim();
 
-    // Update user's name and onboarding step
     await db
       .update(schema.user)
       .set({
@@ -64,3 +41,4 @@ export const updateUserInfo = new Hono<Route<SessionVars>>().post(
     });
   }
 );
+

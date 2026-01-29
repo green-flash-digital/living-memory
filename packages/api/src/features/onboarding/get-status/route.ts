@@ -1,31 +1,10 @@
 import { Hono } from "hono";
-import type { Route, SessionVars } from "../../utils/types.js";
-import { schemaFor } from "../../utils/schemaFor.js";
-import { OnboardingStep } from "../../db/enums.js";
+import type { Route, SessionVars } from "../../../utils/types.js";
+import { OnboardingStep } from "../../../db/enums.js";
 import { eq, and, count } from "drizzle-orm";
-import { schema } from "../../db/index.js";
-import z from "zod";
-
-/**
- * Response schema for onboarding status
- */
-export type OnboardingGetStatusResponse = {
-  currentStep: "USER_INFO" | "JOIN_HOUSEHOLD" | "PAIR_DEVICE";
-  isOnboarded: boolean;
-  hasHousehold: boolean;
-  householdId: string | null;
-  householdName: string | null;
-  hasPairedDevice: boolean;
-};
-
-export const OnboardingGetStatusResponseSchema = schemaFor<OnboardingGetStatusResponse>({
-  currentStep: z.enum(["USER_INFO", "JOIN_HOUSEHOLD", "PAIR_DEVICE"]),
-  isOnboarded: z.boolean(),
-  hasHousehold: z.boolean(),
-  householdId: z.string().nullable(),
-  householdName: z.string().nullable(),
-  hasPairedDevice: z.boolean()
-});
+import { schema } from "../../../db/index.js";
+import { response } from "../../../utils/util.response.js";
+import { OnboardingGetStatusResponseSchema } from "./schema.js";
 
 /**
  * GET `/api/onboarding/status`
@@ -68,12 +47,17 @@ export const getStatus = new Hono<Route<SessionVars>>().get("", async (c) => {
 
   const hasPairedDevice = (deviceCount[0]?.count || 0) > 0;
 
-  return c.json({
-    currentStep: user.currentOnboardingStep || OnboardingStep.USER_INFO,
-    isOnboarded: user.isOnboarded || false,
-    hasHousehold,
-    householdId: household?.id || null,
-    householdName: household?.name || null,
-    hasPairedDevice
+  return response.json(c, {
+    schema: OnboardingGetStatusResponseSchema,
+    data: {
+      currentStep: user.currentOnboardingStep || OnboardingStep.USER_INFO,
+      isOnboarded: user.isOnboarded || false,
+      hasHousehold,
+      householdId: household?.id || null,
+      householdName: household?.name || null,
+      hasPairedDevice
+    },
+    context: "onboarding.getStatus"
   });
 });
+

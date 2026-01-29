@@ -4,7 +4,7 @@ import { withAuthenticatedSession } from "./middleware/session.middleware.js";
 import { env } from "cloudflare:workers";
 import { authentication } from "./features/authentication/authentication.route.js";
 import { health } from "./features/health/health.route.js";
-import { onboarding } from "./features/onboarding/onboarding.route._.js";
+import { onboarding } from "./features/onboarding/onboarding.route.js";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
 import { household } from "./features/household/household.route._.js";
 import { serializeError } from "@living-memory/utils";

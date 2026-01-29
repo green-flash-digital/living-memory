@@ -1,22 +1,10 @@
 import { Hono } from "hono";
-import type { Route, SessionVars } from "../../utils/types.js";
-import { schemaFor } from "../../utils/schemaFor.js";
+import type { Route, SessionVars } from "../../../utils/types.js";
 import { zValidator } from "@hono/zod-validator";
-import { OnboardingStep } from "../../db/enums.js";
+import { OnboardingStep } from "../../../db/enums.js";
 import { eq, and, gt } from "drizzle-orm";
-import { schema } from "../../db/index.js";
-import z from "zod";
-
-/**
- * Schema for joining a household via invitation
- */
-export type JoinHouseholdRequest = {
-  invitationCode: string;
-};
-
-export const joinHouseholdSchema = schemaFor<JoinHouseholdRequest>({
-  invitationCode: z.string().min(1, "Invitation code is required")
-});
+import { schema } from "../../../db/index.js";
+import { joinHouseholdSchema } from "./schema.js";
 
 export const joinHousehold = new Hono<Route<SessionVars>>().post(
   "",
@@ -108,3 +96,4 @@ export const joinHousehold = new Hono<Route<SessionVars>>().post(
     });
   }
 );
+

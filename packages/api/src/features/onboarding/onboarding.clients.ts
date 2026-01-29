@@ -2,29 +2,29 @@ import { type ClientFetchArgs } from "../../utils/ClientFetch.js";
 import {
   CreateHouseholdRequestSchema,
   type CreateHouseholdRequest,
-  type CreateHouseholdResponse,
-  type ValidateSlugRequest,
-  type ValidateSlugResponse,
-  type OnboardingGetStatusResponse
-} from "./onboarding.schemas.js";
+  type CreateHouseholdResponse
+} from "./create-household/schema.js";
+import { type ValidateSlugRequest, type ValidateSlugResponse } from "./validate-slug/schema.js";
+import { type OnboardingGetStatusResponse } from "./get-status/schema.js";
 import {
   SetOnboardingStepRequestSchema,
   type SetOnboardingStepRequest,
   type SetOnboardingStepResponse
-} from "./onboarding.route.setStep.js";
+} from "./set-step/schema.js";
 import { ClientFetchSSR } from "../../utils/ClientFetchSSR.js";
 import { ClientFetchBrowser } from "../../utils/ClientFetchBrowser.js";
 import {
   ApproveDevicePairingRequestSchema,
   type ApproveDevicePairingRequest,
   DenyDevicePairingRequestSchema,
-  type DenyDevicePairingRequest
-} from "./onboarding.route.pairDevice.js";
+  type DenyDevicePairingRequest,
+  type OnboardingPairDeviceApprovalResponse
+} from "./pair-device/schema.js";
 import {
   UpdateUserInfoRequestSchema,
   type UpdateUserInfoRequest,
   type UpdateUserInfoResponse
-} from "./onboarding.route.updateUserInfo.js";
+} from "./update-user-info/schema.js";
 
 export class OnboardingClient extends ClientFetchSSR {
   constructor(args: ClientFetchArgs) {
@@ -64,7 +64,7 @@ export class OnboardingClient extends ClientFetchSSR {
   }
 
   approveDevicePairing(body: ApproveDevicePairingRequest, request: Request) {
-    return this._mutate<ApproveDevicePairingRequest>({
+    return this._mutate<OnboardingPairDeviceApprovalResponse>({
       method: "POST",
       path: "/pair/approve",
       body: [ApproveDevicePairingRequestSchema, body],
@@ -73,7 +73,7 @@ export class OnboardingClient extends ClientFetchSSR {
   }
 
   denyDevicePairing(body: DenyDevicePairingRequest, request: Request) {
-    return this._mutate<DenyDevicePairingRequest>({
+    return this._mutate<OnboardingPairDeviceApprovalResponse>({
       method: "POST",
       path: "/pair/deny",
       body: [DenyDevicePairingRequestSchema, body],
