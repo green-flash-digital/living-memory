@@ -1,8 +1,6 @@
 import { drizzle as drizzleNeon } from "drizzle-orm/neon-http";
 import { drizzle as drizzleNode } from "drizzle-orm/postgres-js";
 
-import "../../scripts/load-local-env-esm.ts";
-
 import { relations } from "./relations.js";
 import { schema } from "./schema/schema._.ts";
 

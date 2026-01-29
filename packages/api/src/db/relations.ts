@@ -1,13 +1,5 @@
 import { defineRelations } from "drizzle-orm";
-
-// Important:
-// - We keep schema in `schema/*` (table definitions)
-// - We define ALL relations here (Relational Queries v2 / Drizzle v1 RC style)
-import * as schemaAll from "./schema/schema.all.js";
-import * as schemaAuth from "./schema/schema.auth.js";
-
-// Merge so `defineRelations()` sees every exported table
-const schema = { ...schemaAll, ...schemaAuth };
+import { schema } from "./schema/schema._.ts";
 
 export const relations = defineRelations(schema, (r) => ({
   user: {
