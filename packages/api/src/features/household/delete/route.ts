@@ -1,22 +1,14 @@
 import { Hono } from "hono";
-import type { Route, SessionVars } from "../../utils/types.js";
+import type { Route, SessionVars } from "../../../utils/types.js";
 import { zValidator } from "@hono/zod-validator";
 import z from "zod";
-import { response } from "../../utils/util.response.js";
+import { response } from "../../../utils/util.response.js";
 import { HTTPError } from "@living-memory/utils";
-import { schemaFor } from "../../utils/schemaFor.js";
 import { eq } from "drizzle-orm";
-import { schema } from "../../db/index.js";
+import { schema } from "../../../db/index.js";
+import { DeleteHouseholdResponseSchema } from "./schema.js";
 
 export const deleteHousehold = new Hono<Route<SessionVars>>();
-
-export type DeleteHouseholdResponse = {
-  message: string;
-};
-
-export const DeleteHouseholdResponseSchema = schemaFor<DeleteHouseholdResponse>({
-  message: z.string()
-});
 
 deleteHousehold.delete(
   "/:id",

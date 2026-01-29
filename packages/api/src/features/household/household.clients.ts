@@ -1,7 +1,7 @@
 import { type ClientFetchArgs } from "../../utils/ClientFetch.js";
 import { ClientFetchSSR } from "../../utils/ClientFetchSSR.js";
-import type { DeleteHouseholdResponse } from "./household.route.deleteHousehold.js";
-import type { GetHouseholdBySlugResponse } from "./household.route.getHousehold.js";
+import type { DeleteHouseholdResponse } from "./delete/schema.js";
+import type { GetHouseholdBySlugResponse } from "./getSingle/schema.js";
 
 export class HouseholdClient extends ClientFetchSSR {
   constructor(args: ClientFetchArgs) {

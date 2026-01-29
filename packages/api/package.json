@@ -6,6 +6,7 @@
     "./client/react": "./dist-clients/client.react.js",
     "./client/ssr": "./dist-clients/client.ssr.js",
     "./onboarding": "./src/features/onboarding/onboarding.index.ts",
+    "./household": "./src/features/household/household.index.ts",
     "./playlists": "./src/features/playlists/playlists.index.ts"
   },
   "scripts": {
@@ -16,7 +17,7 @@
     "build:client": "yarn tsx scripts/generate-client-types.ts && yarn tsc --project ./tsconfig.build.client.json",
     "deploy": "yarn run build:api && wrangler deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
-    "load-env": "node ./dev-utils/loadLocalEnvVars.js",
+    "load-env": "node ./scripts/load-local-env-esm.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",

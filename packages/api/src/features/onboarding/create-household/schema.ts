@@ -29,7 +29,7 @@ const HouseholdMemberSchema = schemaFor<HouseholdMember>({
   userId: z.string(),
   role: z.string(),
   createdAt: z.string().or(z.date()),
-  updatedAt: z.string().or(z.date()).optional()
+  updatedAt: z.string().or(z.date()).nullable()
 });
 
 export type CreateHouseholdResponse = {

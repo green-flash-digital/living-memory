@@ -26,7 +26,8 @@ export const user = pgTable("user", {
       "PICK_HOUSEHOLD_OPTION",
       "JOIN_HOUSEHOLD",
       "CREATE_HOUSEHOLD",
-      "PAIR_DEVICE"
+      "PAIR_DEVICE",
+      "COMPLETE"
     ]
   }).default("USER_INFO")
 });
@@ -119,8 +120,8 @@ export const userHousehold = pgTable(
     updatedAt: timestamp("updated_at")
   },
   (table) => [
-    index("user_household_householdId_idx").on(table.householdId),
-    index("user_household_userId_idx").on(table.userId)
+    index("userHousehold_householdId_idx").on(table.householdId),
+    index("userHousehold_userId_idx").on(table.userId)
   ]
 );
 

@@ -32,7 +32,7 @@ pairDevice.post("/approve", zValidator("json", ApproveDevicePairingRequestSchema
   await db
     .update(schema.user)
     .set({
-      currentOnboardingStep: "PAIR_DEVICE",
+      currentOnboardingStep: "COMPLETE",
       isOnboarded: true,
       updatedAt: new Date()
     })

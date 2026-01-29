@@ -12,6 +12,7 @@ export const joinHousehold = new Hono<Route<SessionVars>>().post(
   async (c) => {
     const user = c.get("user");
     const session = c.get("session");
+    const betterAuth = c.get("betterAuth");
     const { invitationCode } = c.req.valid("json");
     const db = c.get("db");
 
@@ -79,6 +80,12 @@ export const joinHousehold = new Hono<Route<SessionVars>>().post(
       .update(schema.invitation)
       .set({ status: "accepted" })
       .where(eq(schema.invitation.id, invitation.id));
+
+    // Set the household as active (updates session.activeOrganizationId)
+    await betterAuth.setActiveOrganization({
+      headers: c.req.raw.headers,
+      body: { organizationId: invitation.organizationId }
+    });
 
     // Update user's onboarding step
     await db

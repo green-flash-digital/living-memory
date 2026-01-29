@@ -1,6 +1,6 @@
 import z from "zod";
 import { schemaFor } from "../../../utils/schemaFor.js";
-import { OnboardingStep } from "../../../db/enums.js";
+import { OnboardingStep, ONBOARDING_STEP_VALUES } from "../../../db/enums.js";
 
 type OnboardingStepType = keyof typeof OnboardingStep;
 
@@ -9,13 +9,7 @@ export type SetOnboardingStepRequest = {
 };
 
 export const SetOnboardingStepRequestSchema = schemaFor<SetOnboardingStepRequest>({
-  step: z.enum([
-    OnboardingStep.USER_INFO,
-    OnboardingStep.PICK_HOUSEHOLD_OPTION,
-    OnboardingStep.JOIN_HOUSEHOLD,
-    OnboardingStep.CREATE_HOUSEHOLD,
-    OnboardingStep.PAIR_DEVICE
-  ])
+  step: z.enum(ONBOARDING_STEP_VALUES)
 });
 
 export type SetOnboardingStepResponse = {

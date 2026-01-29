@@ -1,6 +1,6 @@
 import { OnboardingClient } from "./features/onboarding/onboarding.clients.js";
 import { AuthClient } from "./features/authentication/authentication.api-client.js";
-import { HouseholdClient } from "./features/household/household.api-client.js";
+import { HouseholdClient } from "./features/household/household.clients.js";
 import { PlaylistsClient } from "./features/playlists/playlists.clients.js";
 
 export type { ClientFetchResult } from "./utils/ClientFetch.js";

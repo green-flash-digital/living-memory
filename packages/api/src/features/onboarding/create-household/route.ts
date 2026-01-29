@@ -30,7 +30,9 @@ export const createHousehold = new Hono<Route<SessionVars>>().post(
       })
     );
     if (!slugStatus.success) {
-      throw HTTPError.badRequest(`The slug '${reqBody.slug}' is already taken. Please try another one.`);
+      throw HTTPError.badRequest(
+        `The slug '${reqBody.slug}' is already taken. Please try another one.`
+      );
     }
 
     // Create the household
@@ -39,8 +41,7 @@ export const createHousehold = new Hono<Route<SessionVars>>().post(
       body: {
         name: reqBody.name,
         slug: reqBody.slug,
-        userId: user.id,
-        keepCurrentActiveOrganization: false
+        userId: user.id
       }
     });
 
@@ -49,10 +50,16 @@ export const createHousehold = new Hono<Route<SessionVars>>().post(
     }
 
     // Set the household as active
-    await betterAuth.setActiveOrganization({
-      headers: c.req.raw.headers,
-      body: { organizationId: household.id }
-    });
+    const activeHouseholdRes = await tryHandle(
+      betterAuth.setActiveOrganization({
+        headers: c.req.raw.headers,
+        body: { organizationId: household.id }
+      })
+    );
+
+    if (!activeHouseholdRes.success) {
+      console.log(activeHouseholdRes.error);
+    }
 
     // Update user's onboarding step
     await db
@@ -73,4 +80,3 @@ export const createHousehold = new Hono<Route<SessionVars>>().post(
     });
   }
 );
-

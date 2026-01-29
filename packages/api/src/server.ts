@@ -6,7 +6,7 @@ import { authentication } from "./features/authentication/authentication.route.j
 import { health } from "./features/health/health.route.js";
 import { onboarding } from "./features/onboarding/onboarding.route.js";
 import type { ContentfulStatusCode } from "hono/utils/http-status";
-import { household } from "./features/household/household.route._.js";
+import { household } from "./features/household/household.route.js";
 import { playlists } from "./features/playlists/playlists.route.js";
 import { serializeError } from "@living-memory/utils";
 

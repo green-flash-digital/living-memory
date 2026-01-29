@@ -9,15 +9,10 @@ import {
   uniqueIndex
 } from "drizzle-orm/pg-core";
 import { household, user } from "./schema.auth.js";
+import { ONBOARDING_STEP_VALUES } from "../enums.js";
 
 // Enums
-export const onboardingStepEnum = pgEnum("OnboardingStep", [
-  "USER_INFO",
-  "PICK_HOUSEHOLD_OPTION",
-  "JOIN_HOUSEHOLD",
-  "CREATE_HOUSEHOLD",
-  "PAIR_DEVICE"
-]);
+export const onboardingStepEnum = pgEnum("OnboardingStep", ONBOARDING_STEP_VALUES);
 
 // Application tables
 export const device = pgTable(
