@@ -1,4 +1,4 @@
-import "../../dev-utils/loadLocalEnvVars.js";
+import "../../scripts/load-local-env-esm.js";
 import { auth } from "../../src/auth.js";
 
 /**
@@ -22,7 +22,6 @@ export async function seedSuperUser() {
     headers.set("Content-Type", "application/json");
 
     // Use auth.api.signUpEmail() to create the user
-    // This now works perfectly in Node.js with Drizzle!
     const result = await auth.api.signUpEmail({
       body: {
         email,

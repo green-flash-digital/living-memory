@@ -1,14 +1,7 @@
 import { defineConfig } from "drizzle-kit";
-import { config } from "dotenv";
-import { resolve } from "node:path";
+import { loadLocalEnv } from "./scripts/load-local-env-cjs.ts";
 
-// Load env vars synchronously - drizzle-kit compiles to CommonJS
-// Use process.cwd() which works reliably
-const rootEnv = resolve(process.cwd(), "../../.env");
-const localEnv = resolve(process.cwd(), "../.dev.vars");
-
-config({ path: rootEnv });
-config({ path: localEnv });
+loadLocalEnv();
 
 if (!process.env.DATABASE_URL) {
   throw new Error(

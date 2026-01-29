@@ -1,22 +1,16 @@
 import { drizzle as drizzleNeon } from "drizzle-orm/neon-http";
 import { drizzle as drizzleNode } from "drizzle-orm/postgres-js";
-import * as schemaAll from "./schema/schema.all.js";
-import * as schemaAuth from "./schema/schema.auth.js";
-import { relations } from "./relations.js";
 
-import "../../dev-utils/loadLocalEnvVars.js";
+import "../../scripts/load-local-env-esm.ts";
+
+import { relations } from "./relations.js";
+import { schema } from "./schema/schema._.ts";
 
 const connectionString = process.env.DATABASE_URL;
 
 if (!connectionString) {
-  throw new Error("DATABASE_URL environment variable is required");
+  throw new Error("`DATABASE_URL` environment variable is required");
 }
-
-// Combine all schema exports into a single object
-const schema = {
-  ...schemaAll,
-  ...schemaAuth
-};
 
 export const db =
   process.env.LIVING_MEMORY_ENV === "local"

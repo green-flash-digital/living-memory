@@ -1,2 +1,7 @@
-export * from "./schema.all.js";
-export * from "./schema.auth.js";
+import * as schemaAll from "./schema.all.js";
+import * as schemaAuth from "./schema.auth.js";
+
+export const schema = {
+  ...schemaAll,
+  ...schemaAuth
+};
