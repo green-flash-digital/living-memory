@@ -50,14 +50,10 @@ export async function requireSession<T extends ContextAndRequest>(args: T) {
 
   console.log("here");
 
-  const householdRes = await api.auth.raw.organization.getFullOrganization(
-    {},
-    { headers: args.request.headers }
-  );
+  const householdRes = await api.auth.getActiveHousehold(args.request);
   if (householdRes.error) {
     throw HTTPError.badRequest("There was an issue trying to get your active household.");
   }
-  console.error(householdRes.data, householdRes.data.members[0]);
 
   const activeHouseholdHref = href("/:household_id", { household_id: householdRes.data.slug });
 

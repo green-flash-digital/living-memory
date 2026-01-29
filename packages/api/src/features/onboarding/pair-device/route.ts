@@ -65,4 +65,3 @@ pairDevice.post("/deny", zValidator("json", DenyDevicePairingRequestSchema), asy
     context: "onboarding.pairDevice.deny"
   });
 });
-
