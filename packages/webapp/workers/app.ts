@@ -1,5 +1,6 @@
 import { createRequestHandler, RouterContextProvider } from "react-router";
 import { cloudflareContext } from "../app/context/context.cloudflare";
+import { apiClientContext, createApiClient } from "~/context/context.apiClient";
 
 declare module "react-router" {
   // Migration support: allows existing code to access context.cloudflare
@@ -21,9 +22,11 @@ export default {
   async fetch(request, env, ctx) {
     const context = new RouterContextProvider();
     context.set(cloudflareContext, { env, ctx });
+    context.set(apiClientContext, createApiClient(env.API_DOMAIN));
+
     // Migration support: also set on the context object directly
     // This allows existing code using context.cloudflare to continue working
     (context as any).cloudflare = { env, ctx };
     return requestHandler(request, context);
-  },
+  }
 } satisfies ExportedHandler<Env>;

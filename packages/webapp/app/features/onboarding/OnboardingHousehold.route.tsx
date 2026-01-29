@@ -1,7 +1,7 @@
 import { Form, href, Link, redirect } from "react-router";
 import type { Route } from "./+types/OnboardingHousehold.route";
 import { exhaustiveMatchGuard, tryHandle } from "@living-memory/utils";
-import { ApiClientSSR } from "~/utils.server/ApiClient.ssr";
+import { getApiClient } from "~/context/context.apiClient";
 
 const OPTIONS = {
   CREATE: "create",
@@ -11,14 +11,15 @@ const OPTIONS = {
 export async function actions(args: Route.ActionArgs) {
   const formData = await args.request.formData();
   const choice = OPTIONS[formData.get("choice") as keyof typeof OPTIONS];
+  const api = await getApiClient(args);
 
   switch (choice) {
     case "create":
-      await tryHandle(ApiClientSSR.onboarding.setStep({ step: "CREATE_HOUSEHOLD" }, args.request));
+      await tryHandle(api.onboarding.setStep({ step: "CREATE_HOUSEHOLD" }, args.request));
       throw redirect(href("/onboarding/household/create"));
 
     case "join":
-      await tryHandle(ApiClientSSR.onboarding.setStep({ step: "JOIN_HOUSEHOLD" }, args.request));
+      await tryHandle(api.onboarding.setStep({ step: "JOIN_HOUSEHOLD" }, args.request));
       throw redirect(href("/onboarding/household/join"));
 
     default:

@@ -14,13 +14,15 @@ import { redirect, type href } from "react-router";
  * ```tsx
  * // Basic usage - return the result as-is
  * export async function action(args: Route.ActionArgs) {
- *   const result = await ApiClientSSR.someMethod(data, args.request);
+ *   const api = await getApiClient(args);
+ *   const result = await api.someMethod(data, args.request);
  *   return actionResponse(result);
  * }
  *
  * // With static redirect on success
  * export async function action(args: Route.ActionArgs) {
- *   const result = await ApiClientSSR.someMethod(data, args.request);
+ *   const api = await getApiClient(args);
+ *   const result = await api.someMethod(data, args.request);
  *   return actionResponse(result, {
  *     redirectOnSuccess: href("/success")
  *   });
@@ -28,7 +30,8 @@ import { redirect, type href } from "react-router";
  *
  * // With dynamic redirect using response data
  * export async function action(args: Route.ActionArgs) {
- *   const result = await ApiClientSSR.createHousehold(data, args.request);
+ *   const api = await getApiClient(args);
+ *   const result = await api.createHousehold(data, args.request);
  *   return actionResponse(result, {
  *     redirectOnSuccess: (data) => href(`/household/${data.id}`)
  *   });

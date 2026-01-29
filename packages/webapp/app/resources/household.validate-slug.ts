@@ -1,12 +1,10 @@
 import type { Route } from "./+types/household.validate-slug";
-import { ApiClientSSR } from "~/utils.server/ApiClient.ssr";
+import { getApiClient } from "~/context/context.apiClient";
 
 export async function loader(args: Route.LoaderArgs) {
   console.log({ args });
-  const res = await ApiClientSSR.onboarding.validateHouseholdSlug(
-    { slug: args.params.slug },
-    args.request
-  );
+  const api = await getApiClient(args);
+  const res = await api.onboarding.validateHouseholdSlug({ slug: args.params.slug }, args.request);
   console.log(res);
   if (!res.success) {
     return { isAvailable: false };

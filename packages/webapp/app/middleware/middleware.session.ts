@@ -1,7 +1,7 @@
 import { sessionContext } from "../context/context.session";
 import type { ContextAndRequest } from "~/utils.server/util.server.types";
 import { href, redirect } from "react-router";
-import { ApiClientSSR } from "~/utils.server/ApiClient.ssr";
+import { getApiClient } from "~/context/context.apiClient";
 import { HTTPError } from "@living-memory/utils";
 
 /**
@@ -19,7 +19,8 @@ export async function requireSession<T extends ContextAndRequest>(args: T) {
   const currentSearchParams = currentUrl.searchParams;
   const currentPath = new URL(args.request.url).pathname;
 
-  const res = await ApiClientSSR.auth.getSession(args.request);
+  const api = await getApiClient(args);
+  const res = await api.auth.getSession(args.request);
   if (res.error) throw res.error;
   if (!res.data?.session) {
     throw redirect(href("/sign-in"));
@@ -49,7 +50,7 @@ export async function requireSession<T extends ContextAndRequest>(args: T) {
 
   console.log("here");
 
-  const householdRes = await ApiClientSSR.auth.raw.organization.getFullOrganization();
+  const householdRes = await api.auth.raw.organization.getFullOrganization();
   if (householdRes.error) {
     throw HTTPError.badRequest("There was an issue trying to get your active household.");
   }

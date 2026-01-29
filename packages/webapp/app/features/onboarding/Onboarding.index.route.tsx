@@ -1,7 +1,7 @@
 import { Form, href, redirect } from "react-router";
 import { useActionData, useLoaderData } from "react-router";
 import type { Route } from "./+types/Onboarding.index.route";
-import { ApiClientSSR } from "~/utils.server/ApiClient.ssr";
+import { getApiClient } from "~/context/context.apiClient";
 import { ssrResponse } from "~/utils.server/util.ssrResponse";
 import { validateFormData } from "~/utils.server/util.validateFormData";
 import { UpdateUserInfoRequestSchema } from "@living-memories/api/onboarding";
@@ -30,7 +30,8 @@ export async function action(args: Route.ActionArgs) {
     return ssrResponse.validationError(formVal.error);
   }
 
-  const res = await ApiClientSSR.onboarding.updateUserInfo(formVal.data, args.request);
+  const api = await getApiClient(args);
+  const res = await api.onboarding.updateUserInfo(formVal.data, args.request);
   if (res.success) {
     throw redirect(href("/onboarding/household"));
   }

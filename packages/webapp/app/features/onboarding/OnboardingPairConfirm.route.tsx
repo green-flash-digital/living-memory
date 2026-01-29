@@ -1,6 +1,6 @@
 import { Form, href, redirect, useLoaderData, useActionData } from "react-router";
 import type { Route } from "./+types/OnboardingPairConfirm.route";
-import { ApiClientSSR } from "~/utils.server/ApiClient.ssr";
+import { getApiClient } from "~/context/context.apiClient";
 import { ssrResponse } from "~/utils.server/util.ssrResponse";
 import { exhaustiveMatchGuard } from "@living-memory/utils";
 
@@ -18,7 +18,8 @@ export async function loader(args: Route.LoaderArgs) {
   }
 
   // Verify the code is still valid
-  const res = await ApiClientSSR.auth.raw.device({
+  const api = await getApiClient(args);
+  const res = await api.auth.raw.device({
     query: { user_code: userCode }
   });
 
@@ -51,13 +52,15 @@ export async function action(args: Route.ActionArgs) {
 
   switch (action) {
     case "approve": {
-      const res = await ApiClientSSR.onboarding.approveDevicePairing({ user_code }, args.request);
+      const api = await getApiClient(args);
+      const res = await api.onboarding.approveDevicePairing({ user_code }, args.request);
       console.log("HERE!!!", res);
       if (res.success) throw redirect(href("/onboarding/done"));
       return ssrResponse.error(res.error);
     }
     case "deny": {
-      await ApiClientSSR.onboarding.approveDevicePairing({ user_code }, args.request);
+      const api = await getApiClient(args);
+      await api.onboarding.approveDevicePairing({ user_code }, args.request);
       throw redirect(href("/onboarding/pair"));
     }
 

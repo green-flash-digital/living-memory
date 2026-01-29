@@ -3,7 +3,7 @@ import type { Route } from "./+types/OnboardingPair.route";
 import { Form, href, redirect, useActionData, useLoaderData } from "react-router";
 import { validateFormData } from "~/utils.server/util.validateFormData";
 import z from "zod";
-import { ApiClientSSR } from "~/utils.server/ApiClient.ssr";
+import { getApiClient } from "~/context/context.apiClient";
 import { ApproveDevicePairingRequestSchema } from "@living-memories/api/onboarding";
 
 const USER_CODE_INPUT_NAME = "user_code";
@@ -24,7 +24,8 @@ export async function action(args: Route.ActionArgs) {
   }
 
   console.log("Validating device");
-  const res = await ApiClientSSR.auth.raw.device({
+  const api = await getApiClient(args);
+  const res = await api.auth.raw.device({
     query: { user_code: formVal.data.user_code }
   });
   if (res.data) {

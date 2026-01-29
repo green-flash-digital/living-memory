@@ -1,9 +1,9 @@
 import type { RouterContextProvider } from "react-router";
-import type { ApiClientSSR } from "./ApiClient.ssr";
+import type { MemoriesApiClientSSR } from "@living-memories/api/client/ssr";
 
 export type ContextAndRequest = {
   context: Readonly<RouterContextProvider>;
   request: Request;
 };
 
-export type Session = typeof ApiClientSSR.auth.raw.$Infer.Session;
+export type Session = MemoriesApiClientSSR["auth"]["raw"]["$Infer"]["Session"];

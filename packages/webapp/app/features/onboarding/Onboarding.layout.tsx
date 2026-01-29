@@ -1,7 +1,7 @@
 import { href, Outlet, redirect } from "react-router";
 import type { Route } from "./+types/Onboarding.layout";
 import { getSessionContext } from "~/context/context.session";
-import { ApiClientSSR } from "~/utils.server/ApiClient.ssr";
+import { getApiClient } from "~/context/context.apiClient";
 import { exhaustiveMatchGuard } from "@living-memory/utils";
 
 /**
@@ -21,7 +21,8 @@ export async function loader(args: Route.LoaderArgs) {
     throw redirect("/");
   }
 
-  const status = await ApiClientSSR.onboarding.getStatus(args.request);
+  const api = await getApiClient(args);
+  const status = await api.onboarding.getStatus(args.request);
   if (!status.success) {
     throw redirect("/onboarding/error");
   }
