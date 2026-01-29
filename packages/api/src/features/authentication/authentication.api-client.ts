@@ -34,6 +34,9 @@ export class AuthClient {
     return this.raw.getSession({ fetchOptions: { headers: request.headers } });
   }
 
+  /**
+   * Returns the users active household
+   */
   getActiveHousehold(request: Request) {
     return this.raw.organization.getFullOrganization({}, { headers: request.headers });
   }

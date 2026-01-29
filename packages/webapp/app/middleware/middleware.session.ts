@@ -56,6 +56,5 @@ export async function requireSession<T extends ContextAndRequest>(args: T) {
   }
 
   const activeHouseholdHref = href("/:household_id", { household_id: householdRes.data.slug });
-
   if (!currentPath.startsWith(activeHouseholdHref)) throw redirect(activeHouseholdHref);
 }
