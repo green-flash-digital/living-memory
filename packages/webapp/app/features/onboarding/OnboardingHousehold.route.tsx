@@ -1,0 +1,76 @@
+import { Form, href, Link, redirect } from "react-router";
+import type { Route } from "./+types/OnboardingHousehold.route";
+import { exhaustiveMatchGuard, tryHandle } from "@living-memory/utils";
+import { getApiClient } from "~/context/context.apiClient";
+
+const OPTIONS = {
+  CREATE: "create",
+  JOIN: "join"
+} as const;
+
+type OptionKey = keyof typeof OPTIONS; // "CREATE" | "JOIN"
+type OptionValue = (typeof OPTIONS)[OptionKey]; // "create" | "join"
+
+export async function action(args: Route.ActionArgs) {
+  const formData = await args.request.formData();
+  console.log(formData.get("choice"));
+  const choice = formData.get("choice") as OptionValue;
+  const api = await getApiClient(args);
+
+  switch (choice) {
+    case "create":
+      await tryHandle(api.onboarding.setStep({ step: "CREATE_HOUSEHOLD" }, args.request));
+      throw redirect(href("/onboarding/household/create"));
+
+    case "join":
+      await tryHandle(api.onboarding.setStep({ step: "JOIN_HOUSEHOLD" }, args.request));
+      throw redirect(href("/onboarding/household/join"));
+
+    default:
+      exhaustiveMatchGuard(choice);
+  }
+}
+
+export default function OnboardingJoin() {
+  return (
+    <div>
+      <h2>Get Started</h2>
+      <p>To begin sharing memories with your family, you'll need to connect to a household.</p>
+      <Form method="post">
+        <ul>
+          <li>
+            <label
+              htmlFor={OPTIONS.CREATE}
+              style={{
+                height: 200,
+                aspectRatio: 1,
+                display: "grid",
+                alignContent: "center",
+                border: "1px solid rebeccapurple"
+              }}
+            >
+              <input type="radio" name="choice" value={OPTIONS.CREATE} id={OPTIONS.CREATE} />
+              Create a new household
+            </label>
+          </li>
+          <li>
+            <label
+              htmlFor={OPTIONS.JOIN}
+              style={{
+                height: 200,
+                aspectRatio: 1,
+                display: "grid",
+                alignContent: "center",
+                border: "1px solid rebeccapurple"
+              }}
+            >
+              <input type="radio" name="choice" value={OPTIONS.JOIN} id={OPTIONS.JOIN} />
+              Join an existing household
+            </label>
+          </li>
+        </ul>
+        <button type="submit">Next</button>
+      </Form>
+    </div>
+  );
+}

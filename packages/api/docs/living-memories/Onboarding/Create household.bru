@@ -1,0 +1,23 @@
+meta {
+  name: Create household
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{API_DOMAIN}}/api/onboarding/create-household
+  body: json
+  auth: inherit
+}
+
+body:json {
+  { 
+    "name": "The Turano Household",
+    "slug": "the-turanos"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

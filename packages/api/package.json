@@ -1,35 +1,50 @@
 {
-  "name": "api",
+  "name": "@living-memories/api",
+  "private": true,
   "type": "module",
+  "exports": {
+    "./client/react": "./dist-clients/client.react.js",
+    "./client/ssr": "./dist-clients/client.ssr.js",
+    "./onboarding": "./src/features/onboarding/onboarding.index.ts",
+    "./playlists": "./src/features/playlists/playlists.index.ts"
+  },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "yarn run build && vite preview",
-    "deploy": "yarn run build && wrangler deploy",
+    "dev:client": "yarn build:client --watch",
+    "build": "yarn build:api & yarn build:client",
+    "build:api": "vite build",
+    "build:client": "yarn tsx scripts/generate-client-types.ts && yarn tsc --project ./tsconfig.build.client.json",
+    "deploy": "yarn run build:api && wrangler deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
-    "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate dev",
-    "db:push": "prisma db push",
-    "db:studio": "prisma studio",
-    "db:seed": "prisma db seed"
+    "load-env": "node ./dev-utils/loadLocalEnvVars.js",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx drizzle/seed/index.ts",
+    "db:better-auth:generate": "yarn load-env && npx @better-auth/cli@latest generate --output ./src/db/schema/schema.auth.ts"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^1.0.2",
-    "@prisma/adapter-neon": "^7.2.0",
-    "@prisma/adapter-pg": "^7.2.0",
-    "@prisma/client": "^7.2.0",
-    "better-auth": "^1.4.12",
-    "hono": "^4.11.4",
-    "prisma": "^7.2.0",
-    "ws": "^8.19.0"
+    "@hono/zod-validator": "0.7.6",
+    "@living-memory/utils": "workspace:",
+    "@neondatabase/serverless": "1.0.2",
+    "better-auth": "1.4.18",
+    "drizzle-orm": "1.0.0-beta.12-a5629fb",
+    "hono": "4.11.7",
+    "picocolors": "1.1.1",
+    "postgres": "^3.4.8",
+    "ws": "8.19.0",
+    "zod": "4.3.6"
   },
   "devDependencies": {
-    "@better-auth/cli": "^1.4.12",
-    "@cloudflare/vite-plugin": "^1.2.3",
-    "@types/ws": "^8.18.1",
-    "tsx": "^4.21.0",
-    "typescript": "^5.9.3",
-    "vite": "^6.3.5",
-    "wrangler": "^4.17.0"
+    "@better-auth/cli": "1.4.18",
+    "@cloudflare/vite-plugin": "1.22.0",
+    "@types/ws": "8.18.1",
+    "drizzle-kit": "1.0.0-beta.12-a5629fb",
+    "glob": "13.0.0",
+    "tsx": "4.21.0",
+    "typescript": "5.9.3",
+    "vite": "7.3.1",
+    "wrangler": "4.61.0"
   }
 }

@@ -1,12 +1,14 @@
 import { useState, type FormEvent } from "react";
-import { AuthClient } from "../../utils.client/auth";
 import { redirect, useNavigate } from "react-router";
 import type { Route } from "./+types/SignIn.route";
-import { AuthClientSSR } from "~/utils.server/SSRAuthClient";
+
+import { ApiClientReact } from "~/utils.client/ApiClient.browser";
+import { getApiClient } from "~/context/context.apiClient";
 
 export async function loader(args: Route.LoaderArgs) {
-  const session = await AuthClientSSR.getSession(args);
-  if (session?.session) throw redirect("/");
+  const api = await getApiClient(args);
+  const res = await api.auth.getSession(args.request);
+  if (res.data?.session) throw redirect("/");
   return null;
 }
 
@@ -23,18 +25,14 @@ export default function SignInRoute() {
     setIsLoading(true);
 
     try {
-      await AuthClient.signIn.email({
+      await ApiClientReact.auth.signIn.email({
         email,
-        password,
+        password
       });
       // Better Auth automatically sets the cookie, so we can redirect
       navigate("/");
     } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Failed to sign in. Please try again."
-      );
+      setError(err instanceof Error ? err.message : "Failed to sign in. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -45,10 +43,7 @@ export default function SignInRoute() {
       <h1 style={{ marginBottom: "1.5rem" }}>Sign In</h1>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: "1rem" }}>
-          <label
-            htmlFor="email"
-            style={{ display: "block", marginBottom: "0.5rem" }}
-          >
+          <label htmlFor="email" style={{ display: "block", marginBottom: "0.5rem" }}>
             Email
           </label>
           <input
@@ -64,15 +59,12 @@ export default function SignInRoute() {
               padding: "0.5rem",
               fontSize: "1rem",
               border: "1px solid #ccc",
-              borderRadius: "4px",
+              borderRadius: "4px"
             }}
           />
         </div>
         <div style={{ marginBottom: "1rem" }}>
-          <label
-            htmlFor="password"
-            style={{ display: "block", marginBottom: "0.5rem" }}
-          >
+          <label htmlFor="password" style={{ display: "block", marginBottom: "0.5rem" }}>
             Password
           </label>
           <input
@@ -88,7 +80,7 @@ export default function SignInRoute() {
               padding: "0.5rem",
               fontSize: "1rem",
               border: "1px solid #ccc",
-              borderRadius: "4px",
+              borderRadius: "4px"
             }}
           />
         </div>
@@ -99,7 +91,7 @@ export default function SignInRoute() {
               padding: "0.75rem",
               backgroundColor: "#fee",
               color: "#c33",
-              borderRadius: "4px",
+              borderRadius: "4px"
             }}
           >
             {error}
@@ -116,7 +108,7 @@ export default function SignInRoute() {
             color: "white",
             border: "none",
             borderRadius: "4px",
-            cursor: isLoading ? "not-allowed" : "pointer",
+            cursor: isLoading ? "not-allowed" : "pointer"
           }}
         >
           {isLoading ? "Signing in..." : "Sign In"}

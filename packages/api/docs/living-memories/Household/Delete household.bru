@@ -1,0 +1,20 @@
+meta {
+  name: Delete household
+  type: http
+  seq: 1
+}
+
+delete {
+  url: {{API_DOMAIN}}/api/household/delete/:household-id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  household-id: EO3yLnRF3deAYphyx5kesFCoTinBXrHj
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

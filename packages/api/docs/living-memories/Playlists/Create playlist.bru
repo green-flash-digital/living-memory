@@ -1,0 +1,25 @@
+meta {
+  name: Create playlist
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{API_DOMAIN}}/api/playlist
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "",
+    "description": null,
+    "isPublic": false
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+

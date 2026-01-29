@@ -1,0 +1,21 @@
+meta {
+  name: Delete playlist
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{API_DOMAIN}}/api/playlist/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+

@@ -1,11 +1,14 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "strict": true,
-    "skipLibCheck": true,
     "lib": ["ESNext"],
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true,
+    "noEmit": true,
     "types": ["vite/client"]
-  }
+  },
+  "exclude": ["drizzle/**"]
 }

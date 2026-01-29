@@ -1,0 +1,57 @@
+import { Hono } from "hono";
+import type { Route, SessionVars } from "../../utils/types.js";
+import { zValidator } from "@hono/zod-validator";
+import z from "zod";
+import { response } from "../../utils/util.response.js";
+import { HTTPError } from "@living-memory/utils";
+import { schemaFor } from "../../utils/schemaFor.js";
+import { eq } from "drizzle-orm";
+import { schema } from "../../db/index.js";
+
+export const deleteHousehold = new Hono<Route<SessionVars>>();
+
+export type DeleteHouseholdResponse = {
+  message: string;
+};
+
+export const DeleteHouseholdResponseSchema = schemaFor<DeleteHouseholdResponse>({
+  message: z.string()
+});
+
+deleteHousehold.delete(
+  "/:id",
+  zValidator("param", z.object({ id: z.string({ error: "Missing param ':household-id'" }) })),
+  async (c) => {
+    const params = c.req.valid("param");
+
+    const user = c.get("user");
+    const betterAuth = c.get("betterAuth");
+    const db = c.get("db");
+
+    // Delete the organization
+    const res = await betterAuth.deleteOrganization({
+      body: { organizationId: params.id },
+      headers: c.req.raw.headers
+    });
+
+    if (!res) {
+      throw HTTPError.serverError("There was an issue when trying to delete the household");
+    }
+
+    // Reset their onboarding status
+    await db
+      .update(schema.user)
+      .set({
+        currentOnboardingStep: "JOIN_HOUSEHOLD",
+        isOnboarded: false,
+        updatedAt: new Date()
+      })
+      .where(eq(schema.user.id, user.id));
+
+    return response.json(c, {
+      context: "household.deleteHousehold",
+      schema: DeleteHouseholdResponseSchema,
+      data: { message: `Successfully deleted '${res.name}' household` }
+    });
+  }
+);
